@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login | ProMomentum</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-error": "#ffffff",
+                      "primary-fixed-dim": "#b2c5ff",
+                      "on-background": "#191b23",
+                      "inverse-surface": "#2e3038",
+                      "on-primary-container": "#ccd8ff",
+                      "tertiary": "#24467c",
+                      "secondary-fixed": "#6bfe9c",
+                      "on-surface": "#191b23",
+                      "surface-container-highest": "#e1e2ec",
+                      "tertiary-fixed": "#d7e2ff",
+                      "primary": "#0040a1",
+                      "inverse-primary": "#b2c5ff",
+                      "surface-dim": "#d9d9e4",
+                      "surface": "#faf8ff",
+                      "tertiary-container": "#3e5e95",
+                      "on-primary-fixed": "#001847",
+                      "on-secondary-fixed-variant": "#005228",
+                      "on-secondary-fixed": "#00210c",
+                      "error-container": "#ffdad6",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-fixed": "#dae2ff",
+                      "secondary-container": "#6bfe9c",
+                      "on-surface-variant": "#424654",
+                      "on-secondary-container": "#00743a",
+                      "surface-container": "#ededf8",
+                      "tertiary-fixed-dim": "#abc7ff",
+                      "outline": "#737785",
+                      "on-tertiary-fixed-variant": "#24467c",
+                      "surface-bright": "#faf8ff",
+                      "surface-container-high": "#e7e7f2",
+                      "on-primary-fixed-variant": "#0040a1",
+                      "background": "#faf8ff",
+                      "on-secondary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "secondary": "#006d37",
+                      "on-tertiary-fixed": "#001b3f",
+                      "primary-container": "#0056d2",
+                      "surface-variant": "#e1e2ec",
+                      "error": "#ba1a1a",
+                      "surface-container-low": "#f2f3fe",
+                      "secondary-fixed-dim": "#4ae183",
+                      "outline-variant": "#c3c6d6",
+                      "inverse-on-surface": "#f0f0fb",
+                      "surface-tint": "#0056d2",
+                      "on-tertiary-container": "#c7d9ff",
+                      "on-tertiary": "#ffffff",
+                      "on-primary": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "headline": ["Lexend"],
+                      "body": ["Manrope"],
+                      "label": ["Manrope"]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .glass-effect {
+            background: rgba(225, 226, 236, 0.6);
+            backdrop-filter: blur(12px);
+        }
+        .kinetic-gradient {
+            background: linear-gradient(135deg, #0040a1 0%, #0056d2 100%);
+        }
+        .ghost-border {
+            border: 1px solid rgba(195, 198, 214, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-background font-body text-on-background min-h-screen flex items-stretch overflow-hidden">
+<!-- Suppress TopAppBar and Footer as per Transactional Screen logic -->
+<!-- Left Side: Visual Momentum (Kinetic Graphic) -->
+<div class="hidden lg:flex lg:w-7/12 relative items-center justify-center bg-slate-950">
+<div class="absolute inset-0 z-0 opacity-60">
+<img alt="motion" class="w-full h-full object-cover" data-alt="dramatic low-angle shot of a sprinter starting a race on a dark blue track with dynamic motion blur and stadium lights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjIHrS-qAJNIL_dOlNMWeuTvEtqSVWnATogKYs9Ug9xEuD0REBZh3SZg5wIjElq2ekctyAwgmeT9WwgKSZtk8RkXh-VEaWn7gMLq0HG6KyOn1g6-jHZOcN6yTr0rNCKuLa5dX8VLQ1eMhxpRFBFwZ5hBvYEHZlkljSWtpFP1Mu29Kqi_8uMgY98ZfQ1yTWxKQW1fbMGxHJeK_H2nHU7UctsgvU-hr6I2LTCGGJUs6FBdRcBDWagE_u6Fbu0QT8DKEGvb3gbIbOzvP-"/>
+</div>
+<div class="absolute inset-0 bg-gradient-to-r from-transparent to-background z-10"></div>
+<!-- Branding Overlay -->
+<div class="relative z-20 px-12 max-w-2xl">
+<span class="inline-block px-4 py-1 mb-6 rounded-full bg-secondary-container text-on-secondary-container font-headline text-sm font-bold tracking-widest uppercase">
+                Precision Momentum
+            </span>
+<h1 class="font-headline text-7xl font-extrabold text-on-primary-fixed leading-tight tracking-tighter mb-6">
+                Redefining the <br/><span class="text-primary-container">Athletic Edge.</span>
+</h1>
+<p class="font-body text-xl text-slate-500 max-w-lg">
+                The global standard for professional sports management and performance tracking.
+            </p>
+</div>
+</div>
+<!-- Right Side: Login Canvas -->
+<main class="w-full lg:w-5/12 flex items-center justify-center p-8 lg:p-24 bg-background relative">
+<!-- Floating Logo for Branding Integrity -->
+<div class="absolute top-12 left-12 lg:left-24">
+<div class="font-headline text-2xl font-bold italic text-blue-700 tracking-tight">ProMomentum</div>
+</div>
+<div class="w-full max-w-md space-y-10">
+<!-- Header Group -->
+<div class="space-y-2">
+<h2 class="font-headline text-4xl font-bold text-on-background">Log In</h2>
+<p class="text-on-surface-variant font-medium">Welcome back to the arena.</p>
+</div>
+<!-- Form Section -->
+<form class="space-y-6" onsubmit="return false;">
+<div class="space-y-4">
+<!-- Email Field -->
+<div class="relative">
+<label class="block text-sm font-semibold font-label mb-2 text-on-surface-variant" for="email">Email Address</label>
+<div class="relative group">
+<input class="w-full bg-surface-container-highest ghost-border rounded-lg px-4 py-4 text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder:text-outline" id="email" placeholder="name@organization.com" type="email"/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="relative">
+<div class="flex justify-between items-center mb-2">
+<label class="block text-sm font-semibold font-label text-on-surface-variant" for="password">Password</label>
+<a class="text-xs font-bold text-primary hover:underline transition-all" href="#">Forgot password?</a>
+</div>
+<div class="relative group">
+<input class="w-full bg-surface-container-highest ghost-border rounded-lg px-4 py-4 text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder:text-outline" id="password" placeholder="••••••••" type="password"/>
+</div>
+</div>
+</div>
+<!-- Submit Button -->
+<button class="w-full kinetic-gradient text-on-primary font-headline font-bold py-4 rounded-lg shadow-lg hover:shadow-xl transition-all active:scale-95" type="submit">
+                    Sign In
+                </button>
+<!-- Divider -->
+<div class="relative flex items-center py-4">
+<div class="flex-grow border-t border-outline-variant opacity-30"></div>
+<span class="flex-shrink mx-4 text-on-surface-variant text-xs font-bold font-label uppercase tracking-widest">or continue with</span>
+<div class="flex-grow border-t border-outline-variant opacity-30"></div>
+</div>
+<!-- Social Login -->
+<button class="w-full flex items-center justify-center gap-3 bg-surface-container-lowest ghost-border text-on-background font-semibold py-4 rounded-lg hover:bg-surface-container-low transition-colors active:scale-95" type="button">
+<img alt="Google Logo" class="w-5 h-5" data-alt="Official Google G color icon logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABWq_svhypU2utfzRwJFEgDIi7vNy4v7FxjYDppxaP51yopZcLF1ZiLpggNCtNCbJB1MkXOFCFm2oB8mdVdNtBarczEZN3VyaH1eAMan4mKdrd1mOeOj9bQPwMJNxGGBB7MlEyA14qdJfPjCnJ4Ar7LnXz9o6KLEePYF6vDUblfClllex6uQHl9inCF9ES4UsnZQDBtmQf9lGwPNxgyHbs2vFUy2vWMeGDvXADgSdj11AL46yw57ciamk1DiD5RNhRuZA9mIIfe88_"/>
+                    Sign in with Google
+                </button>
+</form>
+<!-- Footer Link -->
+<div class="text-center">
+<p class="text-on-surface-variant font-medium">
+                    New to ProMomentum? 
+                    <a class="text-primary font-bold hover:underline ml-1" href="#">Create an account</a>
+</p>
+</div>
+</div>
+<!-- Decorative Subtle Tonal Shift (Kinetic Polish) -->
+<div class="absolute bottom-12 right-12 hidden lg:block opacity-10">
+<span class="material-symbols-outlined text-9xl text-primary font-variation-settings: 'FILL' 1;" data-icon="sports_score">sports_score</span>
+</div>
+</main>
+<!-- Support Link (from JSON top-level instruction) -->
+<div class="fixed bottom-6 right-6 z-50">
+<button class="flex items-center gap-2 text-primary font-bold font-label px-4 py-2 hover:bg-primary-container/10 rounded-full transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="help_outline">help_outline</span>
+            Support
+        </button>
+</div>
+</body></html>

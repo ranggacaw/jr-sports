@@ -1,0 +1,36 @@
+<?php
+
+use App\Http\Controllers\Admin\EventController as AdminEventController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\EventRegistrationController;
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', [EventController::class, 'index'])->name('events.index');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [EventController::class, 'dashboard'])->name('dashboard');
+    Route::post('/events/{sportsEvent}/registrations', [EventRegistrationController::class, 'store'])
+        ->name('events.registrations.store');
+});
+
+Route::middleware(['auth', 'admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::get('/events', [AdminEventController::class, 'index'])->name('events.index');
+        Route::get('/events/create', [AdminEventController::class, 'create'])->name('events.create');
+        Route::post('/events', [AdminEventController::class, 'store'])->name('events.store');
+        Route::get('/events/{sportsEvent}/edit', [AdminEventController::class, 'edit'])->name('events.edit');
+        Route::put('/events/{sportsEvent}', [AdminEventController::class, 'update'])->name('events.update');
+        Route::patch('/events/{sportsEvent}/close-registration', [AdminEventController::class, 'closeRegistration'])
+            ->name('events.close-registration');
+    });
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';

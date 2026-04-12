@@ -1,0 +1,57 @@
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - "${APP_PORT:-8080}:80"
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: "http://localhost:${APP_PORT:-8080}"
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: "${DB_DATABASE:-jr_sports}"
+      DB_USERNAME: "${DB_USERNAME:-jr_sports}"
+      DB_PASSWORD: "${DB_PASSWORD:-secret}"
+      RUN_MIGRATIONS: "true"
+    volumes:
+      - ./:/var/www/html
+      - vendor:/var/www/html/vendor
+      - storage:/var/www/html/storage
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  vite:
+    image: node:20-alpine
+    working_dir: /var/www/html
+    command: sh -lc "npm install && npm run dev -- --host 0.0.0.0 --port 5173"
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./:/var/www/html
+      - node_modules:/var/www/html/node_modules
+
+  mysql:
+    image: mysql:8.4
+    ports:
+      - "${DB_FORWARD_PORT:-3307}:3306"
+    environment:
+      MYSQL_DATABASE: "${DB_DATABASE:-jr_sports}"
+      MYSQL_USER: "${DB_USERNAME:-jr_sports}"
+      MYSQL_PASSWORD: "${DB_PASSWORD:-secret}"
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD:-root}"
+    volumes:
+      - mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${DB_ROOT_PASSWORD:-root}"]
+      retries: 10
+      timeout: 5s
+      interval: 10s
+
+volumes:
+  mysql:
+  node_modules:
+  storage:
+  vendor:

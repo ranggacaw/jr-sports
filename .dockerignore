@@ -1,0 +1,14 @@
+.env
+.git
+.github
+.opencode
+node_modules
+vendor
+storage/logs
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+public/build
+tests
+prompter
+__laravel_tmp
