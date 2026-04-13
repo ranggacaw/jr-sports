@@ -90,7 +90,7 @@ export default function Form({ event }) {
                             
                             <div className="grid grid-cols-2 gap-4 md:gap-6">
                                 <div className="col-span-2">
-                                    <label className="block text-xs font-bold uppercase tracking-widest text-[color:var(--on-surface-variant)] mb-2 md:ml-0 ml-1">
+                                    <label className="block text-[color:var(--primary)] font-bold font-headline text-sm ml-1 mb-2 md:text-xs md:font-bold md:uppercase md:tracking-widest md:text-[color:var(--on-surface-variant)] md:mb-2 md:ml-0">
                                         Sport Name
                                     </label>
                                     <div className="relative group">
@@ -98,22 +98,22 @@ export default function Form({ event }) {
                                             type="text" 
                                             value={data.name}
                                             onChange={(e) => setData('name', e.target.value)}
-                                            className="w-full bg-[color:var(--surface-container-highest)] border-none rounded md:rounded-lg focus:ring-2 focus:ring-[color:var(--primary-container)] transition-all p-4 text-[color:var(--on-surface)] placeholder:text-[color:var(--outline)]/50 font-medium" 
-                                            placeholder="e.g. Professional League Finals" 
+                                            className="w-full bg-[color:var(--surface-container-highest)] border-none rounded-lg px-4 py-4 md:rounded-lg focus:ring-2 focus:ring-[color:var(--primary)] transition-all md:p-4 text-[color:var(--on-surface)] placeholder:text-[color:var(--outline)]/50 font-medium" 
+                                            placeholder="e.g. Competitive Padel" 
                                         />
-                                        <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[color:var(--outline)]/50 group-focus-within:text-[color:var(--primary)] text-lg">sports_tennis</span>
+                                        <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[color:var(--outline)]/50 group-focus-within:text-[color:var(--primary)]">sports_tennis</span>
                                     </div>
                                     <InputError message={errors.name} className="mt-2" />
                                 </div>
 
                                 <div className="col-span-2 md:col-span-1">
-                                    <label className="block text-xs font-bold uppercase tracking-widest text-[color:var(--on-surface-variant)] mb-2 md:ml-0 ml-1">
+                                    <label className="block text-[color:var(--primary)] font-bold font-headline text-sm ml-1 mb-2 md:text-xs md:font-bold md:uppercase md:tracking-widest md:text-[color:var(--on-surface-variant)] md:mb-2 md:ml-0">
                                         Frequency
                                     </label>
                                     <select 
                                         value={data.recurrence}
                                         onChange={(e) => setData('recurrence', e.target.value)}
-                                        className="w-full bg-[color:var(--surface-container-highest)] border-none rounded md:rounded-lg focus:ring-2 focus:ring-[color:var(--primary-container)] transition-all p-4 text-[color:var(--on-surface)] font-medium appearance-none"
+                                        className="w-full bg-[color:var(--surface-container-highest)] border-none rounded-lg px-4 py-4 md:rounded-lg focus:ring-2 focus:ring-[color:var(--primary)] transition-all md:p-4 text-[color:var(--on-surface)] font-medium appearance-none"
                                     >
                                         <option value="One-time">One-time Event</option>
                                         <option value="Daily">Daily</option>
@@ -133,31 +133,31 @@ export default function Form({ event }) {
                             </div>
                             <div className="grid grid-cols-2 gap-4 md:gap-6 relative z-10">
                                 <div className="col-span-2 md:col-span-1">
-                                    <label className="block text-xs font-bold uppercase tracking-widest text-[color:var(--on-surface-variant)] mb-2 md:ml-0 ml-1">
+                                    <label className="block text-[color:var(--primary)] font-bold font-headline text-sm ml-1 mb-2 md:text-xs md:font-bold md:uppercase md:tracking-widest md:text-[color:var(--on-surface-variant)] md:mb-2 md:ml-0">
                                         Start Time
                                     </label>
                                     <div className="relative">
-                                        <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[color:var(--outline)] text-lg">schedule</span>
+                                        <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[color:var(--outline)] text-lg md:block hidden">schedule</span>
                                         <input 
                                             type="datetime-local" 
                                             value={data.starts_at}
                                             onChange={(e) => setData('starts_at', e.target.value)}
-                                            className="w-full bg-[color:var(--surface-container-highest)] border-none rounded md:rounded-lg focus:ring-2 focus:ring-[color:var(--primary-container)] transition-all p-4 pl-12 text-[color:var(--on-surface)] font-medium" 
+                                            className="w-full bg-[color:var(--surface-container-highest)] border-none rounded-lg px-4 py-4 md:pl-12 md:rounded-lg focus:ring-2 focus:ring-[color:var(--primary)] transition-all md:p-4 text-[color:var(--on-surface)] font-medium" 
                                         />
                                     </div>
                                     <InputError message={errors.starts_at} className="mt-2" />
                                 </div>
                                 <div className="col-span-2 md:col-span-1">
-                                    <label className="block text-xs font-bold uppercase tracking-widest text-[color:var(--on-surface-variant)] mb-2 md:ml-0 ml-1">
+                                    <label className="block text-[color:var(--primary)] font-bold font-headline text-sm ml-1 mb-2 md:text-xs md:font-bold md:uppercase md:tracking-widest md:text-[color:var(--on-surface-variant)] md:mb-2 md:ml-0">
                                         End Time
                                     </label>
                                     <div className="relative">
-                                        <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[color:var(--outline)] text-lg">timer_off</span>
+                                        <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[color:var(--outline)] text-lg md:block hidden">timer_off</span>
                                         <input 
                                             type="datetime-local" 
                                             value={data.ends_at ?? ''}
                                             onChange={(e) => setData('ends_at', e.target.value)}
-                                            className="w-full bg-[color:var(--surface-container-highest)] border-none rounded md:rounded-lg focus:ring-2 focus:ring-[color:var(--primary-container)] transition-all p-4 pl-12 text-[color:var(--on-surface)] font-medium" 
+                                            className="w-full bg-[color:var(--surface-container-highest)] border-none rounded-lg px-4 py-4 md:pl-12 md:rounded-lg focus:ring-2 focus:ring-[color:var(--primary)] transition-all md:p-4 text-[color:var(--on-surface)] font-medium" 
                                         />
                                     </div>
                                     <InputError message={errors.ends_at} className="mt-2" />
@@ -183,7 +183,7 @@ export default function Form({ event }) {
                             
                             <div className="space-y-4 md:space-y-6">
                                 <div>
-                                    <label className="block text-xs font-bold uppercase tracking-widest text-[color:var(--on-surface-variant)] mb-2 md:ml-0 ml-1">
+                                    <label className="block text-[color:var(--primary)] font-bold font-headline text-sm ml-1 mb-2 md:text-xs md:font-bold md:uppercase md:tracking-widest md:text-[color:var(--on-surface-variant)] md:mb-2 md:ml-0">
                                         Venue Name
                                     </label>
                                     <div className="relative">
@@ -191,37 +191,38 @@ export default function Form({ event }) {
                                             type="text" 
                                             value={data.venue.name}
                                             onChange={(e) => setVenueField('name', e.target.value)}
-                                            className="w-full bg-[color:var(--surface-container-lowest)] md:bg-white border-none rounded md:rounded-lg focus:ring-2 focus:ring-[color:var(--primary-container)] transition-all p-4 pr-12 text-[color:var(--on-surface)] font-medium placeholder:text-[color:var(--outline)]/50" 
+                                            className="w-full bg-[color:var(--surface-container-highest)] border-none rounded-lg px-4 py-4 md:bg-white md:rounded-lg focus:ring-2 focus:ring-[color:var(--primary)] transition-all md:p-4 text-[color:var(--on-surface)] font-medium placeholder:text-[color:var(--outline)]/50" 
                                             placeholder="Olympia National Stadium" 
                                         />
-                                        <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[color:var(--outline)]/50 text-lg">location_on</span>
+                                        <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[color:var(--outline)]/50 text-lg md:block hidden">location_on</span>
+                                        <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[color:var(--outline)]/50 md:hidden block">location_on</span>
                                     </div>
                                     <InputError message={errors['venue.name']} className="mt-2" />
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-xs font-bold uppercase tracking-widest text-[color:var(--on-surface-variant)] mb-2 md:ml-0 ml-1">
+                                        <label className="block text-[color:var(--primary)] font-bold font-headline text-sm ml-1 mb-2 md:text-xs md:font-bold md:uppercase md:tracking-widest md:text-[color:var(--on-surface-variant)] md:mb-2 md:ml-0">
                                             City
                                         </label>
                                         <input 
                                             type="text" 
                                             value={data.venue.city}
                                             onChange={(e) => setVenueField('city', e.target.value)}
-                                            className="w-full bg-[color:var(--surface-container-lowest)] md:bg-white border-none rounded md:rounded-lg focus:ring-2 focus:ring-[color:var(--primary-container)] transition-all p-4 text-[color:var(--on-surface)] font-medium placeholder:text-[color:var(--outline)]/50" 
+                                            className="w-full bg-[color:var(--surface-container-highest)] border-none rounded-lg px-4 py-4 md:bg-white md:rounded-lg focus:ring-2 focus:ring-[color:var(--primary)] transition-all md:p-4 text-[color:var(--on-surface)] font-medium placeholder:text-[color:var(--outline)]/50" 
                                             placeholder="City" 
                                         />
                                         <InputError message={errors['venue.city']} className="mt-2" />
                                     </div>
                                     <div>
-                                        <label className="block text-xs font-bold uppercase tracking-widest text-[color:var(--on-surface-variant)] mb-2 md:ml-0 ml-1">
+                                        <label className="block text-[color:var(--primary)] font-bold font-headline text-sm ml-1 mb-2 md:text-xs md:font-bold md:uppercase md:tracking-widest md:text-[color:var(--on-surface-variant)] md:mb-2 md:ml-0">
                                             Address
                                         </label>
                                         <input 
                                             type="text" 
                                             value={data.venue.address}
                                             onChange={(e) => setVenueField('address', e.target.value)}
-                                            className="w-full bg-[color:var(--surface-container-lowest)] md:bg-white border-none rounded md:rounded-lg focus:ring-2 focus:ring-[color:var(--primary-container)] transition-all p-4 text-[color:var(--on-surface)] font-medium placeholder:text-[color:var(--outline)]/50" 
+                                            className="w-full bg-[color:var(--surface-container-highest)] border-none rounded-lg px-4 py-4 md:bg-white md:rounded-lg focus:ring-2 focus:ring-[color:var(--primary)] transition-all md:p-4 text-[color:var(--on-surface)] font-medium placeholder:text-[color:var(--outline)]/50" 
                                             placeholder="Address" 
                                         />
                                         <InputError message={errors['venue.address']} className="mt-2" />
@@ -229,7 +230,7 @@ export default function Form({ event }) {
                                 </div>
 
                                 <div>
-                                    <label className="block text-xs font-bold uppercase tracking-widest text-[color:var(--on-surface-variant)] mb-2 md:ml-0 ml-1">
+                                    <label className="block text-[color:var(--primary)] font-bold font-headline text-sm ml-1 mb-2 md:text-xs md:font-bold md:uppercase md:tracking-widest md:text-[color:var(--on-surface-variant)] md:mb-2 md:ml-0">
                                         Google Maps URL
                                     </label>
                                     <div className="relative">
@@ -237,16 +238,17 @@ export default function Form({ event }) {
                                             type="url" 
                                             value={data.venue.google_maps_url ?? ''}
                                             onChange={(e) => setVenueField('google_maps_url', e.target.value)}
-                                            className="w-full bg-[color:var(--surface-container-lowest)] md:bg-white border-none rounded md:rounded-lg focus:ring-2 focus:ring-[color:var(--primary-container)] transition-all p-4 pr-12 text-[color:var(--on-surface)] font-medium text-sm placeholder:text-[color:var(--outline)]/50" 
+                                            className="w-full bg-[color:var(--surface-container-highest)] border-none rounded-lg px-4 py-4 md:bg-white md:rounded-lg focus:ring-2 focus:ring-[color:var(--primary)] transition-all md:p-4 text-[color:var(--on-surface)] font-medium text-sm placeholder:text-[color:var(--outline)]/50" 
                                             placeholder="https://maps.google.com/..." 
                                         />
-                                        <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[color:var(--outline)]/50 text-lg">map</span>
+                                        <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[color:var(--outline)]/50 text-lg md:block hidden">map</span>
+                                        <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[color:var(--outline)]/50 md:hidden block">map</span>
                                     </div>
                                     <InputError message={errors['venue.google_maps_url']} className="mt-2" />
                                 </div>
 
                                 {/* Map Preview */}
-                                <div className="mt-4 relative w-full h-32 md:h-48 rounded-xl overflow-hidden group border border-[color:var(--outline-variant)]/10">
+                                <div className="mt-4 relative w-full h-32 md:h-48 rounded-xl overflow-hidden group border border-[color:var(--outline-variant)]/10 bg-[color:var(--surface-container-high)]">
                                     <img 
                                         alt="Map Preview" 
                                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80" 
@@ -254,7 +256,7 @@ export default function Form({ event }) {
                                     />
                                     <div className="absolute inset-0 bg-[color:var(--primary)]/10 pointer-events-none md:hidden"></div>
                                     <div className="absolute inset-0 flex items-center justify-center md:items-end md:justify-start md:p-4">
-                                        <div className="bg-[color:var(--primary)] text-[color:var(--on-primary)] md:bg-white md:text-[color:var(--primary)] px-4 py-2 rounded-full text-xs font-bold font-label flex items-center gap-2 shadow-lg">
+                                        <div className="bg-[color:var(--primary)] text-[color:var(--on-primary)] md:bg-white md:text-[color:var(--primary)] px-4 py-2 text-xs font-bold font-label flex items-center gap-2 shadow-lg rounded-full">
                                             <span className="material-symbols-outlined text-[color:var(--on-primary)] md:text-[color:var(--primary)] text-sm">location_searching</span>
                                             <span className="tracking-tighter">PREVIEW LOCATION</span>
                                         </div>
@@ -264,13 +266,13 @@ export default function Form({ event }) {
                         </div>
 
                         {/* Action Hub */}
-                        <div className="pt-4">
+                        <div className="pt-4 md:pt-0">
                             <button 
                                 type="submit" 
                                 disabled={processing}
-                                className="w-full py-5 md:py-6 rounded-xl md:rounded bg-[color:var(--primary)] text-[color:var(--on-primary)] md:bg-gradient-to-br md:from-[#002f57] md:to-[#01457d] md:text-white font-headline font-bold text-lg shadow-xl shadow-[color:var(--primary-container)]/20 flex items-center justify-center gap-4 group transition-transform active:scale-[0.95] md:active:scale-[0.98] disabled:opacity-75 disabled:cursor-not-allowed"
+                                className="w-full py-5 md:py-6 rounded-xl md:rounded bg-[color:var(--primary)] text-[color:var(--on-primary)] md:bg-gradient-to-br md:from-[#002f57] md:to-[#01457d] md:text-white font-headline font-bold md:text-lg text-lg shadow-xl shadow-[color:var(--primary-container)]/20 md:shadow-[color:var(--primary-container)]/20 flex items-center justify-center gap-3 md:gap-4 group transition-transform active:scale-[0.95] md:active:scale-[0.98] disabled:opacity-75 disabled:cursor-not-allowed"
                             >
-                                <span className="material-symbols-outlined md:hidden !font-[100]" style={{ fontVariationSettings: "'FILL' 1" }}>save</span>
+                                <span className="material-symbols-outlined md:hidden block" style={{ fontVariationSettings: "'FILL' 1" }}>save</span>
                                 {isEditing ? 'Save Event Configuration' : 'Confirm Event Configuration'}
                                 {processing ? (
                                     <span className="material-symbols-outlined animate-spin hidden md:block">refresh</span>
