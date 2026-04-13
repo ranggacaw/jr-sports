@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ProMomentum | Kinetic Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#37485f",
+                    "background": "#f9f9fe",
+                    "on-primary-container": "#85b4f3",
+                    "on-error-container": "#93000a",
+                    "primary": "#002f57",
+                    "tertiary-fixed": "#ffdbc9",
+                    "on-surface-variant": "#424750",
+                    "on-error": "#ffffff",
+                    "on-tertiary-container": "#f59b64",
+                    "surface-bright": "#f9f9fe",
+                    "primary-fixed": "#d3e3ff",
+                    "inverse-surface": "#2e3035",
+                    "tertiary-fixed-dim": "#ffb68b",
+                    "on-surface": "#191c20",
+                    "error-container": "#ffdad6",
+                    "primary-fixed-dim": "#a3c9ff",
+                    "secondary-container": "#d0e1fd",
+                    "on-background": "#191c20",
+                    "on-secondary-container": "#53647c",
+                    "surface-dim": "#d9dadf",
+                    "secondary-fixed-dim": "#b7c8e3",
+                    "outline": "#727781",
+                    "on-tertiary-fixed": "#321200",
+                    "error": "#ba1a1a",
+                    "secondary": "#4f5f77",
+                    "on-primary-fixed": "#001c39",
+                    "surface-container-low": "#f3f3f9",
+                    "surface-container": "#ededf3",
+                    "outline-variant": "#c2c6d1",
+                    "on-tertiary-fixed-variant": "#743503",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-high": "#e7e8ed",
+                    "inverse-on-surface": "#f0f0f6",
+                    "on-primary-fixed-variant": "#084880",
+                    "surface-container-highest": "#e2e2e7",
+                    "surface": "#f9f9fe",
+                    "surface-tint": "#2d609a",
+                    "primary-container": "#01457d",
+                    "tertiary": "#4e2000",
+                    "tertiary-container": "#703201",
+                    "surface-variant": "#e2e2e7",
+                    "on-secondary-fixed": "#0a1c31",
+                    "on-primary": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed": "#d3e3ff",
+                    "inverse-primary": "#a3c9ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Lexend"],
+                    "body": ["Lexend"],
+                    "label": ["Lexend"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tonal-shift { transition: background-color 0.3s ease; }
+        .kinetic-gradient { background: linear-gradient(135deg, #002f57 0%, #01457d 100%); }
+        .glass-header { backdrop-filter: blur(24px); }
+        .sport-shadow { box-shadow: 0 40px 40px -5px rgba(25, 28, 32, 0.06); }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body antialiased">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-white/60 backdrop-blur-md">
+<div class="flex justify-between items-center px-8 py-4 w-full max-w-screen-2xl mx-auto">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-black italic text-blue-800 tracking-tighter uppercase">ProScore</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-blue-700 border-b-2 border-blue-700 font-bold transition-colors" href="#">Dashboard</a>
+<a class="text-slate-500 font-medium hover:text-blue-600 transition-colors" href="#">Events</a>
+<a class="text-slate-500 font-medium hover:text-blue-600 transition-colors" href="#">Schedule</a>
+<a class="text-slate-500 font-medium hover:text-blue-600 transition-colors" href="#">Roster</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden lg:block">
+<input class="bg-surface-container-highest border-none rounded-full px-6 py-2 text-sm w-64 focus:ring-2 focus:ring-primary-container transition-all" placeholder="Search events..." type="text"/>
+<span class="material-symbols-outlined absolute right-4 top-2 text-slate-400">search</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-all">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="h-10 w-10 rounded-full overflow-hidden ml-2 border-2 border-primary-container">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="professional portrait of a male athlete in modern sports gear with clean studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCB1WCn69Hy8HzAF28fduEAMzRXas9d5odon4xSox_QvIV2lUW5k-CFAvf9HShzK52HwzUDiCVCe1QG_gow9EseQ9_yNpggWChGCqNYAt1HKRqEtoBKE42xr-j9W_49XZqFmJDvMTH0nklXR0bgRD72i0OyHrMj3xd4PbQBqglzdR4_Ht30W5U9P7bH3WeDFnnqrpuGi2oU6Gkw0NBjtNH7SqOh9n28Y216nvBXK9B6wx6l1-sAwSbB83h-Rd4ArVyMbAsvkUUfa4oR"/>
+</div>
+</div>
+</div>
+</div>
+</header>
+<div class="flex min-h-screen pt-20">
+<!-- SideNavBar (Hidden on small screens) -->
+<aside class="hidden lg:flex flex-col gap-2 p-4 w-64 fixed left-0 top-0 pt-24 h-screen bg-slate-50 border-r border-slate-200/50">
+<div class="px-4 mb-6">
+<h3 class="font-['Manrope'] font-bold text-lg text-primary">Filters</h3>
+<p class="text-xs text-slate-500 uppercase tracking-widest">Refine Events</p>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 bg-blue-600 text-white rounded-lg shadow-lg shadow-blue-500/20 font-['Manrope'] font-medium text-sm transition-all duration-200" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+                    Daily
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 rounded-lg font-['Manrope'] font-medium text-sm transition-all duration-200" href="#">
+<span class="material-symbols-outlined">calendar_view_week</span>
+                    Weekly
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 rounded-lg font-['Manrope'] font-medium text-sm transition-all duration-200" href="#">
+<span class="material-symbols-outlined">sports_soccer</span>
+                    Soccer
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 rounded-lg font-['Manrope'] font-medium text-sm transition-all duration-200" href="#">
+<span class="material-symbols-outlined">sports_basketball</span>
+                    Basketball
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-200/50 rounded-lg font-['Manrope'] font-medium text-sm transition-all duration-200" href="#">
+<span class="material-symbols-outlined">sports_tennis</span>
+                    Tennis
+                </a>
+</nav>
+<button class="mt-auto mb-8 mx-2 kinetic-gradient text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-blue-900/20 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">add_circle</span>
+                Create Event
+            </button>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 lg:ml-64 px-8 py-8 max-w-7xl">
+<!-- Hero Section: Kinetic Precision -->
+<section class="relative h-[400px] rounded-lg overflow-hidden mb-12 kinetic-gradient flex items-center px-12 group">
+<div class="absolute inset-0 opacity-40 mix-blend-overlay">
+<img class="w-full h-full object-cover" data-alt="dynamic abstract background with fast moving light streaks in deep blue and white tones representing speed and performance" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQrR-FOwbCuDqN0SPU0thl9bfdrVlFTjrMJnCJX4tekXhshWQKMy6JvwkrU51qh_46TXlrfxatt9B3Pts8Gk1xYq8hNBO1DMNNa1ujKl2OSaZT4DpSeRCMIhefWOKuYb1i8vJfZKqtixUSZfeN-jyzmuN_k4B2cuNZGJVHdZSwm1QeyPQu3AHPaybj_9gJ8gaoSql3KxiZK3h4oTEk9YYcTn4vGBQc7yzW_aRzGnMv8-Jwe9f0oxYjWJu2GbF9vn2Dy4hNqkmSCltf"/>
+</div>
+<div class="relative z-10 max-w-2xl">
+<div class="inline-block px-4 py-1 bg-tertiary-container text-on-tertiary-container rounded-full text-xs font-bold tracking-widest uppercase mb-4">
+                        Elite Performance
+                    </div>
+<h1 class="text-white text-6xl md:text-7xl font-black tracking-tighter leading-tight mb-6">
+                        Precision <br/><span class="text-blue-300 italic">Momentum</span>
+</h1>
+<p class="text-blue-100 text-lg mb-8 max-w-md font-light leading-relaxed">
+                        Track your progress, join elite training events, and push your athletic boundaries with ProMomentum's internal network.
+                    </p>
+<div class="flex gap-4">
+<button class="bg-white text-primary px-8 py-4 rounded-DEFAULT font-bold hover:bg-blue-50 transition-colors">
+                            Explore Stats
+                        </button>
+<button class="bg-transparent border border-white/30 text-white px-8 py-4 rounded-DEFAULT font-bold hover:bg-white/10 transition-colors">
+                            Watch Highlights
+                        </button>
+</div>
+</div>
+<!-- Asymmetric overlap image -->
+<div class="absolute -right-20 bottom-0 h-[110%] hidden xl:block translate-y-10 group-hover:translate-y-0 transition-transform duration-700">
+<img class="h-full object-contain filter drop-shadow-2xl" data-alt="professional athlete in dynamic jumping motion on basketball court with dramatic rim lighting and blurred background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDamFz05rcDwujYy6tUJCWRiWsB8LtYhiM5N5bkfX2-_vdYoV7MAggFej3zBMBaFVggjyhmMObD0-_kXmaHEoNuMswQs_XU27gscCcWHXvQrmig6Zora-TO81GE1hSObQJKNx7Yqt9-egtAwJmUeqlfK0t1e35JdObA-BnPHwrFCr-tdilF4RiEds0ERxHtPBTEQHfgyqBjakYTYXSDU4FJd9QcL7y4OVNy9N7ZudpXidDalrnv_f3dF1UX0ajhM6mYJgQ0Kds5GtVe"/>
+</div>
+</section>
+<!-- Grid Header -->
+<div class="flex justify-between items-end mb-8">
+<div>
+<h2 class="text-3xl font-black text-primary tracking-tight">Upcoming Events</h2>
+<p class="text-slate-500 font-medium">Reserve your spot in the next session</p>
+</div>
+<div class="flex gap-2">
+<button class="p-2 border border-outline-variant rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="p-2 border border-outline-variant rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Bento-style Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+<!-- Event Card: Basketball -->
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden sport-shadow group flex flex-col">
+<div class="relative h-48 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="wide angle shot of an indoor basketball court with polished floors and professional lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3tYV058byYZcaO7Szp6oUNQxglzNiqc5YZgmLvjm5tIkDLys0V5pCGDDTdRnp8un2ilvD2GwYC61adnlI_zkyv0UrF04wuSDicToVUi-O-HNxeLtPWCd1pX-9lWJJ8TBApx2i-G1Ijydm08exGy0pdVNiilp8iunEfgmWitXl8nNLNfTLa2sK3wFJ7jEq6J-9xmGiBWsykte0BcQZ05oxr1aLVZtCkeKaq5d-KdyjJiw6ak7tw1QUq95Q3T6_F1LnmW9JGcnFQ560"/>
+<div class="absolute top-4 left-4 bg-primary-container text-on-primary-container text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-tighter">
+                            Basketball
+                        </div>
+</div>
+<div class="p-6 flex-1 flex flex-col">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-xl font-bold text-primary">Pro 3v3 Tournament</h3>
+<span class="text-xs font-black text-tertiary">LIVE</span>
+</div>
+<div class="flex items-center gap-2 text-slate-500 text-sm mb-6">
+<span class="material-symbols-outlined text-sm">schedule</span>
+                            Today, 5:00 PM • Arena 4
+                        </div>
+<div class="mt-auto flex items-center justify-between pt-6 border-t border-slate-100">
+<div class="flex -space-x-2">
+<img class="w-8 h-8 rounded-full border-2 border-white object-cover" data-alt="user avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEdXG0fs2JXmodHjTk21TliyvC6k-mI-vJ4yt5t4bg3bVlAZ3Mc-qkqXAUw45qiJTayIQQnv4muKajHOFiTjaRVTohoO9kFQT9cEfHyF65K9-XpWgHd-Qb-E8Be7xW29nsArRJpRhIiUdIWb-SXLr5IP1pLSHjPyohFLG2aY1_G978MTmqhUnLv36hewf-_B8hff4Sd4qegs4sl20S1grjdv3pY6KBwPHU1r74qFu6bgojvWjcmWV9g2Yi_lv0Yxbn8xY48i8k56Rn"/>
+<img class="w-8 h-8 rounded-full border-2 border-white object-cover" data-alt="user avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPXznQG2aUITO1njpyJ0CUPB0zvDHSLsMfJR6BP3BIJ35gUuUR8sEOB3X1p8w5YZIhQhn503zhAw2CGKKJpMvg8bKK-X8RmR-EKy4CzfzJvCC1ovRgfE7wG57Bf_9_VzVzWU_pG0UF7y8j24ILOIRKD7E2SxWFFPeZYkqtvp4sApgR9c7sNZUJxHS3MsD3w1u41r8_Rb_MNLbSqikU09cdxTl8mlbRC2pa4OGTo3H7EX-pP2Y2wpLls4LkB1RtH8Is81HdChWMwhr-"/>
+<div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-400 border-2 border-white">+12</div>
+</div>
+<button class="kinetic-gradient text-white px-6 py-2 rounded-full font-bold text-sm active:scale-95 transition-transform">Join Event</button>
+</div>
+</div>
+</div>
+<!-- Event Card: Tennis -->
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden sport-shadow group flex flex-col">
+<div class="relative h-48 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="top view of a professional blue clay tennis court with crisp white lines" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKlbLZcYuiSOLK-Z-eWXojDXqsgJt-S3fc46cLvdboEdDyTBmOwcM0prPxVysM1OtZiyLOWMiO65nJNzkl0G1T5KZNeSitqFSraE7tJReXlzFhbvg56L2-9gzAsY_MVZZDMhFGEFlb88FUOPEFN-Gyk3FXuWTUScGmXxUgaDg7z2X26Hi83Qzg5N3MXA5qH-0fpbAE-x8iN_EV7bjSNk8kaRUoKjAFh1UEI195RaEr_UR3beBHRqy-3rCHTrQRjI5fqaQ1uhOTFLin"/>
+<div class="absolute top-4 left-4 bg-tertiary-container text-on-tertiary-container text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-tighter">
+                            Tennis
+                        </div>
+</div>
+<div class="p-6 flex-1 flex flex-col">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-xl font-bold text-primary">Open Singles Clinic</h3>
+<span class="text-xs font-bold text-slate-400">8/12 Full</span>
+</div>
+<div class="flex items-center gap-2 text-slate-500 text-sm mb-6">
+<span class="material-symbols-outlined text-sm">schedule</span>
+                            Tomorrow, 9:00 AM • Court 2
+                        </div>
+<div class="mt-auto flex items-center justify-between pt-6 border-t border-slate-100">
+<div class="flex -space-x-2">
+<img class="w-8 h-8 rounded-full border-2 border-white object-cover" data-alt="user avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBC7UZwtmSrAtlkWMt9s31SWf6UvAvxYZSzIAlxlLhGFDWSPVXJumvC6j9d1JvzkpV2xXYb1x0NFD-C9mDm9tFDKII2B69p7tJP2QBAxFq3KK3UZ3N_dO-TftIpYGb_P-iqK0PmhhkFYMkzgN2Q6wIc7iM6yq0cWQpKNiSAT7IUrxD_QXwtUHNr_YBt1D1E3k8i76Bc6L9QTKEYMl8y_WYiyLSvYbVQqNpm8TNPQC5cCsxnMhvUosjU_usJ0WX5mCUdMwx-qCSfSp7v"/>
+<img class="w-8 h-8 rounded-full border-2 border-white object-cover" data-alt="user avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOiXKW9XPYQHqfzU-3nBdqMr33MyeapZvLjuT9LBgUDw_PQsF-EaIm-CtaxiYCTE_ETJg3RFXN_LBbM5401KMcQfRpaKSkHR7NdBWSgXXIwlrd1KMGFTEE3u9a2EL1q32yIM5eqSSz0NiN4kOLQSlJldfL5qu_dd5Wjaobhjf0N2sKl3xCFgyCRXer5J172vazTFqGeyUZlmqkbdiFGfZO5v3WEpXxiNMJM3vCrXwB4RDWPibF4GSvNysZI3ouiAeXqf3K99RSM4Lg"/>
+<div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-400 border-2 border-white">+6</div>
+</div>
+<button class="kinetic-gradient text-white px-6 py-2 rounded-full font-bold text-sm active:scale-95 transition-transform">Join Event</button>
+</div>
+</div>
+</div>
+<!-- Event Card: Futsal -->
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden sport-shadow group flex flex-col">
+<div class="relative h-48 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="close up of a professional soccer ball on a high quality synthetic indoor turf" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABEYxwxWYg52jr9jmpusR1FodgRmiErHginpsS8cxBzwLmLRjO6UBtmcewfFZJkDckhHe6d8C5fbTXN4PrH_nRBKC7gn3K2kECluqR0P8NicB3tsrSuRief6hq3SwalSQSNROU4Aw_Z_bABrEZq7U3E804--sWBMY2q-1IeF5NYV8DUuzr2fKEcL2V3vq3jDCaH1NQcdiTBcSmkFqqtHwe-EiVeBHcRUMwCIydGwDRGbLc0O8V5A3-_LmQxlyXHN64w7UopOr513-q"/>
+<div class="absolute top-4 left-4 bg-secondary-container text-on-secondary-container text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-tighter">
+                            Futsal
+                        </div>
+<div class="absolute inset-0 bg-primary/20 backdrop-grayscale-[0.5]"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="bg-white/90 px-4 py-2 rounded font-black text-primary text-xs uppercase">Waitlist Only</span>
+</div>
+</div>
+<div class="p-6 flex-1 flex flex-col">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-xl font-bold text-primary">Late Night Futsal</h3>
+<span class="text-xs font-bold text-error">FULL</span>
+</div>
+<div class="flex items-center gap-2 text-slate-500 text-sm mb-6">
+<span class="material-symbols-outlined text-sm">schedule</span>
+                            Friday, 10:00 PM • Main Hall
+                        </div>
+<div class="mt-auto flex items-center justify-between pt-6 border-t border-slate-100">
+<div class="flex -space-x-2">
+<img class="w-8 h-8 rounded-full border-2 border-white object-cover" data-alt="user avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAUEo49iJDmk1RTolwZ_MnkgMx_POP3cy5j_84Rp1q-VedTGVj9RxnJeDxu7SDL1PceQfvmFAYCWMZTo8MiKQOTO4_aT3TKEuvxjuGziBYWrQ7DtJLj35XyZnBRI72SLCSpKC0Peu27ezB8-C5d6IKKtQFoQYgNrc2KOwpMLgfqF9X1GHE2t1NoFkiZ64VIs7Br3QSNXnCFUdrde07lzjUXDqkrweGJs1kt7IEy97_RMSPIFHsAwpuljg7-L0Dd1pzR1vFCvH9M0t4"/>
+<img class="w-8 h-8 rounded-full border-2 border-white object-cover" data-alt="user avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuTZuS0yBFQJ77mxPzPhLdM1TNNlQ1GIJoGZyk8v5FbpNS0KMmUge6G46kPhnPT-nGmbyoET6sF0UFTp4eOQ-zqSOKLzr_DawG_Ht0YXsS4zWnAHLADj6tWZL-CqB50P-ectoXGKaXCtR5tkrCoYFi6gpwi2Dk6s9jnVtQZj-NsY9bzRrbIb7BOC4kTiaxVn6CGUzgVH6oFGQZWklGzeSEe6USyLtgZl3TqaD4q_gFtVBcftZmFXEK0bUlYj2tQvlgsEICVQUHtMn8"/>
+<div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-400 border-2 border-white">+18</div>
+</div>
+<button class="border-2 border-outline-variant text-slate-600 px-6 py-2 rounded-full font-bold text-sm hover:bg-slate-50 transition-colors">Waitlist</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Performance Stats Section -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-16">
+<div class="bg-surface-container-lowest p-6 rounded-lg sport-shadow border-l-4 border-primary">
+<span class="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2">Events Attended</span>
+<span class="text-4xl font-black text-primary">24</span>
+<div class="mt-4 h-1 w-full bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-3/4"></div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-lg sport-shadow border-l-4 border-tertiary">
+<span class="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2">Win Rate</span>
+<span class="text-4xl font-black text-primary">68%</span>
+<div class="mt-4 h-1 w-full bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[68%]"></div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-lg sport-shadow border-l-4 border-blue-400">
+<span class="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2">Active Streak</span>
+<span class="text-4xl font-black text-primary">5 <span class="text-lg font-bold">Days</span></span>
+<div class="mt-4 h-1 w-full bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-blue-400 w-1/2"></div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-lg sport-shadow border-l-4 border-slate-300">
+<span class="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2">Energy Level</span>
+<span class="text-4xl font-black text-primary">82</span>
+<div class="mt-4 h-1 w-full bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-container w-[82%]"></div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="w-full py-12 mt-auto bg-white border-t border-slate-100">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 gap-8 max-w-screen-2xl mx-auto">
+<div class="text-center md:text-left">
+<span class="text-xl font-black italic text-blue-800 tracking-tighter uppercase mb-2 block">ProScore</span>
+<p class="font-['Manrope'] text-xs uppercase tracking-widest text-slate-400">© 2024 ProScore Management. All rights reserved.</p>
+</div>
+<div class="flex gap-8">
+<a class="font-['Manrope'] text-xs uppercase tracking-widest text-slate-400 hover:text-blue-500 transition-colors" href="#">Terms of Service</a>
+<a class="font-['Manrope'] text-xs uppercase tracking-widest text-slate-400 hover:text-blue-500 transition-colors" href="#">Privacy Policy</a>
+<a class="font-['Manrope'] text-xs uppercase tracking-widest text-slate-400 hover:text-blue-500 transition-colors" href="#">Help Center</a>
+</div>
+<div class="flex gap-4">
+<button class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined text-xl">share</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined text-xl">language</span>
+</button>
+</div>
+</div>
+</footer>
+</body></html>

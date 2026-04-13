@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&amp;family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error-container": "#ffdad6",
+                    "tertiary": "#24467c",
+                    "on-tertiary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "outline-variant": "#c3c6d6",
+                    "on-secondary-container": "#00743a",
+                    "secondary-fixed": "#6bfe9c",
+                    "on-tertiary-fixed-variant": "#24467c",
+                    "on-error-container": "#93000a",
+                    "surface-bright": "#faf8ff",
+                    "surface-variant": "#e1e2ec",
+                    "primary-fixed": "#dae2ff",
+                    "outline": "#737785",
+                    "inverse-surface": "#2e3038",
+                    "secondary-fixed-dim": "#4ae183",
+                    "tertiary-container": "#3e5e95",
+                    "secondary": "#006d37",
+                    "on-tertiary-container": "#c7d9ff",
+                    "surface-container-high": "#e7e7f2",
+                    "on-secondary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "background": "#faf8ff",
+                    "surface-tint": "#01457d",
+                    "inverse-primary": "#b2c5ff",
+                    "on-secondary-fixed-variant": "#005228",
+                    "surface-dim": "#d9d9e4",
+                    "on-primary-fixed-variant": "#01457d",
+                    "primary-fixed-dim": "#b2c5ff",
+                    "surface-container-low": "#f2f3fe",
+                    "on-secondary-fixed": "#00210c",
+                    "on-primary-fixed": "#001847",
+                    "secondary-container": "#6bfe9c",
+                    "primary": "#01457d",
+                    "error": "#ba1a1a",
+                    "on-primary-container": "#ccd8ff",
+                    "surface-container-highest": "#e1e2ec",
+                    "on-background": "#191b23",
+                    "primary-container": "#01457d",
+                    "inverse-on-surface": "#f0f0fb",
+                    "tertiary-fixed-dim": "#abc7ff",
+                    "surface-container": "#ededf8",
+                    "surface-container-lowest": "#ffffff",
+                    "surface": "#faf8ff",
+                    "on-surface": "#191b23",
+                    "on-tertiary-fixed": "#001b3f",
+                    "on-surface-variant": "#424654",
+                    "tertiary-fixed": "#d7e2ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Lexend"],
+                    "body": ["Manrope"],
+                    "label": ["Manrope"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased">
+<header class="w-full top-0 sticky z-50 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-xl flex justify-between items-center px-6 py-4 transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden">
+<img alt="user profile photo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyg8p6FUL6NaKVXsZi-3ZPU0Z3bRo9ocymNR1xfMX1k86eQDv-Yxk2Y7i5jh7Zv-in5IaTWRcXsLXwzybWPqPHxD-h2o4SnuKnTKSuAa7CDzQocTFwYeg3n3Yc5xsjKzVEs-aj8AQ3nyPRJDZwFPDNMmm4t1eRGpT3s9zoSxqjdAReJiIn-hkUTRPdCNOd4w0-6CmF2dezIEykupk2nVq3S60oUMA3tNe_lxDBTeMaOsnnVEhFdj5oRnxTDm-uxk_b3k8QXDIXALTf"/>
+</div>
+<h1 class="font-headline text-2xl font-black tracking-tighter text-[#01457d] dark:text-blue-100 italic">KINETIC</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-[#01457d] dark:text-blue-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</header>
+<main class="px-6 pt-4 pb-32 space-y-8">
+<section class="space-y-6">
+<div class="flex items-center gap-3">
+<div class="flex-1 flex items-center bg-surface-container-highest/50 backdrop-blur-sm rounded-xl px-4 py-3 border border-outline-variant/15">
+<span class="material-symbols-outlined text-outline" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 w-full text-on-surface-variant font-medium placeholder:text-outline" placeholder="Search elite events..." type="text"/>
+</div>
+<button class="bg-primary text-on-primary w-12 h-12 rounded-xl flex items-center justify-center active:scale-90 duration-150">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+</button>
+</div>
+<div class="flex overflow-x-auto gap-3 hide-scrollbar -mx-6 px-6">
+<button class="px-6 py-2 bg-primary text-on-primary rounded-full font-headline font-semibold text-sm whitespace-nowrap active:scale-95">All</button>
+<button class="px-6 py-2 bg-surface-container-high text-on-surface-variant rounded-full font-headline font-semibold text-sm whitespace-nowrap hover:bg-surface-container-highest transition-colors">Basketball</button>
+<button class="px-6 py-2 bg-surface-container-high text-on-surface-variant rounded-full font-headline font-semibold text-sm whitespace-nowrap hover:bg-surface-container-highest transition-colors">Tennis</button>
+<button class="px-6 py-2 bg-surface-container-high text-on-surface-variant rounded-full font-headline font-semibold text-sm whitespace-nowrap hover:bg-surface-container-highest transition-colors">Soccer</button>
+<button class="px-6 py-2 bg-surface-container-high text-on-surface-variant rounded-full font-headline font-semibold text-sm whitespace-nowrap hover:bg-surface-container-highest transition-colors">Padel</button>
+</div>
+</section>
+<section class="space-y-6">
+<div class="flex items-center justify-between">
+<h2 class="font-headline font-extrabold text-2xl tracking-tight">Active Events</h2>
+<span class="text-xs font-bold text-primary uppercase tracking-widest">38 Found</span>
+</div>
+<div class="grid gap-6">
+<div class="group bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 transform">
+<div class="relative h-64 overflow-hidden">
+<img alt="basketball court" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhJBoYNlG9TI9GZCRiNiw0DhUreepbGmkMWfHoUpdHk3M_2obOJPrjKbnBdnBpfHk16GcWQGYf5V_-WVdOu_rnNPG9fEE0n24KW920iPQbvW7ubwIFr_U4pUSgIIyX0vsvtg5ZLBefPT0H7NIjVXn2CWlbchXqKzCaANVyMi67jRSDB-xqJWHTerk3vAZ03EG2FoiylgmIBZfm23e8B6-Yx701PW-5B-bYy6YpVtwayq5eG8hAKzXqANaEwuWCpEbyR9-5DbqnfM0o"/>
+<div class="absolute top-4 right-4 px-3 py-1 bg-secondary-container rounded-full flex items-center shadow-lg">
+<span class="text-[10px] font-headline font-black text-on-secondary-container tracking-widest">OPEN</span>
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
+<div class="flex items-center gap-2 text-white/80 mb-1">
+<span class="material-symbols-outlined text-sm" data-icon="calendar_today">calendar_today</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Starts in 2h 15m</span>
+</div>
+<h3 class="font-headline text-xl font-bold text-white leading-tight">Downtown Elite: 3x3 Street Masters</h3>
+</div>
+</div>
+<div class="p-6 space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex -space-x-2">
+<img class="w-8 h-8 rounded-full border-2 border-surface-container-lowest object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB57rdY5Gpw_3UZ-pMa86l8pknZp3F7noAonT2bGqnP0SMWJrkwcSWa1Ec8fSTyam8k5qcqjPlGt-pmASzk4TeP-7w9Us4pF3qYp1GLQyScXGB11TydQT5BuSvgUP15zMtvWYA6U7Z54nzpzzBh4p2LvUMoG6blHWtmD2shQjJuqKADUWJgeTNNxIYeHlut50X_h8k4mBxG8jSRxHFECIOWHaezErE_aatKZ7DyfQmbU-HEYJE-i1mMP7aLCBdnQSGoW22mkwZ_7_Dz"/>
+<img class="w-8 h-8 rounded-full border-2 border-surface-container-lowest object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZbOvf4RJ9ubkYdOHmSn-VUa8zaE1s-U5A3rSzrROy7EiVCW3vtnFyXBJ4tSXJWcbLB07btNKUic4HR4kBDcoAQY0DMjII3lQqdQW0dxyXipWHRaQWJc9p4DXXEVd1yAdxLXjy4_59cRW3suusM-yh17JtFvIVS08IRj-xK-XWzpKWsG2W1fF-RpeIeWxjb8erAEAY4UlazTaLwn-vVTiMJMNP4YbYzfGchuckJfCBIck2_nzNv5Cp5wfS-l1gADG0mleq7MEweIEw"/>
+<div class="w-8 h-8 rounded-full border-2 border-surface-container-lowest bg-primary-fixed flex items-center justify-center text-[10px] font-bold text-[#01457d]">+12</div>
+</div>
+<span class="text-on-surface-variant font-bold text-xs uppercase tracking-wider">Madison Square</span>
+</div>
+<button class="w-full py-3.5 bg-secondary-fixed text-on-secondary-fixed font-headline font-extrabold text-sm rounded-xl active:scale-95 transition-transform">JOIN EVENT</button>
+</div>
+</div>
+<div class="group bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm transition-all duration-300">
+<div class="relative h-64 overflow-hidden">
+<img alt="tennis court action" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZvWPNT5CnjkxMDrYO8XuLlX3WxR8ohCZLCHa9EtMBG4jxnYFzobg2U00dSolsrtocl3ACZJLuJZCCkBBamIan1xMpHx6b9XC6Dk5nhiyo7Qhb0JDvCMCMoXArlUBvkxk-KFmtFAAhpNvZnf1MTiEnD6pNZ_7Sfuc4M0PGbNdAxVj87glDWGf_AF93PYfSbfPU0sxcNs7y5CAjpcRT71hzCURfvkbQd1wihBhSsJ_jCsyGuYxy2sB6IjHHLyp31zbd9890-gj8cJRB"/>
+<div class="absolute top-4 right-4 px-3 py-1 bg-secondary-container rounded-full flex items-center shadow-lg">
+<span class="text-[10px] font-headline font-black text-on-secondary-container tracking-widest">OPEN</span>
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
+<div class="flex items-center gap-2 text-white/80 mb-1">
+<span class="material-symbols-outlined text-sm" data-icon="calendar_today">calendar_today</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Tomorrow at 09:00</span>
+</div>
+<h3 class="font-headline text-xl font-bold text-white leading-tight">Lakeside Open: Singles Finals</h3>
+</div>
+</div>
+<div class="p-6 space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex -space-x-2">
+<img class="w-8 h-8 rounded-full border-2 border-surface-container-lowest object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBklC5VAZFJ6dXcaEBYyCNL7JnuVuvJO2ikjtgTZ9JaVchRgHbW27ho8G4SgyOG6ci2yZMxypzz-JXjBl62HkjfkxUUFYdF3Kn7vhIm98y9oYjXp-lG8OhjZTBEu5r2f8xaeI9OTVHNGHUiVJYSgRsH3m7gMZ5xEQAAe_V6jLOIGmuJpGJSG2NUvDcWYQfLaeWW8wF5oFI1bzwjI4aXz6l_YsRh0PjkzW1tpdIUooHngR1PNJaKDLgvdqksk4CmRNU7SzgOeJcvpRnS"/>
+<div class="w-8 h-8 rounded-full border-2 border-surface-container-lowest bg-primary-fixed flex items-center justify-center text-[10px] font-bold text-[#01457d]">1/2</div>
+</div>
+<span class="text-on-surface-variant font-bold text-xs uppercase tracking-wider">Rivera Court</span>
+</div>
+<button class="w-full py-3.5 bg-secondary-fixed text-on-secondary-fixed font-headline font-extrabold text-sm rounded-xl active:scale-95 transition-transform">JOIN EVENT</button>
+</div>
+</div>
+<div class="group bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm grayscale opacity-80">
+<div class="relative h-56 overflow-hidden">
+<img alt="soccer field" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNEdM7JwMhOuN_FJIZLr3xejd3jCYVp3tBov9ckmkwhDl2mmvbSu6UlYpm7G0DEheQZIR1f0Dx0mDvYu5JqexT7OnxcCp5mTZxhd6OuAHGhOWRLH-USHyyzH6YCr3aGKoGdxVB5pqjYmXhioiIozRdBs1QR3Ogp1Esbsr_ASkDhCRjCppkt6-I0Q2mfhFLgcXOxlvMNSqbMj_ikCU-30zPMVWvq0qNxBD85fyWfZh9LK9c8seAeMM2_3mhDcrGmzRgAAZkpVebLA6s"/>
+<div class="absolute top-4 right-4 px-3 py-1 bg-error-container rounded-full flex items-center shadow-lg">
+<span class="text-[10px] font-headline font-black text-on-error-container tracking-widest">CLOSED</span>
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
+<h3 class="font-headline text-xl font-bold text-white leading-tight">Midnight Cup Qualifiers</h3>
+</div>
+</div>
+<div class="p-6">
+<button class="w-full py-3.5 bg-surface-container-high text-outline font-headline font-extrabold text-sm rounded-xl cursor-not-allowed" disabled="">EVENT FILLED</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-white/90 dark:bg-slate-950/90 backdrop-blur-lg rounded-t-3xl shadow-[0_-8px_30px_rgba(0,0,0,0.04)]">
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-6 py-2 transition-all hover:text-[#01457d] dark:hover:text-blue-200 active:scale-90 duration-200 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-headline text-[10px] font-bold tracking-widest uppercase mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#01457d] dark:bg-blue-700 text-white dark:text-blue-50 rounded-full px-6 py-2 transition-all duration-300 active:scale-90 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="sports_score" style="font-variation-settings: 'FILL' 1;">sports_score</span>
+<span class="font-headline text-[10px] font-bold tracking-widest uppercase mt-1">Events</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-6 py-2 transition-all hover:text-[#01457d] dark:hover:text-blue-200 active:scale-90 duration-200 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span class="font-headline text-[10px] font-bold tracking-widest uppercase mt-1">Admin</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-6 py-2 transition-all hover:text-[#01457d] dark:hover:text-blue-200 active:scale-90 duration-200 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-headline text-[10px] font-bold tracking-widest uppercase mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

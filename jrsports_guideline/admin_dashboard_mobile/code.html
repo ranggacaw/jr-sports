@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KINETIC Admin Dashboard</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error-container": "#ffdad6",
+                    "outline": "#737785",
+                    "inverse-surface": "#2e3038",
+                    "primary": "#01457d",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-highest": "#e1e2ec",
+                    "on-secondary-fixed": "#00210c",
+                    "surface-container-high": "#e7e7f2",
+                    "on-error": "#ffffff",
+                    "secondary-fixed": "#6bfe9c",
+                    "on-primary-fixed-variant": "#01457d",
+                    "surface-container-low": "#f2f3fe",
+                    "tertiary-fixed": "#d7e2ff",
+                    "on-tertiary": "#ffffff",
+                    "outline-variant": "#c3c6d6",
+                    "tertiary": "#24467c",
+                    "primary-fixed-dim": "#b2c5ff",
+                    "on-tertiary-container": "#c7d9ff",
+                    "surface-tint": "#01457d",
+                    "error": "#ba1a1a",
+                    "on-error-container": "#93000a",
+                    "surface-bright": "#faf8ff",
+                    "secondary-container": "#6bfe9c",
+                    "on-primary-fixed": "#001847",
+                    "surface-variant": "#e1e2ec",
+                    "primary-fixed": "#dae2ff",
+                    "inverse-on-surface": "#f0f0fb",
+                    "inverse-primary": "#b2c5ff",
+                    "secondary-fixed-dim": "#4ae183",
+                    "tertiary-fixed-dim": "#abc7ff",
+                    "on-tertiary-fixed-variant": "#24467c",
+                    "on-secondary-fixed-variant": "#005228",
+                    "secondary": "#006d37",
+                    "surface": "#faf8ff",
+                    "on-surface-variant": "#424654",
+                    "on-secondary": "#ffffff",
+                    "background": "#faf8ff",
+                    "on-surface": "#191b23",
+                    "on-primary-container": "#ccd8ff",
+                    "tertiary-container": "#3e5e95",
+                    "on-background": "#191b23",
+                    "surface-dim": "#d9d9e4",
+                    "surface-container": "#ededf8",
+                    "on-tertiary-fixed": "#001b3f",
+                    "primary-container": "#01457d",
+                    "on-secondary-container": "#00743a",
+                    "on-primary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.5rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Lexend"],
+                    "body": ["Manrope"],
+                    "label": ["Manrope"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-xl z-50 bg-slate-100 dark:bg-slate-900 shadow-none">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20">
+<img alt="headshot of a professional athletic coach with a confident smile in soft studio lighting" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeWt70AYUIIB7mMPKFdy0HnX2nQxBqlOpUz3QZmrhhSu05mrUM3T-n0Roj2pDzdWJpaSXcyC3GnDUpG3oE7Gk3w45cbjOHNTmuBEcNIARmhA7ERLhX44S0LGMTvBh3sQ31Yotk_6u8OAa2w-jR3yrHkq8SiKjdxnzE8VwWAm-RVfZAgCZC2dEQMNS32UIp9HOCPWIEjd8wxADbc_DfLX1EXR_HxhPd610rnz8pE_HR2_B20qF2jHUALH2tPpoiiT1Y0AYESIzSOOSs"/>
+</div>
+<h1 class="text-2xl font-black tracking-tighter text-[#01457d] dark:text-blue-100 italic font-headline">KINETIC</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-[#01457d] dark:text-blue-400">notifications</span>
+</button>
+</div>
+</div>
+</header>
+<main class="px-6 pt-6">
+<!-- Hero Stats Section: Bento Grid Inspired -->
+<section class="grid grid-cols-2 gap-4 mb-8">
+<div class="col-span-2 bg-primary p-6 rounded-xl relative overflow-hidden">
+<div class="relative z-10">
+<p class="font-label text-white/80 text-xs font-semibold uppercase tracking-widest mb-1">Momentum Score</p>
+<p class="font-headline text-4xl font-extrabold text-white">92%</p>
+<p class="font-body text-sm text-white/90 mt-2 max-w-[200px]">System performance and participant engagement is at peak levels today.</p>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-10">
+<span class="material-symbols-outlined text-9xl text-white" style="font-variation-settings: 'FILL' 1;">insights</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-xl flex flex-col justify-between shadow-sm">
+<span class="material-symbols-outlined text-primary mb-3">event_available</span>
+<div>
+<p class="font-headline text-2xl font-bold">24</p>
+<p class="font-label text-on-surface-variant text-[10px] uppercase font-bold tracking-wider">Total Events</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-xl flex flex-col justify-between shadow-sm">
+<span class="material-symbols-outlined text-secondary mb-3">groups</span>
+<div>
+<p class="font-headline text-2xl font-bold">1.2k</p>
+<p class="font-label text-on-surface-variant text-[10px] uppercase font-bold tracking-wider">Live Users</p>
+</div>
+</div>
+</section>
+<!-- Main Action CTA -->
+<section class="mb-10">
+<button class="w-full bg-primary py-4 px-6 rounded-xl flex items-center justify-between text-white shadow-lg active:scale-95 transition-transform duration-150 group">
+<div class="flex flex-col items-start text-left">
+<span class="font-headline text-lg font-bold">Create New Event</span>
+<span class="text-xs opacity-80">Initialize a new professional competition</span>
+</div>
+<div class="bg-white/20 p-2 rounded-full group-hover:translate-x-1 transition-transform">
+<span class="material-symbols-outlined">add_circle</span>
+</div>
+</button>
+</section>
+<!-- Active Events List -->
+<section>
+<div class="flex items-center justify-between mb-6">
+<h2 class="font-headline text-xl font-bold text-primary">Active Events</h2>
+<span class="font-label text-xs font-bold text-on-surface-variant bg-surface-container px-3 py-1 rounded-full">3 Running</span>
+</div>
+<div class="space-y-6">
+<!-- Event Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:bg-surface-container-high transition-colors">
+<div class="p-4">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-headline font-bold text-lg mb-1 leading-tight">Marathon Series 2024</h3>
+<p class="text-xs text-on-surface-variant font-medium">854 Registered • Oct 24th</p>
+</div>
+<span class="bg-secondary-container text-on-secondary-container text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">OPEN</span>
+</div>
+<div class="flex gap-2 mt-6">
+<button class="flex-1 bg-surface-container-highest text-on-surface font-label text-sm font-bold py-3 rounded-lg flex items-center justify-center gap-2 active:scale-95 duration-150">
+<span class="material-symbols-outlined text-sm">edit</span>
+                            Edit
+                        </button>
+<button class="flex-1 bg-error-container text-on-error-container font-label text-sm font-bold py-3 rounded-lg flex items-center justify-center gap-2 active:scale-95 duration-150">
+<span class="material-symbols-outlined text-sm">lock</span>
+                            Close Reg
+                        </button>
+</div>
+</div>
+</div>
+<!-- Event Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:bg-surface-container-high transition-colors">
+<div class="p-4">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-headline font-bold text-lg mb-1 leading-tight">Corporate Padel Cup</h3>
+<p class="text-xs text-on-surface-variant font-medium">42 Teams • Nov 2nd</p>
+</div>
+<span class="bg-secondary-container text-on-secondary-container text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">OPEN</span>
+</div>
+<div class="flex gap-2 mt-6">
+<button class="flex-1 bg-surface-container-highest text-on-surface font-label text-sm font-bold py-3 rounded-lg flex items-center justify-center gap-2 active:scale-95 duration-150">
+<span class="material-symbols-outlined text-sm">edit</span>
+                            Edit
+                        </button>
+<button class="flex-1 bg-error-container text-on-error-container font-label text-sm font-bold py-3 rounded-lg flex items-center justify-center gap-2 active:scale-95 duration-150">
+<span class="material-symbols-outlined text-sm">lock</span>
+                            Close Reg
+                        </button>
+</div>
+</div>
+</div>
+<!-- Event Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:bg-surface-container-high transition-colors">
+<div class="p-4">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-headline font-bold text-lg mb-1 leading-tight">National Tennis Finals</h3>
+<p class="text-xs text-on-surface-variant font-medium">128 Participants • Oct 30th</p>
+</div>
+<span class="bg-error-container text-on-error-container text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">CLOSED</span>
+</div>
+<div class="flex gap-2 mt-6">
+<button class="flex-1 bg-surface-container-highest text-on-surface font-label text-sm font-bold py-3 rounded-lg flex items-center justify-center gap-2 active:scale-95 duration-150">
+<span class="material-symbols-outlined text-sm">edit</span>
+                            Edit
+                        </button>
+<button class="flex-1 border-2 border-primary text-primary font-label text-sm font-bold py-3 rounded-lg flex items-center justify-center gap-2 active:scale-95 duration-150">
+<span class="material-symbols-outlined text-sm">history</span>
+                            Analytics
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-white/90 dark:bg-slate-950/90 backdrop-blur-lg rounded-t-3xl shadow-[0_-8px_30px_rgba(0,0,0,0.04)]">
+<!-- Home -->
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-6 py-2 hover:text-[#01457d] dark:hover:text-blue-200 transition-all active:scale-90 duration-200 ease-out" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-headline text-[10px] font-bold tracking-widest uppercase mt-1">Home</span>
+</a>
+<!-- Events -->
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-6 py-2 hover:text-[#01457d] dark:hover:text-blue-200 transition-all active:scale-90 duration-200 ease-out" href="#">
+<span class="material-symbols-outlined">sports_score</span>
+<span class="font-headline text-[10px] font-bold tracking-widest uppercase mt-1">Events</span>
+</a>
+<!-- Admin (Active) -->
+<a class="flex flex-col items-center justify-center bg-[#01457d] dark:bg-blue-700 text-white dark:text-blue-50 rounded-full px-6 py-2 transition-all duration-300 active:scale-90 ease-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">admin_panel_settings</span>
+<span class="font-headline text-[10px] font-bold tracking-widest uppercase mt-0.5">Admin</span>
+</a>
+<!-- Profile -->
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-6 py-2 hover:text-[#01457d] dark:hover:text-blue-200 transition-all active:scale-90 duration-200 ease-out" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-headline text-[10px] font-bold tracking-widest uppercase mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

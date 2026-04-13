@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ProMomentum | Kinetic Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "error-container": "#ffdad6",
+                      "outline": "#737785",
+                      "inverse-surface": "#2e3038",
+                      "primary": "#01457d",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-highest": "#e1e2ec",
+                      "on-secondary-fixed": "#00210c",
+                      "surface-container-high": "#e7e7f2",
+                      "on-error": "#ffffff",
+                      "secondary-fixed": "#6bfe9c",
+                      "on-primary-fixed-variant": "#01457d",
+                      "surface-container-low": "#f2f3fe",
+                      "tertiary-fixed": "#d7e2ff",
+                      "on-tertiary": "#ffffff",
+                      "outline-variant": "#c3c6d6",
+                      "tertiary": "#24467c",
+                      "primary-fixed-dim": "#b2c5ff",
+                      "on-tertiary-container": "#c7d9ff",
+                      "surface-tint": "#01457d",
+                      "error": "#ba1a1a",
+                      "on-error-container": "#93000a",
+                      "surface-bright": "#faf8ff",
+                      "secondary-container": "#6bfe9c",
+                      "on-primary-fixed": "#001847",
+                      "surface-variant": "#e1e2ec",
+                      "primary-fixed": "#dae2ff",
+                      "inverse-on-surface": "#f0f0fb",
+                      "inverse-primary": "#b2c5ff",
+                      "secondary-fixed-dim": "#4ae183",
+                      "tertiary-fixed-dim": "#abc7ff",
+                      "on-tertiary-fixed-variant": "#24467c",
+                      "on-secondary-fixed-variant": "#005228",
+                      "secondary": "#006d37",
+                      "surface": "#faf8ff",
+                      "on-surface-variant": "#424654",
+                      "on-secondary": "#ffffff",
+                      "background": "#faf8ff",
+                      "on-surface": "#191b23",
+                      "on-primary-container": "#ccd8ff",
+                      "tertiary-container": "#3e5e95",
+                      "on-background": "#191b23",
+                      "surface-dim": "#d9d9e4",
+                      "surface-container": "#ededf8",
+                      "on-tertiary-fixed": "#001b3f",
+                      "primary-container": "#01457d",
+                      "on-secondary-container": "#00743a",
+                      "on-primary": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "headline": ["Lexend"],
+                      "body": ["Manrope"],
+                      "label": ["Manrope"]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Manrope', sans-serif; }
+        .font-headline { font-family: 'Lexend', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-50 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-xl flex justify-between items-center px-6 py-4 transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20">
+<img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfg2R5wBeI9alacrdGY3AyiyZWoLOiDi1AsbGh-tVPj-n05-vZsba5gg5Akm8gpXePrwnvnstmMvQxvEz3uAJ8OsyrRcWVBYu6N2IokYqYXOHH-_4TbU3VfGFFmRX4QHPq_cmThAb1UUSbDEg2itVOfesEpBRhUgAOvUFZZZAFgpRWn66wukBLXTZ3VOhWgsBPXw8qrYdKwcvYMhVFULNvp0lM5qLjuCq6qOt45qX4qzPd-Dv98aWd833T-Sbt3OmLSfZ1Ew6jZ-Og"/>
+</div>
+<span class="text-2xl font-black tracking-tighter text-[#01457d] dark:text-blue-100 italic font-headline uppercase">KINETIC</span>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-[#01457d] dark:text-blue-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</header>
+<main class="px-6 py-4">
+<!-- Hero Search Section -->
+<div class="mb-8">
+<h1 class="font-headline text-3xl font-extrabold text-[#01457d] tracking-tight mb-2">Precision Momentum</h1>
+<p class="text-on-surface-variant font-body mb-6">Discover your next competitive challenge.</p>
+<div class="flex gap-2">
+<div class="relative flex-grow">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant" data-icon="search">search</span>
+<input class="w-full bg-surface-container-highest border-none rounded-xl py-4 pl-12 pr-4 focus:ring-2 focus:ring-primary placeholder:text-outline font-body text-sm outline-variant/15" placeholder="Search sports or venues..." type="text"/>
+</div>
+<button class="bg-surface-container-highest p-4 rounded-xl text-[#01457d] hover:bg-surface-container-high transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+</button>
+</div>
+</div>
+<!-- Filter Chips (Asymmetric Layout) -->
+<div class="flex overflow-x-auto gap-3 pb-4 -mx-6 px-6 no-scrollbar">
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-label text-sm font-bold whitespace-nowrap">All Events</button>
+<button class="bg-surface-container-high text-on-surface-variant px-6 py-2 rounded-full font-label text-sm font-semibold whitespace-nowrap">Basketball</button>
+<button class="bg-surface-container-high text-on-surface-variant px-6 py-2 rounded-full font-label text-sm font-semibold whitespace-nowrap">Tennis</button>
+<button class="bg-surface-container-high text-on-surface-variant px-6 py-2 rounded-full font-label text-sm font-semibold whitespace-nowrap">Futsal</button>
+</div>
+<!-- Event Grid -->
+<section class="space-y-6 mt-4">
+<h2 class="font-headline text-xl font-bold text-[#01457d] mb-4">Upcoming Tournaments</h2>
+<!-- Event Card: Basketball -->
+<div class="group bg-surface-container-lowest rounded-xl overflow-hidden transition-all duration-300 hover:bg-surface-container-high flex flex-col shadow-[0px_12px_32px_rgba(25,27,35,0.06)]">
+<div class="relative h-48 w-full">
+<img alt="Basketball court" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGo__jmegUAQYceYG4Rt0E52BRUX_6uMl8nDOBN_GfYNSGkw7jZnX2KxLa7tPcFitoV05FhHDaCbt_xqpckrI92l8vb3IttGG0T64O1EIyr4H_Yb2JahsqtBQfw_zxUlI7Oj9FC5o9jGkBl_1NZrezW6yW92oPriPABZbGrq1BPsSWfHIETjnKu-yB839w1_bwlgxPcp8cpeqPZcizLho89tjt6wB5k8BRfLeX68vEpkYkHqozqR4eawrJlI3tL-7xm_qkqEfeaOaI"/>
+<div class="absolute top-4 right-4 bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label text-[10px] font-extrabold tracking-widest uppercase">OPEN</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-headline text-lg font-bold text-on-surface mb-1">Corporate Slam Jam</h3>
+<p class="text-on-surface-variant text-xs font-label uppercase tracking-wider">Basketball Championship</p>
+</div>
+<div class="text-right">
+<span class="block font-headline text-primary font-bold">18:00</span>
+<span class="block text-[10px] text-outline font-bold uppercase">Oct 12</span>
+</div>
+</div>
+<div class="flex items-center gap-4 mb-6">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="location_on">location_on</span>
+<span class="text-xs font-semibold">Downtown Arena</span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="group">group</span>
+<span class="text-xs font-semibold">12/16 Joined</span>
+</div>
+</div>
+<button class="w-full bg-secondary-fixed text-on-secondary-fixed py-3.5 rounded-full font-headline font-bold text-sm uppercase tracking-widest transition-transform active:scale-95 duration-150">Join Event</button>
+</div>
+</div>
+<!-- Event Card: Tennis -->
+<div class="group bg-surface-container-lowest rounded-xl overflow-hidden transition-all duration-300 hover:bg-surface-container-high flex flex-col shadow-[0px_12px_32px_rgba(25,27,35,0.06)]">
+<div class="relative h-40 w-full">
+<img alt="Tennis Match" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRG6rHSjdR454K536jUHwFLbGpqqtRBxyyy3Lu6xK4zx2IMpVEZGevjC2w8hOjeLLALDwDWZnUAgN4hO-NzIfTvi9ChXC-wL6W_ZETQcQEh7J0mCj_U1gOWqoJH1oH82caudxGDY53-Wu2JhI4_oxjDmz8tqZSIEQnv9C6nEkakZ2ZBD5ePELGMXY_2QZV603u5vBiIh1-yuQUwhj9v9WnIk09T2H64ddSRdZ02eyQliASR1spxqbutkwlSi1dHY5xlX_R69Es6vZE"/>
+<div class="absolute top-4 right-4 bg-error-container text-on-error-container px-3 py-1 rounded-full font-label text-[10px] font-extrabold tracking-widest uppercase">CLOSED</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-headline text-lg font-bold text-on-surface mb-1">Executive Ace Open</h3>
+<p class="text-on-surface-variant text-xs font-label uppercase tracking-wider">Tennis Singles</p>
+</div>
+<div class="text-right">
+<span class="block font-headline text-primary font-bold">09:30</span>
+<span class="block text-[10px] text-outline font-bold uppercase">Oct 14</span>
+</div>
+</div>
+<div class="flex items-center gap-4 mb-6">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="location_on">location_on</span>
+<span class="text-xs font-semibold">Skyline Club</span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="group">group</span>
+<span class="text-xs font-semibold">Full Capacity</span>
+</div>
+</div>
+<button class="w-full bg-surface-container-highest text-outline py-3.5 rounded-full font-headline font-bold text-sm uppercase tracking-widest cursor-not-allowed">Waitlist Only</button>
+</div>
+</div>
+<!-- Event Card: Futsal -->
+<div class="group bg-surface-container-lowest rounded-xl overflow-hidden transition-all duration-300 hover:bg-surface-container-high flex flex-col shadow-[0px_12px_32px_rgba(25,27,35,0.06)]">
+<div class="relative h-40 w-full">
+<img alt="Futsal Goal" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZXw8gNWZZg0MxnaDSAOy59an7rzCegRmlHRNlok6uoqy30NPqHKOH3SX2zVasW0AyI8AOzrqo3cH0COMcB0XtoE6znKXfAHxI2mmI4H7affOBqC3UyBe5-5zpWUf3_XEoFhC9dyW1oXVA_5k6KSMfLLZA9Issy2co6CcSdMi5trdzDxCsXVXYGFvqLZ3i90x1X-CGUeocFxB4-t-dw3vhqTvOM3_nJ_25b8gbW9LPikAW9jtCg_dg2bduKldOmRFVTHfUBrUQIbJ0"/>
+<div class="absolute top-4 right-4 bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label text-[10px] font-extrabold tracking-widest uppercase">OPEN</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-headline text-lg font-bold text-on-surface mb-1">Inter-Dept Futsal Cup</h3>
+<p class="text-on-surface-variant text-xs font-label uppercase tracking-wider">5v5 Tournament</p>
+</div>
+<div class="text-right">
+<span class="block font-headline text-primary font-bold">20:00</span>
+<span class="block text-[10px] text-outline font-bold uppercase">Oct 15</span>
+</div>
+</div>
+<div class="flex items-center gap-4 mb-6">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="location_on">location_on</span>
+<span class="text-xs font-semibold">Velocity Sports Center</span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="group">group</span>
+<span class="text-xs font-semibold">4/10 Joined</span>
+</div>
+</div>
+<button class="w-full bg-secondary-fixed text-on-secondary-fixed py-3.5 rounded-full font-headline font-bold text-sm uppercase tracking-widest transition-transform active:scale-95 duration-150">Join Event</button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-white/90 dark:bg-slate-950/90 backdrop-blur-lg z-50 rounded-t-3xl shadow-[0_-8px_30px_rgba(0,0,0,0.04)]">
+<!-- Home (Active) -->
+<a class="flex flex-col items-center justify-center bg-[#01457d] dark:bg-blue-700 text-white dark:text-blue-50 rounded-full px-6 py-2 transition-all duration-300 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-headline text-[10px] font-bold tracking-widest uppercase mt-0.5">Home</span>
+</a>
+<!-- Events -->
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-6 py-2 hover:text-[#01457d] dark:hover:text-blue-200 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="sports_score">sports_score</span>
+<span class="font-headline text-[10px] font-bold tracking-widest uppercase mt-0.5">Events</span>
+</a>
+<!-- Admin -->
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-6 py-2 hover:text-[#01457d] dark:hover:text-blue-200 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span class="font-headline text-[10px] font-bold tracking-widest uppercase mt-0.5">Admin</span>
+</a>
+<!-- Profile -->
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-6 py-2 hover:text-[#01457d] dark:hover:text-blue-200 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-headline text-[10px] font-bold tracking-widest uppercase mt-0.5">Profile</span>
+</a>
+</nav>
+</body></html>

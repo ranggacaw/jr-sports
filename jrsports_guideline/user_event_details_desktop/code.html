@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ProMomentum | Champions League Finals</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Manrope:wght@200..800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary-fixed-variant": "#37485f",
+                      "background": "#f9f9fe",
+                      "on-primary-container": "#85b4f3",
+                      "on-error-container": "#93000a",
+                      "primary": "#002f57",
+                      "tertiary-fixed": "#ffdbc9",
+                      "on-surface-variant": "#424750",
+                      "on-error": "#ffffff",
+                      "on-tertiary-container": "#f59b64",
+                      "surface-bright": "#f9f9fe",
+                      "primary-fixed": "#d3e3ff",
+                      "inverse-surface": "#2e3035",
+                      "tertiary-fixed-dim": "#ffb68b",
+                      "on-surface": "#191c20",
+                      "error-container": "#ffdad6",
+                      "primary-fixed-dim": "#a3c9ff",
+                      "secondary-container": "#d0e1fd",
+                      "on-background": "#191c20",
+                      "on-secondary-container": "#53647c",
+                      "surface-dim": "#d9dadf",
+                      "secondary-fixed-dim": "#b7c8e3",
+                      "outline": "#727781",
+                      "on-tertiary-fixed": "#321200",
+                      "error": "#ba1a1a",
+                      "secondary": "#4f5f77",
+                      "on-primary-fixed": "#001c39",
+                      "surface-container-low": "#f3f3f9",
+                      "surface-container": "#ededf3",
+                      "outline-variant": "#c2c6d1",
+                      "on-tertiary-fixed-variant": "#743503",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-high": "#e7e8ed",
+                      "inverse-on-surface": "#f0f0f6",
+                      "on-primary-fixed-variant": "#084880",
+                      "surface-container-highest": "#e2e2e7",
+                      "surface": "#f9f9fe",
+                      "surface-tint": "#2d609a",
+                      "primary-container": "#01457d",
+                      "tertiary": "#4e2000",
+                      "tertiary-container": "#703201",
+                      "surface-variant": "#e2e2e7",
+                      "on-secondary-fixed": "#0a1c31",
+                      "on-primary": "#ffffff",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "secondary-fixed": "#d3e3ff",
+                      "inverse-primary": "#a3c9ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "1rem",
+                      "lg": "2rem",
+                      "xl": "3rem",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "headline": ["Lexend"],
+                      "body": ["Lexend"],
+                      "label": ["Lexend"]
+              }
+            },
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .kinetic-gradient {
+            background: linear-gradient(135deg, #002f57 0%, #01457d 100%);
+        }
+        .sport-shadow {
+            box-shadow: 0 40px 40px -5px rgba(25, 28, 32, 0.06);
+        }
+        .tonal-shift {
+            transition: background-color 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body antialiased">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-white/60 backdrop-blur-md">
+<div class="flex justify-between items-center px-8 py-4 w-full max-w-screen-2xl mx-auto">
+<div class="text-2xl font-black italic text-blue-800 tracking-tighter">ProScore</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-slate-500 font-medium hover:text-blue-600 transition-colors" href="#">Dashboard</a>
+<a class="text-blue-700 border-b-2 border-blue-700 font-bold transition-colors" href="#">Events</a>
+<a class="text-slate-500 font-medium hover:text-blue-600 transition-colors" href="#">Schedule</a>
+<a class="text-slate-500 font-medium hover:text-blue-600 transition-colors" href="#">Roster</a>
+</nav>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<button class="p-2 text-slate-500 hover:text-blue-700 transition-all scale-95 active:duration-100">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-slate-500 hover:text-blue-700 transition-all scale-95 active:duration-100">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<img alt="User profile" class="w-10 h-10 rounded-full border-2 border-primary-fixed shadow-sm object-cover" data-alt="Close-up portrait of a professional athletic director in a modern office environment with soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvA-c1LikKbYCIqm1IOXQPgNIQeD8-ZFrHN1BN87-7MVB3-Y1t3tohKyRS176Tlg2ncEB4hlBNisG7RUucmS0x9IGe3-OmkkSIc30xbC5EFjD83RZtsx-UdjYFug3j4lp3lgRg6u2WdAQIMxJ42L0_T_v1ocliWUktSt9wE2oLT3TC3dCmvjXSKYwCZIAHre8NxQqN_eP8F7tJVwyjHXxrkuQlM3vLDPLW5rNnyL3HeZqoZHLuaiWhsw51j40fB2qIE17aynpWRcq0"/>
+</div>
+</div>
+</header>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative w-full h-[716px] overflow-hidden">
+<img alt="Stadium Background" class="w-full h-full object-cover" data-alt="Wide angle view of a massive modern sports stadium interior at twilight with bright floodlights and a lush green pitch" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARUYFhko2mUYgsn4A6pzbg7OTXbPSYlgR3z6yeYOuoDiKvROmDG0CMy8aAVHmwKthyJhH31o1e8znSUw3iiqJaoWIdzOCWOgQWd9JmDSzZmta8f8UURhwYpuKkGcHsyGMZWDRNh0ZyjQlgc8bu5p_jIsAvOFD434nZDxqz3IojZu6YqYPPgtIc0XFG_zumkxxi5GNsDDHq-MfsKB42ucF0uSN6TDg4X5rh4gQELfkgMnhyla_ui1ujm5-TN484SUgYDP4PIPJdXt8K"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent"></div>
+<div class="absolute bottom-0 left-0 w-full p-12 max-w-screen-2xl mx-auto">
+<div class="flex flex-col gap-4">
+<span class="inline-block bg-tertiary-container text-on-tertiary-container px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest self-start">Live Event • Final Stage</span>
+<h1 class="text-6xl md:text-8xl font-black text-on-primary tracking-tighter leading-none mb-4">Champions League Finals</h1>
+<div class="flex flex-wrap items-center gap-8 text-on-primary/90">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary-fixed-dim">calendar_today</span>
+<span class="font-bold">May 28, 2024</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary-fixed-dim">schedule</span>
+<span class="font-bold">21:00 CEST</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary-fixed-dim">location_on</span>
+<span class="font-bold">Wembley Stadium, London</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Content Area -->
+<section class="max-w-screen-2xl mx-auto px-8 py-16 flex flex-col lg:flex-row gap-12">
+<!-- Details & Participants -->
+<div class="flex-1 flex flex-col gap-12">
+<!-- Bento Grid Info -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-surface-container-lowest p-8 rounded-lg sport-shadow border-l-4 border-primary">
+<h3 class="label-md uppercase tracking-widest text-secondary font-bold mb-4">Registration Status</h3>
+<div class="flex items-end justify-between">
+<span class="text-4xl font-black text-primary">85% Full</span>
+<div class="w-32 h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="bg-primary-container h-full w-[85%]"></div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-lg sport-shadow border-l-4 border-tertiary">
+<h3 class="label-md uppercase tracking-widest text-secondary font-bold mb-4">Security Level</h3>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-tertiary text-4xl" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span class="text-xl font-bold">Protocol Alpha Active</span>
+</div>
+</div>
+</div>
+<!-- Registration Actions -->
+<div class="flex flex-wrap gap-6">
+<button class="kinetic-gradient text-white px-12 py-6 rounded-full font-bold text-xl flex items-center gap-3 sport-shadow hover:scale-105 transition-transform">
+                        Register Now
+                        <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<button class="bg-white border-2 border-outline-variant/30 text-primary px-12 py-6 rounded-full font-bold text-xl flex items-center gap-3 hover:bg-surface-container-low transition-colors">
+                        View on Google Maps
+                        <span class="material-symbols-outlined">map</span>
+</button>
+</div>
+<!-- Participants Section -->
+<div>
+<h2 class="text-3xl font-black tracking-tight mb-8">Confirmed Participants</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="bg-surface-container-lowest p-4 rounded-lg flex items-center gap-4 tonal-shift hover:bg-surface-container-low">
+<img alt="Marcus Rashford" class="w-12 h-12 rounded-full object-cover" data-alt="Close-up of a professional male athlete with focused expression in studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9WubQ1BrvEpE9e5VgkwY5UgejIODVydhVpUqEMLYak9yJtR3aGNXbqdIEerub95dfSie-j9wlEjlW5CoOtMcIoeE-t8szwEj5pHe8bw0D6SzXttcUzqaKkYanG3mJroJtVqA-g6zdeAKBZUxvXdD-zU8D1Vk0fym9vmld6RIBddRgatu3l5EaWkwK5W55PyLHcvCuvGsp4IGfSemDIi26sjoeLYcAxgKwAiwJIpfOAXMQ4xpVytcyH7Z3Qdlr29SEQ47gUYMEcNVy"/>
+<div>
+<p class="font-bold text-primary">Marcus R.</p>
+<p class="text-xs text-secondary uppercase font-bold">Forward</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-lg flex items-center gap-4 tonal-shift hover:bg-surface-container-low">
+<img alt="Elena Garcia" class="w-12 h-12 rounded-full object-cover" data-alt="Portrait of a young woman with athletic gear smiling against a neutral grey background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWXGj0xcGrpXg0fWQwLPelBTR-2l3ochWOlqVZeRf9NOEYmldqdZxkDp_XLC94fD_RVl9v7cFJk-SznpHmajMgiLwTb9tlwJL5YECM6Ea9IDBtzQdo7Uqu89AvqYGTRLskoulO2jlQatqNLZe7O6ul4HnjPB3Epc2P5e9ERb6501_xvVIaFpLRZwni5oj04KF7iBBZxuk4HzevX-p4yJZNmaCdhbJLfdqG00sI61vU-PAotsb_wc6LvVynE4ubjxpQ6pNek6bUrrfn"/>
+<div>
+<p class="font-bold text-primary">Elena G.</p>
+<p class="text-xs text-secondary uppercase font-bold">Midfield</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-lg flex items-center gap-4 tonal-shift hover:bg-surface-container-low">
+<img alt="David Kim" class="w-12 h-12 rounded-full object-cover" data-alt="Professional profile photo of a man with short hair looking directly at camera" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGzl0-DwH99w57XvvMnXLKHNeTStLuaq6V-tZv39L19SrC7AN7UtjbKhc-UJkfkFnTObPHEXV-ditSAjYWkVzlscC3tqNiZ44cFs4MemkJLdONKL8xj7wVjv0aWbfuQM2ULvz4qerfp60tGX8KN80suQM_SP_WwGc3VTSaAX_Ttovl3LmAMa2N1W6jLtxkIJtvL9TzbXIjCOC-XeUGwNX-hv62whfBYEec794mOmurxpWAIUyviv28V5Ys-hGruBzgPawqSybIoq8P"/>
+<div>
+<p class="font-bold text-primary">David K.</p>
+<p class="text-xs text-secondary uppercase font-bold">Defense</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-lg flex items-center gap-4 tonal-shift hover:bg-surface-container-low">
+<img alt="Sarah Miller" class="w-12 h-12 rounded-full object-cover" data-alt="Headshot of a confident woman in a blue professional jersey" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBORnWiyzjqcyZyPQvHD3jpCAhZvTWSsvwzfN0TxCZd4fKP1K53YUpl8S61Rbbi4jN2-KCU_Uu6JWQ0SG1T39iOBGx0eKiRDwMCW1HPpBNEWGi0XtL-dK4GBXUCfAOeYQ7ibjrsuchZkrlKcbT1VO4ufHWZo3ea7JzbDQPz6aBDE0PXp64APg5nttLOsFQNiWXUgVqGp116PEg-_ddzTuzU2u8pkQwrBc2dZ9QonNbmXTi9C8VKWJU-qLLcpuYrrlkE11FLjY9seQ9w"/>
+<div>
+<p class="font-bold text-primary">Sarah M.</p>
+<p class="text-xs text-secondary uppercase font-bold">Goalie</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar / Venue Section -->
+<aside class="w-full lg:w-96 flex flex-col gap-8">
+<div class="bg-surface-container-high p-8 rounded-lg sport-shadow">
+<h3 class="text-2xl font-black mb-6">Venue Access</h3>
+<div class="rounded-lg overflow-hidden h-64 mb-6 relative group">
+<img alt="Venue Map" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Stylized top-down digital map of London highlighting the Wembley stadium area with athletic blue markers" data-location="London" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCaccWjvOFFORjWkcEOaLkCWJ52_OKb379KqJEhdwS-VTNdC3-cmD5v7lfn7F-bZqJJnNb3AUlHESof6Td340nwHMUcidaJoBgNhdWWvF2YSarH6TMJ3MNwwM2O2nYeVfViBv8srnTOISNuSaRKwUUvg6S18l_IqSGFljeO1BPWYluk2pB-5OAi2Hpl0bsWbxFeG08GBx7-4JelVSNn-3Kf1a3AMS_OTKHL0R6-VKnRNgWzGKSPkaOiLIv2cn_RZNXjlYhav2jLLyM"/>
+<div class="absolute inset-0 bg-primary-container/10 pointer-events-none"></div>
+</div>
+<div class="space-y-6">
+<div class="flex gap-4">
+<div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary">train</span>
+</div>
+<div>
+<h4 class="font-bold text-primary">Transit Hub</h4>
+<p class="text-sm text-secondary">Wembley Park Station (5 min walk)</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary">local_parking</span>
+</div>
+<div>
+<h4 class="font-bold text-primary">Reserved Parking</h4>
+<p class="text-sm text-secondary">Green Zone B, Entry 4</p>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-primary-container p-8 rounded-lg text-white">
+<h3 class="text-xl font-bold mb-4">Elite Support</h3>
+<p class="text-on-primary-container text-sm mb-6 leading-relaxed">Need exclusive hospitality packages or VIP tunnel access for this event?</p>
+<button class="w-full py-4 bg-tertiary text-white font-bold rounded-full hover:bg-tertiary-container transition-colors">
+                        Contact Concierge
+                    </button>
+</div>
+</aside>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-white border-t border-slate-100 py-12 mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 gap-8 max-w-screen-2xl mx-auto">
+<div class="text-xs uppercase tracking-widest text-slate-400 font-['Manrope']">
+                © 2024 ProScore Management. All rights reserved.
+            </div>
+<div class="flex gap-8">
+<a class="text-xs uppercase tracking-widest text-slate-400 hover:text-blue-500 font-['Manrope'] transition-opacity hover:opacity-80" href="#">Terms of Service</a>
+<a class="text-xs uppercase tracking-widest text-slate-400 hover:text-blue-500 font-['Manrope'] transition-opacity hover:opacity-80" href="#">Privacy Policy</a>
+<a class="text-xs uppercase tracking-widest text-slate-400 hover:text-blue-500 font-['Manrope'] transition-opacity hover:opacity-80" href="#">Help Center</a>
+</div>
+</div>
+</footer>
+</body></html>

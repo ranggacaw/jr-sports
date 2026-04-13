@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ProScore Admin | Kinetic Precision Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#37485f",
+                    "background": "#f9f9fe",
+                    "on-primary-container": "#85b4f3",
+                    "on-error-container": "#93000a",
+                    "primary": "#002f57",
+                    "tertiary-fixed": "#ffdbc9",
+                    "on-surface-variant": "#424750",
+                    "on-error": "#ffffff",
+                    "on-tertiary-container": "#f59b64",
+                    "surface-bright": "#f9f9fe",
+                    "primary-fixed": "#d3e3ff",
+                    "inverse-surface": "#2e3035",
+                    "tertiary-fixed-dim": "#ffb68b",
+                    "on-surface": "#191c20",
+                    "error-container": "#ffdad6",
+                    "primary-fixed-dim": "#a3c9ff",
+                    "secondary-container": "#d0e1fd",
+                    "on-background": "#191c20",
+                    "on-secondary-container": "#53647c",
+                    "surface-dim": "#d9dadf",
+                    "secondary-fixed-dim": "#b7c8e3",
+                    "outline": "#727781",
+                    "on-tertiary-fixed": "#321200",
+                    "error": "#ba1a1a",
+                    "secondary": "#4f5f77",
+                    "on-primary-fixed": "#001c39",
+                    "surface-container-low": "#f3f3f9",
+                    "surface-container": "#ededf3",
+                    "outline-variant": "#c2c6d1",
+                    "on-tertiary-fixed-variant": "#743503",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-high": "#e7e8ed",
+                    "inverse-on-surface": "#f0f0f6",
+                    "on-primary-fixed-variant": "#084880",
+                    "surface-container-highest": "#e2e2e7",
+                    "surface": "#f9f9fe",
+                    "surface-tint": "#2d609a",
+                    "primary-container": "#01457d",
+                    "tertiary": "#4e2000",
+                    "tertiary-container": "#703201",
+                    "surface-variant": "#e2e2e7",
+                    "on-secondary-fixed": "#0a1c31",
+                    "on-primary": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed": "#d3e3ff",
+                    "inverse-primary": "#a3c9ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Lexend"],
+                    "body": ["Lexend"],
+                    "label": ["Lexend"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tonal-shift { transition: background-color 0.3s ease; }
+        .kinetic-gradient { background: linear-gradient(135deg, #002f57 0%, #01457d 100%); }
+        .glass-nav { backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md fixed top-0 w-full z-50 tonal-shift">
+<div class="flex justify-between items-center px-8 py-4 w-full max-w-screen-2xl mx-auto">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-black italic text-blue-800 dark:text-blue-300 tracking-tighter">ProScore</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-blue-700 dark:text-blue-400 border-b-2 border-blue-700 font-bold font-['Lexend'] text-lg py-1" href="#">Dashboard</a>
+<a class="text-slate-500 dark:text-slate-400 font-medium font-['Lexend'] text-lg hover:text-blue-600 dark:hover:text-blue-300 transition-colors py-1" href="#">Events</a>
+<a class="text-slate-500 dark:text-slate-400 font-medium font-['Lexend'] text-lg hover:text-blue-600 dark:hover:text-blue-300 transition-colors py-1" href="#">Schedule</a>
+<a class="text-slate-500 dark:text-slate-400 font-medium font-['Lexend'] text-lg hover:text-blue-600 dark:hover:text-blue-300 transition-colors py-1" href="#">Roster</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="bg-surface-container-high border-none rounded-full py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary" placeholder="Search data..." type="text"/>
+</div>
+<button class="p-2 text-slate-500 hover:text-blue-600 transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-slate-500 hover:text-blue-600 transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="w-10 h-10 rounded-full bg-primary-fixed overflow-hidden ring-2 ring-primary/10">
+<img alt="User profile" data-alt="professional portrait of a confident sports executive in a modern office setting with soft daylight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCE2E8cOzFYXwl5n12FTItSOzrYiCwEpZcqYkMgucv7FJpvVFJjDo8oPpvv7hA9_n_gnRJ02ONTFB229rcvZWOETxdcGJ0AdTKLIPx69UHlsRIKBDS4uzWSoCj-qFiVGzv9GGD0OQ_0oxX9CVR45A8K-MI9ca2MXdG4R0rx81sg0hEgbu_tTLFX5Mcb_lHJTwIwIq2UjC4mrI66UgZNb6XAj9TDCbKZdvUTySzl9vTayJ-gdY8oOH2vEyv-H9NjilGU-pxgezN5dsYx"/>
+</div>
+</div>
+</div>
+</header>
+<div class="flex flex-1 pt-20">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 pt-20 bg-slate-50 dark:bg-slate-950 flex flex-col gap-2 p-4 border-r border-slate-200/50 dark:border-slate-800/50 tonal-shift">
+<div class="mb-6 px-2">
+<h2 class="font-['Manrope'] font-bold text-xs uppercase tracking-widest text-slate-400">Filters</h2>
+<p class="text-xs text-slate-500">Refine Events</p>
+</div>
+<button class="w-full kinetic-gradient text-white flex items-center justify-center gap-2 py-3 rounded-lg shadow-lg shadow-blue-500/20 mb-6 font-bold scale-95 active:duration-100 transition-all">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+<span>Create Event</span>
+</button>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 bg-blue-600 text-white rounded-lg shadow-lg shadow-blue-500/20 transition-all duration-200 ease-in-out font-['Manrope'] font-medium text-sm" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span> Daily
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 rounded-lg transition-all duration-200 ease-in-out font-['Manrope'] font-medium text-sm" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_view_week">calendar_view_week</span> Weekly
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 rounded-lg transition-all duration-200 ease-in-out font-['Manrope'] font-medium text-sm" href="#">
+<span class="material-symbols-outlined" data-icon="sports_soccer">sports_soccer</span> Soccer
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 rounded-lg transition-all duration-200 ease-in-out font-['Manrope'] font-medium text-sm" href="#">
+<span class="material-symbols-outlined" data-icon="sports_basketball">sports_basketball</span> Basketball
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 rounded-lg transition-all duration-200 ease-in-out font-['Manrope'] font-medium text-sm" href="#">
+<span class="material-symbols-outlined" data-icon="sports_tennis">sports_tennis</span> Tennis
+                </a>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 flex-1 p-8 overflow-y-auto">
+<div class="max-w-7xl mx-auto space-y-12">
+<!-- Hero Bento Header -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2 kinetic-gradient p-10 rounded-lg text-on-primary relative overflow-hidden flex flex-col justify-between min-h-[320px]">
+<div class="relative z-10">
+<span class="label-md uppercase tracking-[0.2em] font-bold opacity-80">System Analytics</span>
+<h1 class="text-5xl font-black mt-2 leading-none tracking-tighter">MOMENTUM SCORE</h1>
+</div>
+<div class="flex items-end justify-between relative z-10">
+<div class="flex items-baseline gap-2">
+<span class="text-8xl font-black">92</span>
+<span class="text-2xl font-bold opacity-60">%</span>
+</div>
+<div class="text-right">
+<p class="text-lg font-medium">Performance Peak</p>
+<p class="text-sm opacity-70">Updated 2 mins ago</p>
+</div>
+</div>
+<!-- Decorative Abstract Background -->
+<div class="absolute -right-20 -bottom-20 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
+<div class="absolute right-0 top-0 w-full h-full opacity-20 pointer-events-none">
+<img class="w-full h-full object-cover mix-blend-overlay" data-alt="dramatic wide angle shot of a professional sports stadium floodlit at night with epic atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCERzW1Q4H62yrVHwmchfLEQb-DQIbJpBMtUyplLQeBHwTPc_fL5IuxmtRYKa69EJe3AH_CLnpllSI1bHMH8x-z6NyAw2WqcayIWfCWVFtVkCfQaE-07NbqCBndZY2IhO59zU09f9VOWiHju5Kjq4cFLKwbc4ilTJ3x6gMUD8Dd9tLq8uJEVEzUkSCHQS2iBkoHQR_MPrxOfk_h_d6uftBnUoEdX-A69L8FtKXjbPAq4SJHXUhZ9XI5KxVO5Dc1KkWoJHpdn9YBpHoi"/>
+</div>
+</div>
+<div class="grid grid-cols-1 gap-6">
+<div class="bg-surface-container-lowest p-6 rounded-lg flex flex-col justify-between border-l-4 border-tertiary">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-tertiary text-3xl" data-icon="groups">groups</span>
+<span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded-full">+12%</span>
+</div>
+<div>
+<h3 class="text-3xl font-black text-primary tracking-tight">1,429</h3>
+<p class="text-sm font-bold text-slate-500 uppercase tracking-widest">Live Users</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-lg flex flex-col justify-between border-l-4 border-primary">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="event_available">event_available</span>
+<span class="text-xs font-bold text-slate-400">Total</span>
+</div>
+<div>
+<h3 class="text-3xl font-black text-primary tracking-tight">384</h3>
+<p class="text-sm font-bold text-slate-500 uppercase tracking-widest">Total Events</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Active Events Table-less List -->
+<section class="space-y-6">
+<div class="flex justify-between items-end">
+<div>
+<h2 class="text-2xl font-black tracking-tight text-primary">Active Events</h2>
+<p class="text-slate-500">Managing regional tournament flows</p>
+</div>
+<button class="text-primary font-bold flex items-center gap-2 hover:gap-3 transition-all">
+                            View All <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+<div class="space-y-4">
+<!-- Event Item 1 -->
+<div class="bg-surface-container-lowest p-6 rounded-lg flex flex-wrap lg:flex-nowrap items-center gap-8 transition-transform hover:translate-x-2 border-l-4 border-primary shadow-sm">
+<div class="w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="close-up of a premium soccer ball on professional green turf" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZZROyxqUxF8uZD7mIy8ckSQOpgFChr2060i7md8QEoyzUDQMxxD2pjVSMJmrZ6BM7UNcDUHYyYGNcfDp2t1wDxeoskiZ9YRi0lkyEVUjFmHnjyhrqJntdKd4m4aGIh-hj2fbKsfp5dRlQwqNT-5SUbHIorcJpgrnMfqk3EArMOMaO0QjVCUvfH7iWB6aHNKR3ntkq2DJymSE0Ha7OJY0_yCPAph_fVPfSwoYoQF5nJ3Nhu1BV7s2wCxgHPeyn_4DiifauUTNk0z8c"/>
+</div>
+<div class="flex-1 min-w-[200px]">
+<h4 class="text-lg font-bold text-primary">Summer Soccer Invitational</h4>
+<p class="text-slate-500 text-sm">Regional Division • Los Angeles, CA</p>
+</div>
+<div class="flex flex-col gap-1 w-48">
+<span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Registration</span>
+<div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[85%]"></div>
+</div>
+<span class="text-xs font-bold text-primary">128/150 Athletes</span>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 bg-surface-container-high text-primary font-bold rounded-lg hover:bg-primary-container hover:text-white transition-colors text-sm">Edit</button>
+<button class="px-4 py-2 border-2 border-outline-variant text-slate-600 font-bold rounded-lg hover:border-error hover:text-error transition-colors text-sm">Close Reg</button>
+</div>
+<div class="p-2">
+<button class="text-slate-400 hover:text-primary">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Event Item 2 -->
+<div class="bg-surface-container-lowest p-6 rounded-lg flex flex-wrap lg:flex-nowrap items-center gap-8 transition-transform hover:translate-x-2 border-l-4 border-tertiary-container shadow-sm">
+<div class="w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="basketball swishing through a hoop with a clear blue sky background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAC55dwWEjonJ3wwSNhijkwF0HvoVeJNagz7axC-2vDuKGuFHxW6-dlEiaJUHr4erwVxI6lLZVrQcosnWAP_RlmW7Jz2XjnD1uqb0WHfrlulHtAySO4DatWt4QYqswbEcJhrrDDMMBrFAheXdewd-gPF6DvE0_sR2OR6IvD_vr_xGOouuJuKMeeG3bMe5y4w7ktx_YJ1GB9v3O4_rKZ_3ZsURx9KVKfFBHpAi-8nUQeUuKovk_VHJpfrgxqo5IZXOOjAzgyNTUbfzZ2"/>
+</div>
+<div class="flex-1 min-w-[200px]">
+<h4 class="text-lg font-bold text-primary">Elite Hoop Showcase</h4>
+<p class="text-slate-500 text-sm">U18 National • Chicago, IL</p>
+</div>
+<div class="flex flex-col gap-1 w-48">
+<span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Momentum</span>
+<div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-container w-[92%]"></div>
+</div>
+<span class="text-xs font-bold text-tertiary-container">High Engagement</span>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 bg-surface-container-high text-primary font-bold rounded-lg hover:bg-primary-container hover:text-white transition-colors text-sm">Edit</button>
+<button class="px-4 py-2 border-2 border-outline-variant text-slate-600 font-bold rounded-lg hover:border-error hover:text-error transition-colors text-sm">Close Reg</button>
+</div>
+<div class="p-2">
+<button class="text-slate-400 hover:text-primary">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Event Item 3 -->
+<div class="bg-surface-container-lowest p-6 rounded-lg flex flex-wrap lg:flex-nowrap items-center gap-8 transition-transform hover:translate-x-2 border-l-4 border-secondary shadow-sm">
+<div class="w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="tennis racket hitting a ball on a clay court with dust rising" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCA4F4cZXjt3ogekttMOBiXANWj1qmaSes-AqKeuRPXEosKunkwRYbHT7GeEqM61tSbtd3g9FGlxc5uLoOONnwWlC5-O5yh1XP1luwQezNn5ixGkbCVxoO9qEYhTP3KnCIlPvisdFrMD2DFajq68b0ls7C5zL1ApPeER-eG7-B77yOg7tQyGgSn7XzWLoPXLAPaNOnhDK4hxfz47umft-_TefWhMmmL1OHf2PJtBNnKHpDzlfg3A2p67zrXZjcAsa5qjFsDx1XUxs5n"/>
+</div>
+<div class="flex-1 min-w-[200px]">
+<h4 class="text-lg font-bold text-primary">Clay Court Masters</h4>
+<p class="text-slate-500 text-sm">Pro-Am Series • Austin, TX</p>
+</div>
+<div class="flex flex-col gap-1 w-48">
+<span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Registration</span>
+<div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[45%]"></div>
+</div>
+<span class="text-xs font-bold text-primary">42/100 Athletes</span>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 bg-surface-container-high text-primary font-bold rounded-lg hover:bg-primary-container hover:text-white transition-colors text-sm">Edit</button>
+<button class="px-4 py-2 border-2 border-outline-variant text-slate-600 font-bold rounded-lg hover:border-error hover:text-error transition-colors text-sm">Close Reg</button>
+</div>
+<div class="p-2">
+<button class="text-slate-400 hover:text-primary">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="w-full py-8 mt-auto bg-white dark:bg-slate-900 tonal-shift border-t border-slate-100 dark:border-slate-800">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 gap-4">
+<p class="font-['Manrope'] text-xs uppercase tracking-widest text-slate-400">© 2024 ProScore Management. All rights reserved.</p>
+<div class="flex gap-8">
+<a class="font-['Manrope'] text-xs uppercase tracking-widest text-slate-400 hover:text-blue-500 transition-opacity hover:opacity-80" href="#">Terms of Service</a>
+<a class="font-['Manrope'] text-xs uppercase tracking-widest text-slate-400 hover:text-blue-500 transition-opacity hover:opacity-80" href="#">Privacy Policy</a>
+<a class="font-['Manrope'] text-xs uppercase tracking-widest text-slate-400 hover:text-blue-500 transition-opacity hover:opacity-80" href="#">Help Center</a>
+</div>
+</div>
+</footer>
+</body></html>

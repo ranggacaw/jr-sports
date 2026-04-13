@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700;800;900&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#ffdad6",
+                        "tertiary": "#24467c",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "outline-variant": "#c3c6d6",
+                        "on-secondary-container": "#00743a",
+                        "secondary-fixed": "#6bfe9c",
+                        "on-tertiary-fixed-variant": "#24467c",
+                        "on-error-container": "#93000a",
+                        "surface-bright": "#faf8ff",
+                        "surface-variant": "#e1e2ec",
+                        "primary-fixed": "#dae2ff",
+                        "outline": "#737785",
+                        "inverse-surface": "#2e3038",
+                        "secondary-fixed-dim": "#4ae183",
+                        "tertiary-container": "#3e5e95",
+                        "secondary": "#006d37",
+                        "on-tertiary-container": "#c7d9ff",
+                        "surface-container-high": "#e7e7f2",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "background": "#faf8ff",
+                        "surface-tint": "#01457d",
+                        "inverse-primary": "#b2c5ff",
+                        "on-secondary-fixed-variant": "#005228",
+                        "surface-dim": "#d9d9e4",
+                        "on-primary-fixed-variant": "#0040a1",
+                        "primary-fixed-dim": "#b2c5ff",
+                        "surface-container-low": "#f2f3fe",
+                        "on-secondary-fixed": "#00210c",
+                        "on-primary-fixed": "#001847",
+                        "secondary-container": "#6bfe9c",
+                        "primary": "#01457d",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#ccd8ff",
+                        "surface-container-highest": "#e1e2ec",
+                        "on-background": "#191b23",
+                        "primary-container": "#01457d",
+                        "inverse-on-surface": "#f0f0fb",
+                        "tertiary-fixed-dim": "#abc7ff",
+                        "surface-container": "#ededf8",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#faf8ff",
+                        "on-surface": "#191b23",
+                        "on-tertiary-fixed": "#001b3f",
+                        "on-surface-variant": "#424654",
+                        "tertiary-fixed": "#d7e2ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Lexend"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-nav {
+            background: rgba(225, 226, 236, 0.6);
+            backdrop-filter: blur(12px);
+        }
+        .tonal-shift {
+            transition: background-color 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md">
+<nav class="flex justify-between items-center px-8 py-4 w-full max-w-screen-2xl mx-auto">
+<div class="flex items-center gap-12">
+<span class="text-2xl font-black italic text-[#01457d] dark:text-blue-300 tracking-tighter font-headline">ProScore</span>
+<div class="hidden md:flex gap-8">
+<a class="text-slate-500 dark:text-slate-400 font-medium font-headline transition-colors hover:text-[#01457d]" href="#">Dashboard</a>
+<a class="text-[#01457d] dark:text-blue-400 border-b-2 border-[#01457d] font-bold font-headline transition-colors" href="#">Events</a>
+<a class="text-slate-500 dark:text-slate-400 font-medium font-headline transition-colors hover:text-[#01457d]" href="#">Schedule</a>
+<a class="text-slate-500 dark:text-slate-400 font-medium font-headline transition-colors hover:text-[#01457d]" href="#">Roster</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden lg:flex items-center bg-surface-container px-4 py-2 rounded-full">
+<span class="material-symbols-outlined text-outline mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-48" placeholder="Search events..." type="text"/>
+</div>
+<div class="flex gap-4 items-center">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">settings</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="professional headshot of a corporate executive with a clean background and soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAn5ZgkXPXZW22iBWlHbE27XUkugBOI9iYnOhrjE_2SRLvLcjdQjJCUf8CMpDbY6qrEgKIIx10qi-mB2A9rto-thcAWTpOFZhuWHyhMo8Vr9taqSTCd7zPkJmaK3VMnHjnGRH9NEiUqlTdjeTR7psizK88yANWZNulAd4UHuXJRUdaOPtnNYXyLRR02070h4zxBf-zLVnIhykoq4tI_ElO7CI3DMOhsZRAkOIu1FA9ZDCkpwyNppSjZG7YI7OMJbMxMRXaXpTvgsyQQ"/>
+</div>
+</div>
+</div>
+</nav>
+</header>
+<div class="flex pt-20 flex-1">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 pt-20 hidden lg:flex flex-col gap-2 p-4 border-r border-slate-200/50 dark:border-slate-800/50 bg-slate-50 dark:bg-slate-950">
+<div class="px-4 py-6">
+<h3 class="font-headline font-bold text-primary text-lg">Filters</h3>
+<p class="text-xs text-on-surface-variant uppercase tracking-widest mt-1">Refine Events</p>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 transition-all duration-200 ease-in-out rounded-lg font-['Manrope'] font-medium text-sm" href="#">
+<span class="material-symbols-outlined">calendar_today</span> Daily
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 bg-[#01457d] text-white rounded-lg shadow-lg shadow-blue-500/20 transition-all duration-200 ease-in-out font-['Manrope'] font-medium text-sm" href="#">
+<span class="material-symbols-outlined">calendar_view_week</span> Weekly
+            </a>
+<div class="my-4 border-t border-outline-variant/20 mx-4"></div>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 transition-all duration-200 ease-in-out rounded-lg font-['Manrope'] font-medium text-sm" href="#">
+<span class="material-symbols-outlined">sports_soccer</span> Soccer
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 transition-all duration-200 ease-in-out rounded-lg font-['Manrope'] font-medium text-sm" href="#">
+<span class="material-symbols-outlined">sports_basketball</span> Basketball
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 transition-all duration-200 ease-in-out rounded-lg font-['Manrope'] font-medium text-sm" href="#">
+<span class="material-symbols-outlined">sports_tennis</span> Tennis
+            </a>
+</nav>
+<button class="mt-8 mx-4 bg-primary text-on-primary py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-primary-container transition-colors shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">add</span> Create Event
+        </button>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 ml-0 lg:ml-64 p-8 bg-surface">
+<section class="max-w-7xl mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+<div class="max-w-2xl">
+<span class="text-secondary font-bold text-sm tracking-[0.2em] uppercase block mb-2">Corporate League</span>
+<h1 class="text-5xl md:text-6xl font-headline font-black text-on-surface tracking-tight leading-none">Precision <span class="text-primary italic">Momentum.</span></h1>
+<p class="mt-4 text-on-surface-variant text-lg">Manage your elite athletic commitments and corporate competitions with institutional precision.</p>
+</div>
+<div class="flex gap-2">
+<button class="p-3 rounded-full bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined">grid_view</span>
+</button>
+<button class="p-3 rounded-full bg-white shadow-sm text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">view_list</span>
+</button>
+</div>
+</div>
+<!-- Bento Grid Gallery -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+<!-- Event Card 1: Corporate Slam Jam -->
+<div class="md:col-span-8 group relative overflow-hidden rounded-xl bg-surface-container-lowest transition-all hover:bg-surface-container-high border-none">
+<div class="relative h-96 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="professional indoor basketball court with cinematic lighting and dramatic shadows on the polished floor" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnbZMFbxRvUiENUB4ly0I-YOuTk64EK1VzC6DZmyHPmB8qEPA1xDhHXsQ2fTRYSL-o3H_ETaxcVOTyC1HBljaOvPCoQLwYZkFYs5Z9FTvPb0L7lWpzJAWxMveZZ86XtEXqdf6nNAvyOh4VfrC-mZINkxJ3vNCi5fCk6JbZE8sYVHoZB2fuC3skFQhWXmBXN3EIsGSOyKuMiP6xeMpU7hYh2SjEi0r0_mkaX9SsgyBN9ZOOX3bd18uWIk7N-f9Qa3IW53itpvCkmFFF"/>
+<div class="absolute top-6 right-6">
+<span class="bg-secondary-container text-on-secondary-container px-4 py-1.5 rounded-full font-headline font-bold text-xs tracking-widest uppercase">OPEN</span>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+<div class="absolute bottom-6 left-6 right-6 text-white">
+<h2 class="text-4xl font-headline font-black mb-2">Corporate Slam Jam</h2>
+<div class="flex gap-6 items-center text-sm font-medium opacity-90">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">calendar_today</span> Oct 24, 2024</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 18:30 PM</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">location_on</span> Arena North</span>
+</div>
+</div>
+</div>
+<div class="p-6 flex justify-between items-center">
+<div class="flex -space-x-3">
+<img class="w-10 h-10 rounded-full border-2 border-white object-cover" data-alt="headshot of a young professional man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAP2PLl10f9T_gep4ROPeOrzZAIHOoJPjg2LuPpS9-A7DHuEsRNW9iXmxPR1rxB8CreZOsg59kmSnJMZKGDqjVkixnalZ5eWBIkFaDgJwwfSOwKyhjC7zVEQ7GMPfMgB7CXnUwA-4i2CI-RKOOpxjxehLpBT1D6AJaY-94cmyYQlv2gDZxb42FUvgaXKr5qFQ2GUfT1jyUA6tDFF7ZW1xEeUqDJzqw0VW6619oD5oGB4H6_1BmlDJZyhWVjRcsiIqzGMNcuxz1yKz7d"/>
+<img class="w-10 h-10 rounded-full border-2 border-white object-cover" data-alt="headshot of a professional woman" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDROgvoRD8SAYr5tELAB7FY4cOGB8Zft3Cwz9MfaqRmUPjG1607cui9wwNyAiDriB1AUddo_g2eV7iDGRxoi_YmaO89SebmrWIJGu4D67Od8hlpRZ-5zNfo_cTlnZfyg4_xsakK7akyh9AcAEy_AL5F9bgDBNo3-gAtis8HofEBuUdoM2gAQMJzhI3WACdBlP4wbREqScB5aAaGQzkpycdzAFb3r-AKD6BZWiEtHJ7QM-0lWW0NFSx0f9MXN60AT6fo_f39ehz7C3pr"/>
+<img class="w-10 h-10 rounded-full border-2 border-white object-cover" data-alt="headshot of a middle aged executive" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCM4XOOlMEIbpKj43WOhnDreG6306_ICvSOx2wQIsSrJ6O9YSrlTEIX24l-p0bSQgMjX4H-MaW7ahIGs39DVZd4Mqhroa_lSqRJdzTDfafDAoGD1XCqT4ydgd-yfLbkBzsNW3c-IWgAkUeIap8Of_p9B7PXm7rxFD34wBhb2_ni3NAUzXg1UYRG9AqhkV5oOnsqnWYpnIf3TrNuWo0ibbvhXN7gOp23wuAq_CKexX65RD-dnLutR2I8lpEFelo1I1JDLGG4OhyjZQIH"/>
+<div class="w-10 h-10 rounded-full border-2 border-white bg-primary-fixed flex items-center justify-center text-xs font-bold text-primary">+12</div>
+</div>
+<button class="bg-secondary-fixed text-on-secondary-container px-8 py-3 rounded-full font-bold hover:brightness-95 transition-all shadow-md shadow-secondary-fixed/30">Join Event</button>
+</div>
+</div>
+<!-- Event Card 2: Executive Ace Open -->
+<div class="md:col-span-4 bg-surface-container-lowest rounded-xl p-1 overflow-hidden transition-all hover:bg-surface-container-high">
+<div class="relative h-64 rounded-t-lg overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="close up of a professional tennis ball on a blue hard court with sun flare and shallow depth of field" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAydSjb96iESnDId-_WgXl10ECtXS5OebuO0yklWY0A-mc2AIcb1XPEEZOpDLGt8frPgol7e1lDodsTQmyiNRXPavAP7jukwxYa_z9wlvuvxYe3tLT8wdpJIrLCuEqb8KlRnKZaAU2TWQNWQ-aapKtlcTftaOpJezmdG4UsuITeKa4B0o895ohWkBECPcQNYDCdg2fBaQm6dhUlfGJTWrdlej5L4jxv02iW3sYPw61y8DRt8IElq8a3xZMGK0v9JY0K4RcixkseKVpZ"/>
+<div class="absolute top-4 right-4">
+<span class="bg-error-container text-on-error-container px-4 py-1.5 rounded-full font-headline font-bold text-xs tracking-widest uppercase">FULL</span>
+</div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-headline font-bold text-on-surface mb-2">Executive Ace Open</h3>
+<p class="text-sm text-on-surface-variant mb-6">Annual tennis doubles tournament for senior management and partners.</p>
+<div class="space-y-3 mb-8">
+<div class="flex items-center gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-lg">event</span>
+<span>Nov 02, 2024</span>
+</div>
+<div class="flex items-center gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-lg">location_on</span>
+<span>City Tennis Club</span>
+</div>
+</div>
+<button class="w-full py-3 rounded-full border-2 border-primary text-primary font-bold hover:bg-primary/5 transition-colors">Waitlist</button>
+</div>
+</div>
+<!-- Event Card 3: Inter-Dept Futsal Cup -->
+<div class="md:col-span-6 bg-surface-container-lowest rounded-xl p-8 flex flex-col md:flex-row gap-8 items-center transition-all hover:bg-surface-container-high">
+<div class="w-full md:w-1/3 aspect-square rounded-lg overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="vibrant green indoor futsal court with bright lights and white line markings" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALi7xphAorWUZBkWsBk4a7AYtCZYeEr5B1lbYBxIzHcW0fgEMJ7O4l1cXhEHYqt0r19bMOP0JPuB_TfabokjjohF8Fe2R_-1Pao075Ls9us08vJQQge2VNum0Wc6Q7XtrMoE791lLCa6nNaq-Hxh6Yz7lwr1QrsQ9UPyLMS4DIIJ1I5QDQI3Mw2OepKvK_0RqXeuSCuDzgF01L9n3l4KDeYbRIVukus85TcCtcZt6pG23lrYX_DLijcQlcU2D_OBjxVMWY7zVhzZDS"/>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-4">
+<h3 class="text-2xl font-headline font-bold text-on-surface">Inter-Dept Futsal Cup</h3>
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-bold text-[10px] uppercase">OPEN</span>
+</div>
+<p class="text-on-surface-variant text-sm mb-6 leading-relaxed">Fast-paced 5v5 action. Represent your department in the quarterly knockout stage.</p>
+<div class="flex items-center justify-between">
+<div class="text-xs font-medium text-primary">
+                                Oct 28 • 17:00 PM
+                            </div>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full text-sm font-bold shadow-md shadow-primary/10">Register Team</button>
+</div>
+</div>
+</div>
+<!-- Event Card 4: Morning Track Run -->
+<div class="md:col-span-6 bg-primary text-white rounded-xl p-8 relative overflow-hidden group">
+<div class="relative z-10">
+<div class="flex justify-between items-start mb-6">
+<div class="p-3 bg-white/10 rounded-xl backdrop-blur-md">
+<span class="material-symbols-outlined text-secondary-fixed text-3xl">directions_run</span>
+</div>
+<span class="text-xs font-bold bg-white/20 px-3 py-1 rounded-full uppercase tracking-widest">CLOSED</span>
+</div>
+<h3 class="text-3xl font-headline font-black mb-2">Morning Track Run</h3>
+<p class="text-primary-fixed text-sm mb-8 max-w-xs opacity-90">Start your Tuesday with a high-intensity interval session lead by Coach Miller.</p>
+<div class="flex items-center gap-8">
+<div>
+<p class="text-[10px] uppercase tracking-tighter opacity-60">Status</p>
+<p class="font-bold">Completed</p>
+</div>
+<div>
+<p class="text-[10px] uppercase tracking-tighter opacity-60">Participants</p>
+<p class="font-bold">42 Runners</p>
+</div>
+<button class="ml-auto text-secondary-fixed font-bold flex items-center gap-2 text-sm">
+                                View Recap <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="absolute -right-12 -bottom-12 opacity-10 group-hover:scale-110 transition-transform duration-1000">
+<span class="material-symbols-outlined text-[240px]" style="font-variation-settings: 'FILL' 1;">sprint</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Footer -->
+<footer class="w-full py-8 mt-auto bg-white dark:bg-slate-900 tonal-shift border-t border-slate-100 dark:border-slate-800">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 gap-4 max-w-screen-2xl mx-auto">
+<div class="flex items-center gap-4">
+<span class="text-[#01457d] dark:text-blue-300 font-headline font-black italic tracking-tighter text-xl">ProScore</span>
+<span class="text-slate-400 font-['Manrope'] text-[10px] uppercase tracking-widest">© 2024 ProScore Management. All rights reserved.</span>
+</div>
+<div class="flex gap-8">
+<a class="text-slate-400 hover:text-[#01457d] font-['Manrope'] text-xs uppercase tracking-widest transition-opacity hover:opacity-80" href="#">Terms of Service</a>
+<a class="text-slate-400 hover:text-[#01457d] font-['Manrope'] text-xs uppercase tracking-widest transition-opacity hover:opacity-80" href="#">Privacy Policy</a>
+<a class="text-slate-400 hover:text-[#01457d] font-['Manrope'] text-xs uppercase tracking-widest transition-opacity hover:opacity-80" href="#">Help Center</a>
+</div>
+</div>
+</footer>
+</body></html>

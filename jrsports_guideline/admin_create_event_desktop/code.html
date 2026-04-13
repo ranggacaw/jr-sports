@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Manrope:wght@200..800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#37485f",
+                    "background": "#f9f9fe",
+                    "on-primary-container": "#85b4f3",
+                    "on-error-container": "#93000a",
+                    "primary": "#002f57",
+                    "tertiary-fixed": "#ffdbc9",
+                    "on-surface-variant": "#424750",
+                    "on-error": "#ffffff",
+                    "on-tertiary-container": "#f59b64",
+                    "surface-bright": "#f9f9fe",
+                    "primary-fixed": "#d3e3ff",
+                    "inverse-surface": "#2e3035",
+                    "tertiary-fixed-dim": "#ffb68b",
+                    "on-surface": "#191c20",
+                    "error-container": "#ffdad6",
+                    "primary-fixed-dim": "#a3c9ff",
+                    "secondary-container": "#d0e1fd",
+                    "on-background": "#191c20",
+                    "on-secondary-container": "#53647c",
+                    "surface-dim": "#d9dadf",
+                    "secondary-fixed-dim": "#b7c8e3",
+                    "outline": "#727781",
+                    "on-tertiary-fixed": "#321200",
+                    "error": "#ba1a1a",
+                    "secondary": "#4f5f77",
+                    "on-primary-fixed": "#001c39",
+                    "surface-container-low": "#f3f3f9",
+                    "surface-container": "#ededf3",
+                    "outline-variant": "#c2c6d1",
+                    "on-tertiary-fixed-variant": "#743503",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-high": "#e7e8ed",
+                    "inverse-on-surface": "#f0f0f6",
+                    "on-primary-fixed-variant": "#084880",
+                    "surface-container-highest": "#e2e2e7",
+                    "surface": "#f9f9fe",
+                    "surface-tint": "#2d609a",
+                    "primary-container": "#01457d",
+                    "tertiary": "#4e2000",
+                    "tertiary-container": "#703201",
+                    "surface-variant": "#e2e2e7",
+                    "on-secondary-fixed": "#0a1c31",
+                    "on-primary": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed": "#d3e3ff",
+                    "inverse-primary": "#a3c9ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Lexend"],
+                    "body": ["Lexend"],
+                    "label": ["Lexend"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .kinetic-gradient {
+            background: linear-gradient(135deg, #002f57 0%, #01457d 100%);
+        }
+        .tonal-separation {
+            background-color: #f3f3f9;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 w-full z-50 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md">
+<div class="flex justify-between items-center px-8 py-4 w-full max-w-screen-2xl mx-auto">
+<div class="text-2xl font-black italic text-blue-800 dark:text-blue-300 tracking-tighter">ProScore</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-slate-500 dark:text-slate-400 font-medium hover:text-blue-600 transition-colors" href="#">Dashboard</a>
+<a class="text-blue-700 dark:text-blue-400 border-b-2 border-blue-700 font-bold hover:text-blue-600 transition-colors" href="#">Events</a>
+<a class="text-slate-500 dark:text-slate-400 font-medium hover:text-blue-600 transition-colors" href="#">Schedule</a>
+<a class="text-slate-500 dark:text-slate-400 font-medium hover:text-blue-600 transition-colors" href="#">Roster</a>
+</nav>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">settings</span>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden">
+<img alt="User Profile" data-alt="Close-up headshot of a professional male athletic manager in a clean white shirt against a neutral studio background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGix-NsbLfFfxy49N7dZOKm7q7qmu6EKPEndkFi8i0LV5FmMlz4JkImvkHk1H5Y_006pu7AMbbrsL9mRAMnpjl4LemU-8FlZi25Kr6DEFOJ9362ZBHeUXV6AShLoJORqCfbV_1mPWiJQSzjwqStG_-wz_-n1NaGll_WaFb9h_nOlz2ssop8CKMH7x9VgDx55b03MVMjSHIeUtKnTPwTo5gtKhXhFRIY_hQJFv2yiFyCDsyo-dBAUCLeWJUyT1gBajlinM9O0eGV3nj"/>
+</div>
+</div>
+</div>
+</header>
+<!-- SideNavBar Shell -->
+<aside class="h-screen w-64 fixed left-0 top-0 pt-20 flex flex-col gap-2 p-4 border-r border-slate-200/50 bg-slate-50 dark:bg-slate-950 hidden xl:flex">
+<div class="px-4 py-4 mb-4">
+<h3 class="font-headline font-bold text-primary uppercase tracking-widest text-xs">Filters</h3>
+<p class="text-xs text-on-surface-variant">Refine Events</p>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 hover:bg-slate-200/50 transition-all" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="text-sm font-medium">Daily</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 hover:bg-slate-200/50 transition-all" href="#">
+<span class="material-symbols-outlined">calendar_view_week</span>
+<span class="text-sm font-medium">Weekly</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-blue-600 text-white shadow-lg shadow-blue-500/20" href="#">
+<span class="material-symbols-outlined">sports_soccer</span>
+<span class="text-sm font-medium">Soccer</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 hover:bg-slate-200/50 transition-all" href="#">
+<span class="material-symbols-outlined">sports_basketball</span>
+<span class="text-sm font-medium">Basketball</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 hover:bg-slate-200/50 transition-all" href="#">
+<span class="material-symbols-outlined">sports_tennis</span>
+<span class="text-sm font-medium">Tennis</span>
+</a>
+</nav>
+</aside>
+<!-- Main Canvas -->
+<main class="xl:ml-64 pt-28 pb-16 px-8 max-w-7xl mx-auto">
+<!-- Header Section -->
+<div class="mb-12 relative">
+<div class="absolute -top-6 -left-4 text-primary opacity-5 font-black text-8xl uppercase pointer-events-none select-none">Create</div>
+<h1 class="text-display-lg font-headline font-black text-primary-container tracking-tighter relative z-10">Configure Event</h1>
+<p class="text-on-surface-variant font-medium mt-2 max-w-xl">Define the kinetic parameters for the upcoming high-performance event in the ProMomentum ecosystem.</p>
+</div>
+<form class="grid grid-cols-12 gap-8 items-start">
+<!-- Left Column: Primary Details (Bento Style) -->
+<div class="col-span-12 lg:col-span-7 space-y-6">
+<!-- Core Config Card -->
+<div class="bg-surface-container-lowest p-8 rounded-lg border border-outline-variant/10 shadow-sm">
+<div class="flex items-center gap-3 mb-8">
+<div class="w-1 h-6 bg-tertiary rounded-full"></div>
+<h2 class="font-headline font-bold text-xl text-primary">Event Identity</h2>
+</div>
+<div class="grid grid-cols-2 gap-6">
+<div class="col-span-2">
+<label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Sport Name</label>
+<input class="w-full bg-surface-container-highest border-none rounded-DEFAULT focus:ring-2 focus:ring-primary-container transition-all p-4 text-on-surface placeholder:text-outline/50" placeholder="e.g. Professional League Finals" type="text"/>
+</div>
+<div>
+<label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Frequency</label>
+<select class="w-full bg-surface-container-highest border-none rounded-DEFAULT focus:ring-2 focus:ring-primary-container transition-all p-4 text-on-surface">
+<option>One-time Event</option>
+<option>Weekly Series</option>
+<option>Monthly Tournament</option>
+<option>Custom Recurring</option>
+</select>
+</div>
+<div>
+<label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Event Date</label>
+<input class="w-full bg-surface-container-highest border-none rounded-DEFAULT focus:ring-2 focus:ring-primary-container transition-all p-4 text-on-surface" type="date"/>
+</div>
+</div>
+</div>
+<!-- Time Matrix Card -->
+<div class="bg-surface-container-lowest p-8 rounded-lg border border-outline-variant/10 shadow-sm relative overflow-hidden">
+<div class="flex items-center gap-3 mb-8">
+<div class="w-1 h-6 bg-primary rounded-full"></div>
+<h2 class="font-headline font-bold text-xl text-primary">Precision Timing</h2>
+</div>
+<div class="grid grid-cols-2 gap-6 relative z-10">
+<div>
+<label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Start Time</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-4 text-outline">schedule</span>
+<input class="w-full bg-surface-container-highest border-none rounded-DEFAULT focus:ring-2 focus:ring-primary-container transition-all p-4 pl-12 text-on-surface" type="time"/>
+</div>
+</div>
+<div>
+<label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">End Time</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-4 text-outline">timer_off</span>
+<input class="w-full bg-surface-container-highest border-none rounded-DEFAULT focus:ring-2 focus:ring-primary-container transition-all p-4 pl-12 text-on-surface" type="time"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Location & Preview -->
+<div class="col-span-12 lg:col-span-5 space-y-6">
+<!-- Location Management -->
+<div class="bg-surface-container-highest p-8 rounded-lg border border-outline-variant/10">
+<div class="flex items-center gap-3 mb-8">
+<div class="w-1 h-6 bg-tertiary-container rounded-full"></div>
+<h2 class="font-headline font-bold text-xl text-primary">Venue Logistics</h2>
+</div>
+<div class="space-y-6">
+<div>
+<label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Venue Name</label>
+<input class="w-full bg-surface-container-lowest border-none rounded-DEFAULT focus:ring-2 focus:ring-primary-container transition-all p-4 text-on-surface" placeholder="Olympia National Stadium" type="text"/>
+</div>
+<div>
+<label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Google Maps URL</label>
+<div class="flex gap-2">
+<input class="flex-1 bg-surface-container-lowest border-none rounded-DEFAULT focus:ring-2 focus:ring-primary-container transition-all p-4 text-on-surface text-sm" placeholder="https://maps.google.com/..." type="url"/>
+<button class="bg-primary-container text-on-primary-fixed rounded-DEFAULT px-4 hover:opacity-90" type="button">
+<span class="material-symbols-outlined">link</span>
+</button>
+</div>
+</div>
+<!-- Map Preview -->
+<div class="relative w-full h-64 rounded-lg overflow-hidden group">
+<img alt="Map Preview" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Stylized aerial map view of a modern sports stadium complex with surrounding green fields and precise architectural lines in soft daylight" data-location="London" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKFo8DB3gv-cnrcbMXA2s5jWspVSrw_Fwbbhq44r38zxRkGsBkwyVc0CUBdMQ1y_q9zM1VJHUaj_yBai9R_MRsUcvWz7AcZndVplYu9K-OC2Nskcm1VoWnV06X277qPv31TND-ws9LCc3uHfNOJ-gpTFcO01XCTNx9zRxzVUZ9wR_trgOYtqTVdXsidyGxkUSiuhDABoRvVqD6VgeV91SbVxCwSoemkDq58EqXInlTcN2t5eueIMg_LT9KtfIDQvk2j-xh2gnojxoF"/>
+<div class="absolute inset-0 bg-primary/20 backdrop-blur-[1px] pointer-events-none"></div>
+<div class="absolute bottom-4 left-4 bg-white px-4 py-2 rounded-full shadow-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">location_on</span>
+<span class="text-xs font-bold text-primary uppercase tracking-tighter">Preview Enabled</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Hub -->
+<div class="pt-4">
+<button class="kinetic-gradient w-full py-6 rounded-DEFAULT text-white font-headline font-bold text-lg shadow-xl shadow-primary-container/30 flex items-center justify-center gap-4 group transition-transform active:scale-[0.98]" type="submit">
+                        Save Event Configuration
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">rocket_launch</span>
+</button>
+<p class="text-center text-[10px] text-outline uppercase tracking-[0.2em] mt-6 font-medium">Final validation required upon submission</p>
+</div>
+</div>
+</form>
+</main>
+<!-- Footer Shell -->
+<footer class="w-full py-8 mt-auto tonal-separation border-t border-slate-100 dark:border-slate-800">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 gap-4 max-w-screen-2xl mx-auto">
+<div class="font-['Manrope'] text-xs uppercase tracking-widest text-slate-400">
+                © 2024 ProScore Management. All rights reserved.
+            </div>
+<div class="flex gap-8">
+<a class="font-['Manrope'] text-xs uppercase tracking-widest text-slate-400 hover:text-blue-500 transition-opacity" href="#">Terms of Service</a>
+<a class="font-['Manrope'] text-xs uppercase tracking-widest text-slate-400 hover:text-blue-500 transition-opacity" href="#">Privacy Policy</a>
+<a class="font-['Manrope'] text-xs uppercase tracking-widest text-slate-400 hover:text-blue-500 transition-opacity" href="#">Help Center</a>
+</div>
+</div>
+</footer>
+</body></html>
