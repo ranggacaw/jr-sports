@@ -62,6 +62,10 @@ export default function Index({ events }) {
     const { auth, flash, errors } = usePage().props;
     const user = auth.user;
     const [selectedFilter, setSelectedFilter] = useState(getFilterFromUrl);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchFocused, setSearchFocused] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const PAGE_SIZE = 10;
     const eventsSectionRef = useRef(null);
     const statsSectionRef = useRef(null);
 
@@ -83,13 +87,26 @@ export default function Index({ events }) {
         ];
     }, [events]);
 
-    const filteredEvents = useMemo(() => {
+    const filterByRecurrence = useMemo(() => {
         if (selectedFilter === 'all') {
             return events;
         }
 
         return events.filter((event) => slugify(event.recurrence || '') === selectedFilter);
     }, [events, selectedFilter]);
+
+    const filteredEvents = useMemo(() => {
+        const q = searchQuery.trim().toLowerCase();
+        if (!q) return filterByRecurrence;
+        return filterByRecurrence.filter((event) => event.name.toLowerCase().includes(q));
+    }, [filterByRecurrence, searchQuery]);
+
+    const totalPages = Math.max(1, Math.ceil(filteredEvents.length / PAGE_SIZE));
+
+    const pagedEvents = useMemo(() => {
+        const start = (currentPage - 1) * PAGE_SIZE;
+        return filteredEvents.slice(start, start + PAGE_SIZE);
+    }, [filteredEvents, currentPage, PAGE_SIZE]);
 
     const activeFilterIndex = Math.max(
         filters.findIndex((filter) => filter.id === selectedFilter),
@@ -128,6 +145,11 @@ export default function Index({ events }) {
             setSelectedFilter('all');
         }
     }, [filters, selectedFilter]);
+
+    // Reset to page 1 whenever the visible set changes
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [selectedFilter, searchQuery]);
 
     useEffect(() => {
         if (typeof window === 'undefined') {
@@ -235,31 +257,32 @@ export default function Index({ events }) {
                             <span className="material-symbols-outlined text-[18px] text-primary">location_on</span>
                             {event.venue.name}
                         </a>
-                    </div>
-
-                    <div className="mt-auto flex flex-col sm:flex-row items-start sm:items-center justify-between pt-6 border-t border-surface-container">
-                        <div className="flex flex-col items-start gap-3">
-                            <div className="flex items-center gap-3">
-                                <div className="flex -space-x-2">
-                                    <div className="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-[10px] font-bold text-primary border-2 border-surface-container-lowest shadow-sm ring-1 ring-black/5 z-20">
-                                        <span className="material-symbols-outlined text-[14px]">person</span>
-                                    </div>
-                                    <div className="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-[10px] font-bold text-on-surface-variant border-2 border-surface-container-lowest z-10">
-                                        +{event.participants_count > 0 ? event.participants_count : 0}
-                                    </div>
+                        <div className="flex items-center flex-shrink-0">
+                            <div className="flex -space-x-2">
+                                <div className="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-[10px] font-bold text-primary border-2 border-surface-container-lowest shadow-sm ring-1 ring-black/5 z-20">
+                                    <span className="material-symbols-outlined text-[14px]">person</span>
+                                </div>
+                                <div className="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-[10px] font-bold text-on-surface-variant border-2 border-surface-container-lowest z-10">
+                                    +{event.participants_count > 0 ? event.participants_count : 0}
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <div className="mt-auto flex flex-col sm:flex-row items-start sm:items-center justify-between pt-6 border-t border-surface-container gap-4 sm:gap-6">
+                        <div className="flex flex-row sm:flex-col items-center sm:items-start justify-between w-full sm:w-auto sm:gap-3">
                             {user && (
                                 <Link
                                     href={route('events.show', event.id)}
-                                    className="inline-flex items-center gap-2 text-sm font-semibold text-primary transition hover:gap-3"
+                                    className="group/link inline-flex items-center gap-1.5 text-[14px] font-bold text-primary hover:text-primary/80 transition-all duration-300 whitespace-nowrap"
                                 >
-                                    View details
-                                    <span className="material-symbols-outlined text-base">arrow_forward</span>
+                                    <span>View details</span>
                                 </Link>
                             )}
                         </div>
-                        {cardAction}
+                        <div className="w-full sm:w-auto flex-shrink-0">
+                            {cardAction}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -362,18 +385,61 @@ export default function Index({ events }) {
                     </section>
 
                     {/* Content Header */}
-                    <div ref={eventsSectionRef} className="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-8 gap-4 px-2 scroll-mt-8">
-                        <div>
-                            <h2 className="text-3xl font-headline font-black text-primary tracking-tight">Upcoming Events</h2>
-                            <p className="text-on-surface-variant font-medium mt-1">{activeFilter?.label || 'All Upcoming'} · {filteredEvents.length} match{filteredEvents.length === 1 ? '' : 'es'} available</p>
+                    <div ref={eventsSectionRef} className="flex flex-col gap-5 mb-8 px-2 scroll-mt-8">
+                        {/* Title row */}
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
+                            <div>
+                                <h2 className="text-3xl font-headline font-black text-primary tracking-tight">Upcoming Events</h2>
+                                <p className="text-on-surface-variant font-medium mt-1">
+                                    {activeFilter?.label || 'All Upcoming'} · {filteredEvents.length} match{filteredEvents.length === 1 ? '' : 'es'} available
+                                    {searchQuery.trim() && (
+                                        <span className="ml-2 text-primary font-semibold">for &ldquo;{searchQuery.trim()}&rdquo;</span>
+                                    )}
+                                </p>
+                            </div>
+                            <div className="flex gap-2 hidden sm:flex self-end">
+                                <button type="button" onClick={() => cycleFilter(-1)} className="p-3 border border-outline-variant/60 rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant">
+                                    <span className="material-symbols-outlined text-[20px]">chevron_left</span>
+                                </button>
+                                <button type="button" onClick={() => cycleFilter(1)} className="p-3 border border-outline-variant/60 rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant">
+                                    <span className="material-symbols-outlined text-[20px]">chevron_right</span>
+                                </button>
+                            </div>
                         </div>
-                        <div className="flex gap-2 hidden sm:flex self-end">
-                            <button type="button" onClick={() => cycleFilter(-1)} className="p-3 border border-outline-variant/60 rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant">
-                                <span className="material-symbols-outlined text-[20px]">chevron_left</span>
-                            </button>
-                            <button type="button" onClick={() => cycleFilter(1)} className="p-3 border border-outline-variant/60 rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant">
-                                <span className="material-symbols-outlined text-[20px]">chevron_right</span>
-                            </button>
+
+                        {/* Search bar — Kinetic Precision input style */}
+                        <div className="relative w-full max-w-lg">
+                            <span
+                                className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[20px] pointer-events-none transition-colors duration-200"
+                                style={{ color: searchFocused ? 'var(--color-primary, #002f57)' : 'var(--color-on-surface-variant, #44474f)' }}
+                            >
+                                search
+                            </span>
+                            <input
+                                id="event-search"
+                                type="search"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                onFocus={() => setSearchFocused(true)}
+                                onBlur={() => setSearchFocused(false)}
+                                placeholder="Search events by name…"
+                                className="w-full pl-11 pr-10 pt-3 pb-3 bg-surface-container-high rounded-xl text-on-surface placeholder:text-on-surface-variant/60 font-medium text-sm outline-none transition-all duration-300"
+                                style={{
+                                    boxShadow: searchFocused
+                                        ? 'inset 0 -2px 0 0 #002f57'
+                                        : 'inset 0 -2px 0 0 transparent',
+                                }}
+                            />
+                            {searchQuery && (
+                                <button
+                                    type="button"
+                                    onClick={() => setSearchQuery('')}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface transition-colors"
+                                    aria-label="Clear search"
+                                >
+                                    <span className="material-symbols-outlined text-[18px]">close</span>
+                                </button>
+                            )}
                         </div>
                     </div>
 
@@ -381,15 +447,123 @@ export default function Index({ events }) {
                     {filteredEvents.length === 0 ? (
                         <div className="bg-surface-container-lowest p-16 rounded-3xl text-center shadow-sm border border-surface-container-high mb-16 shadow-[0_40px_40px_-5px_rgba(25,28,32,0.06)]">
                             <div className="w-20 h-20 rounded-full bg-primary-fixed/50 text-primary mx-auto flex items-center justify-center mb-6 ring-8 ring-primary-fixed/20">
-                                <span className="material-symbols-outlined text-4xl">event_busy</span>
+                                <span className="material-symbols-outlined text-4xl">{searchQuery.trim() ? 'manage_search' : 'event_busy'}</span>
                             </div>
-                            <h3 className="text-2xl font-headline font-bold text-on-surface mb-2">No events match this filter yet.</h3>
-                            <p className="text-on-surface-variant max-w-sm mx-auto text-sm leading-relaxed">Try another category to browse the rest of the live schedule.</p>
+                            {searchQuery.trim() ? (
+                                <>
+                                    <h3 className="text-2xl font-headline font-bold text-on-surface mb-2">No events found for &ldquo;{searchQuery.trim()}&rdquo;</h3>
+                                    <p className="text-on-surface-variant max-w-sm mx-auto text-sm leading-relaxed mb-6">Try a different keyword or clear the search to see all events.</p>
+                                    <button
+                                        type="button"
+                                        onClick={() => setSearchQuery('')}
+                                        className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20"
+                                    >
+                                        <span className="material-symbols-outlined text-[18px]">close</span>
+                                        Clear Search
+                                    </button>
+                                </>
+                            ) : (
+                                <>
+                                    <h3 className="text-2xl font-headline font-bold text-on-surface mb-2">No events match this filter yet.</h3>
+                                    <p className="text-on-surface-variant max-w-sm mx-auto text-sm leading-relaxed">Try another category to browse the rest of the live schedule.</p>
+                                </>
+                            )}
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8 mb-16">
-                            {filteredEvents.map((event, index) => renderEventCard(event, index))}
-                        </div>
+                        <>
+                            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8 mb-8">
+                                {pagedEvents.map((event, index) => renderEventCard(event, (currentPage - 1) * PAGE_SIZE + index))}
+                            </div>
+
+                            {/* Pagination bar */}
+                            {totalPages > 1 && (
+                                <div className="flex items-center justify-between mb-16 px-1">
+                                    {/* Left info */}
+                                    <p className="text-xs font-semibold text-on-surface-variant uppercase tracking-widest hidden sm:block">
+                                        Page {currentPage} of {totalPages}
+                                    </p>
+
+                                    {/* Page controls */}
+                                    <div className="flex items-center gap-1 mx-auto sm:mx-0">
+                                        {/* Prev */}
+                                        <button
+                                            type="button"
+                                            onClick={() => { setCurrentPage((p) => Math.max(1, p - 1)); scrollToSection(eventsSectionRef); }}
+                                            disabled={currentPage === 1}
+                                            className="p-2.5 rounded-xl border border-outline-variant/50 text-on-surface-variant hover:bg-surface-container-high disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                                            aria-label="Previous page"
+                                        >
+                                            <span className="material-symbols-outlined text-[18px]">chevron_left</span>
+                                        </button>
+
+                                        {/* Page numbers */}
+                                        {(() => {
+                                            const pages = [];
+                                            const delta = 1; // siblings each side
+                                            const left  = Math.max(2, currentPage - delta);
+                                            const right = Math.min(totalPages - 1, currentPage + delta);
+
+                                            // Always first
+                                            pages.push(1);
+
+                                            // Left ellipsis
+                                            if (left > 2) pages.push('...-left');
+
+                                            // Middle range
+                                            for (let i = left; i <= right; i++) pages.push(i);
+
+                                            // Right ellipsis
+                                            if (right < totalPages - 1) pages.push('...-right');
+
+                                            // Always last
+                                            if (totalPages > 1) pages.push(totalPages);
+
+                                            return pages.map((page) => {
+                                                if (typeof page === 'string') {
+                                                    return (
+                                                        <span key={page} className="w-10 h-10 flex items-center justify-center text-on-surface-variant text-sm select-none">
+                                                            &hellip;
+                                                        </span>
+                                                    );
+                                                }
+                                                const isActive = page === currentPage;
+                                                return (
+                                                    <button
+                                                        key={page}
+                                                        type="button"
+                                                        onClick={() => { setCurrentPage(page); scrollToSection(eventsSectionRef); }}
+                                                        className={`w-10 h-10 rounded-xl text-sm font-bold transition-all duration-200 ${
+                                                            isActive
+                                                                ? 'bg-primary text-on-primary shadow-md shadow-primary/25'
+                                                                : 'text-on-surface-variant hover:bg-surface-container-high'
+                                                        }`}
+                                                        aria-current={isActive ? 'page' : undefined}
+                                                    >
+                                                        {page}
+                                                    </button>
+                                                );
+                                            });
+                                        })()}
+
+                                        {/* Next */}
+                                        <button
+                                            type="button"
+                                            onClick={() => { setCurrentPage((p) => Math.min(totalPages, p + 1)); scrollToSection(eventsSectionRef); }}
+                                            disabled={currentPage === totalPages}
+                                            className="p-2.5 rounded-xl border border-outline-variant/50 text-on-surface-variant hover:bg-surface-container-high disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                                            aria-label="Next page"
+                                        >
+                                            <span className="material-symbols-outlined text-[18px]">chevron_right</span>
+                                        </button>
+                                    </div>
+
+                                    {/* Right info — entries range */}
+                                    <p className="text-xs font-semibold text-on-surface-variant uppercase tracking-widest hidden sm:block">
+                                        {(currentPage - 1) * PAGE_SIZE + 1}–{Math.min(currentPage * PAGE_SIZE, filteredEvents.length)} of {filteredEvents.length}
+                                    </p>
+                                </div>
+                            )}
+                        </>
                     )}
 
                     {/* Event Stats */}
