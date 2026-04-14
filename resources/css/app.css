@@ -6,31 +6,33 @@
 
 @layer base {
     :root {
-        --surface: #faf8ff;
+        --surface: #f9f9fe;
         --surface-container-lowest: #ffffff;
-        --surface-container-low: #f2f3fe;
+        --surface-container-low: #f3f3f9;
         --surface-container: #ededf8;
-        --surface-container-high: #e7e7f2;
-        --surface-container-highest: #e1e2ec;
+        --surface-container-high: #e7e8ed;
+        --surface-container-highest: #e2e2e7;
+        --surface-bright: rgba(255, 255, 255, 0.8);
         --surface-variant: #e1e2ec;
         --outline: #737785;
-        --outline-variant: #c3c6d6;
-        --on-surface: #191b23;
+        --outline-variant: #c2c6d1;
+        --on-surface: #191c20;
         --on-surface-variant: #424654;
-        --primary: #0040a1;
-        --primary-container: #0056d2;
+        --primary: #002f57;
+        --primary-container: #01457d;
         --on-primary: #ffffff;
+        --tertiary: #4e2000;
+        --tertiary-container: #703201;
         --secondary: #006d37;
         --secondary-fixed: #6bfe9c;
         --secondary-fixed-dim: #4ae183;
         --secondary-container: #6bfe9c;
         --on-secondary-container: #00743a;
         --tertiary-fixed: #d7e2ff;
-        --on-tertiary-fixed-variant: #24467c;
         --error: #ba1a1a;
         --error-container: #ffdad6;
         --on-error-container: #93000a;
-        --ambient-shadow: 0 12px 32px rgba(25, 27, 35, 0.06);
+        --ambient-shadow: 0 12px 32px rgba(25, 28, 32, 0.06);
     }
 
     html {

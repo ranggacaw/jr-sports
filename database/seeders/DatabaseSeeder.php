@@ -167,15 +167,35 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // --- Users ---
-        User::factory()->create([
+        $admin = User::factory()->create([
             'name'     => 'Admin User',
             'email'    => 'admin@example.com',
             'is_admin' => true,
         ]);
 
-        User::factory()->create([
+        $testUser = User::factory()->create([
             'name'  => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        // Generate more diverse users
+        $users = User::factory(20)->create();
+
+        // Let's get all created events
+        $events = SportsEvent::all();
+
+        // Assign random participants to each event to make the data dynamic
+        foreach ($events as $event) {
+            // Random number of participants between 2 and 10
+            $participantsCount = rand(2, 10);
+            $eventUsers = $users->random($participantsCount);
+
+            foreach ($eventUsers as $user) {
+                \App\Models\Registration::factory()->create([
+                    'sports_event_id' => $event->id,
+                    'user_id'         => $user->id,
+                ]);
+            }
+        }
     }
 }
