@@ -69,6 +69,13 @@ export default function EmployeeDashboard({ registeredEvents }) {
                                     <div className="mt-8 text-sm font-medium text-[color:var(--on-surface-variant)]">
                                         <p>You have secured a spot in this event.</p>
                                         <p className="mt-1">{mainEvent.venue.address}, {mainEvent.venue.city}</p>
+                                        <Link
+                                            href={route('events.show', mainEvent.id)}
+                                            className="mt-4 inline-flex items-center gap-2 font-semibold text-[color:var(--primary)] transition hover:gap-3"
+                                        >
+                                            View details
+                                            <span className="material-symbols-outlined text-base">arrow_forward</span>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
@@ -109,6 +116,13 @@ export default function EmployeeDashboard({ registeredEvents }) {
                             <div className="mt-8 text-sm font-semibold text-[color:var(--on-surface-variant)]">
                                 {evt.venue.name}
                             </div>
+                            <Link
+                                href={route('events.show', evt.id)}
+                                className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[color:var(--primary)] transition hover:gap-3"
+                            >
+                                View details
+                                <span className="material-symbols-outlined text-base">arrow_forward</span>
+                            </Link>
                         </div>
                     ))}
 

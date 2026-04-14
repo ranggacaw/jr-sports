@@ -34,7 +34,7 @@ export default function AuthenticatedLayout({ header, children }) {
                             <div className="hidden items-center gap-2 sm:flex">
                                 <NavLink
                                     href={route('events.index')}
-                                    active={route().current('events.index')}
+                                    active={route().current('events.*')}
                                 >
                                     Events
                                 </NavLink>
@@ -167,7 +167,7 @@ export default function AuthenticatedLayout({ header, children }) {
                     <div className="surface-panel mt-4 space-y-3 px-4 py-4">
                         <ResponsiveNavLink
                             href={route('events.index')}
-                            active={route().current('events.index')}
+                            active={route().current('events.*')}
                         >
                             Events
                         </ResponsiveNavLink>

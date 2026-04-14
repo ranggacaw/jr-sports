@@ -10,6 +10,7 @@ Route::get('/', [EventController::class, 'index'])->name('events.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [EventController::class, 'dashboard'])->name('dashboard');
+    Route::get('/events/{sportsEvent}', [EventController::class, 'show'])->name('events.show');
     Route::post('/events/{sportsEvent}/registrations', [EventRegistrationController::class, 'store'])
         ->name('events.registrations.store');
 });

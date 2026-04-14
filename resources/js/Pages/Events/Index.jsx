@@ -238,15 +238,26 @@ export default function Index({ events }) {
                     </div>
 
                     <div className="mt-auto flex flex-col sm:flex-row items-start sm:items-center justify-between pt-6 border-t border-surface-container">
-                        <div className="flex items-center gap-3">
-                            <div className="flex -space-x-2">
-                                <div className="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-[10px] font-bold text-primary border-2 border-surface-container-lowest shadow-sm ring-1 ring-black/5 z-20">
-                                    <span className="material-symbols-outlined text-[14px]">person</span>
-                                </div>
-                                <div className="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-[10px] font-bold text-on-surface-variant border-2 border-surface-container-lowest z-10">
-                                    +{event.participants_count > 0 ? event.participants_count : 0}
+                        <div className="flex flex-col items-start gap-3">
+                            <div className="flex items-center gap-3">
+                                <div className="flex -space-x-2">
+                                    <div className="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-[10px] font-bold text-primary border-2 border-surface-container-lowest shadow-sm ring-1 ring-black/5 z-20">
+                                        <span className="material-symbols-outlined text-[14px]">person</span>
+                                    </div>
+                                    <div className="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-[10px] font-bold text-on-surface-variant border-2 border-surface-container-lowest z-10">
+                                        +{event.participants_count > 0 ? event.participants_count : 0}
+                                    </div>
                                 </div>
                             </div>
+                            {user && (
+                                <Link
+                                    href={route('events.show', event.id)}
+                                    className="inline-flex items-center gap-2 text-sm font-semibold text-primary transition hover:gap-3"
+                                >
+                                    View details
+                                    <span className="material-symbols-outlined text-base">arrow_forward</span>
+                                </Link>
+                            )}
                         </div>
                         {cardAction}
                     </div>

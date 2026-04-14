@@ -11,13 +11,21 @@ class EventController extends Controller
 {
     public function index(Request $request): Response
     {
+        $userId = $request->user()?->id;
+
+        $events = SportsEvent::query()
+            ->with('venue')
+            ->withCount('participants')
+            ->upcoming();
+
+        if ($userId) {
+            $events->with(['participants:id,name']);
+        }
+
         return Inertia::render('Events/Index', [
-            'events' => SportsEvent::query()
-                ->with(['venue', 'participants:id,name'])
-                ->withCount('participants')
-                ->upcoming()
+            'events' => $events
                 ->get()
-                ->map(fn (SportsEvent $event) => $this->eventPayload($event, $request->user()?->id)),
+                ->map(fn (SportsEvent $event) => $this->eventPayload($event, $userId, $userId !== null)),
         ]);
     }
 
@@ -35,8 +43,26 @@ class EventController extends Controller
         ]);
     }
 
-    private function eventPayload(SportsEvent $event, ?int $userId): array
+    public function show(Request $request, SportsEvent $sportsEvent): Response
     {
+        abort_unless($sportsEvent->starts_at?->gte(now()->startOfDay()), 404);
+
+        $sportsEvent->load([
+            'venue',
+            'participants' => fn ($query) => $query
+                ->select('users.id', 'users.name')
+                ->orderBy('users.name'),
+        ])->loadCount('participants');
+
+        return Inertia::render('Events/Show', [
+            'event' => $this->eventPayload($sportsEvent, $request->user()->id),
+        ]);
+    }
+
+    private function eventPayload(SportsEvent $event, ?int $userId, bool $includeParticipants = true): array
+    {
+        $participants = $event->relationLoaded('participants') ? $event->participants : collect();
+
         return [
             'id' => $event->id,
             'name' => $event->name,
@@ -47,15 +73,17 @@ class EventController extends Controller
             'registration_is_open' => $event->registrationIsOpen(),
             'participants_count' => $event->participants_count ?? $event->participants()->count(),
             'is_registered' => $userId
-                ? $event->participants->contains('id', $userId)
+                ? $participants->contains('id', $userId)
                 : false,
-            'participants' => $event->participants
-                ->map(fn ($participant) => [
-                    'id' => $participant->id,
-                    'name' => $participant->name,
-                ])
-                ->values()
-                ->all(),
+            'participants' => $includeParticipants
+                ? $participants
+                    ->map(fn ($participant) => [
+                        'id' => $participant->id,
+                        'name' => $participant->name,
+                    ])
+                    ->values()
+                    ->all()
+                : [],
             'venue' => [
                 'name' => $event->venue->name,
                 'address' => $event->venue->address,

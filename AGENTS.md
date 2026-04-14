@@ -18,7 +18,7 @@ Use `@/prompter/AGENTS.md` to learn:
 
 # Project Summary
 
-JR Sports is an internal sports-event MVP built with Laravel 12 and Inertia.js. Public visitors can browse upcoming events, authenticated users can register once per event, and admins can create events and close registration.
+JR Sports is an internal sports-event MVP built with Laravel 12 and Inertia.js. Public visitors can browse upcoming events, authenticated users can register once per event and open authenticated event details with participant visibility, and admins can create events and close registration.
 
 # Tech Stack
 
@@ -52,13 +52,13 @@ A project-level design system is generated and maintained at `prompter/design-sy
 
 # Folder Structure
 
-- `app/Http/Controllers/` HTTP controllers for public, auth, and admin flows
+- `app/Http/Controllers/` HTTP controllers for public, auth, admin, and authenticated event detail flows
 - `app/Models/` Eloquent models for users, venues, sports events, and registrations
 - `database/migrations/` schema for auth tables plus sports event domain tables
 - `database/factories/` factories used by feature tests
-- `resources/js/Pages/` Inertia React pages
+- `resources/js/Pages/` Inertia React pages, including public listing and authenticated event detail screens
 - `resources/js/Layouts/` shared authenticated and guest layouts
-- `tests/Feature/` feature coverage for auth, listing, registration, and admin access
+- `tests/Feature/` feature coverage for auth, listing, registration, event details, and admin access
 - `docker/` container entrypoint and PHP config
 
 # Coding Conventions
