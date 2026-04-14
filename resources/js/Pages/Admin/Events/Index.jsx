@@ -1,5 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
+import { useEffect, useMemo, useState } from 'react';
 
 const formatDateTime = (dateString) =>
     new Intl.DateTimeFormat('en-ID', {
@@ -7,177 +8,311 @@ const formatDateTime = (dateString) =>
         timeStyle: 'short',
     }).format(new Date(dateString));
 
+const slugify = (value) =>
+    value
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '');
+
+const getEventIcon = (value) => {
+    const normalizedValue = value.toLowerCase();
+
+    if (normalizedValue.includes('soccer') || normalizedValue.includes('football')) {
+        return 'sports_soccer';
+    }
+
+    if (normalizedValue.includes('basket')) {
+        return 'sports_basketball';
+    }
+
+    if (normalizedValue.includes('tennis') || normalizedValue.includes('badminton')) {
+        return 'sports_tennis';
+    }
+
+    if (normalizedValue.includes('run') || normalizedValue.includes('track')) {
+        return 'directions_run';
+    }
+
+    return 'stadia_controller';
+};
+
+const getFilterFromUrl = () => {
+    if (typeof window === 'undefined') {
+        return 'all';
+    }
+
+    return new URLSearchParams(window.location.search).get('filter') || 'all';
+};
+
+// Placedholder image arrays based on sport types
+const STUB_IMAGES = [
+    "https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=2090&auto=format&fit=crop", 
+    "https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?q=80&w=2074&auto=format&fit=crop", 
+    "https://images.unsplash.com/photo-1536243298747-ea8f15b4c19a?q=80&w=2070&auto=format&fit=crop", 
+];
+
 export default function Index({ events }) {
+    const { flash } = usePage().props;
+    const [selectedFilter, setSelectedFilter] = useState(getFilterFromUrl);
     const openEvents = events.filter((event) => event.registration_is_open).length;
+    const closedEvents = events.length - openEvents;
     const totalParticipants = events.reduce(
         (total, event) => total + event.participants_count,
         0,
     );
+    const uniqueCities = new Set(events.map((event) => event.venue.city).filter(Boolean)).size;
+    const openRate = events.length > 0 ? Math.round((openEvents / events.length) * 100) : 0;
+    const maxParticipants = Math.max(...events.map((event) => event.participants_count), 0);
+
+    const filters = useMemo(() => {
+        const recurrenceFilters = [...new Set(events.map((event) => event.recurrence).filter(Boolean))]
+            .map((recurrence) => ({
+                id: `recurrence:${slugify(recurrence)}`,
+                label: recurrence,
+                icon: getEventIcon(recurrence),
+                predicate: (event) => event.recurrence === recurrence,
+            }));
+
+        return [
+            {
+                id: 'all',
+                label: 'All Events',
+                icon: 'calendar_today',
+                predicate: () => true,
+            },
+            {
+                id: 'open',
+                label: 'Open Registration',
+                icon: 'event_available',
+                predicate: (event) => event.registration_is_open,
+            },
+            {
+                id: 'closed',
+                label: 'Closed Registration',
+                icon: 'event_busy',
+                predicate: (event) => !event.registration_is_open,
+            },
+            ...recurrenceFilters,
+        ];
+    }, [events]);
+
+    const activeFilter = filters.find((filter) => filter.id === selectedFilter) || filters[0];
+    const filteredEvents = events.filter((event) => activeFilter.predicate(event));
+
+    useEffect(() => {
+        if (!filters.some((filter) => filter.id === selectedFilter)) {
+            setSelectedFilter('all');
+        }
+    }, [filters, selectedFilter]);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') {
+            return;
+        }
+
+        const url = new URL(window.location.href);
+
+        if (selectedFilter === 'all') {
+            url.searchParams.delete('filter');
+        } else {
+            url.searchParams.set('filter', selectedFilter);
+        }
+
+        window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
+    }, [selectedFilter]);
+
+    const calcMomentumScore = () => {
+        if (events.length === 0) return 0;
+
+        return openRate;
+    };
+
+    const momentumScore = calcMomentumScore();
 
     return (
-        <AuthenticatedLayout
-            header={
-                <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
-                    <div className="pl-2 sm:pl-6 lg:pl-10">
-                        <p className="editorial-kicker">Admin control</p>
-                        <h2 className="mt-4 text-4xl font-extrabold leading-tight text-[color:var(--on-surface)] sm:text-5xl">
-                            Event management board.
-                        </h2>
-                        <p className="mt-4 max-w-2xl text-base leading-8 text-[color:var(--on-surface-variant)]">
-                            Create sessions, monitor registrations, and close sign-up windows when participation reaches the limit.
-                        </p>
-                    </div>
-
-                    <div className="surface-panel">
-                        <p className="text-xs font-bold uppercase tracking-[0.24em] text-[color:var(--on-surface-variant)]">
-                            Admin action
-                        </p>
-                        <h3 className="mt-3 text-2xl font-bold text-[color:var(--primary)]">
-                            Launch a new event
-                        </h3>
-                        <p className="mt-3 text-sm leading-7 text-[color:var(--on-surface-variant)]">
-                            Configure timing, recurrence, venue details, and registration flow in one place.
-                        </p>
-                        <div className="mt-5">
-                            <Link
-                                href={route('admin.events.create')}
-                                className="button-accent"
-                            >
-                                Create event
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-            }
-        >
+        <AuthenticatedLayout>
             <Head title="Admin Events" />
 
-            <div className="space-y-6 pb-6">
-                <div className="grid gap-5 md:grid-cols-3">
-                    <div className="metric-card-accent">
-                        <p className="text-xs font-bold uppercase tracking-[0.24em] text-blue-100/70">
-                            Total events
-                        </p>
-                        <p className="mt-4 font-['Lexend'] text-5xl font-bold tracking-tight">
-                            {events.length}
-                        </p>
+            <div className="max-w-[96rem] mx-auto flex flex-col lg:flex-row gap-8 px-4 sm:px-6 lg:px-8 py-8 items-start">
+                
+                {/* Admin SideNavBar */}
+                <aside className="w-full lg:w-64 shrink-0 flex flex-col gap-2 relative lg:sticky lg:top-8 z-10">
+                    <div className="mb-4 hidden lg:block px-2">
+                        <h2 className="font-headline font-bold text-xs uppercase tracking-widest text-on-surface-variant">Filters</h2>
+                        <p className="text-xs text-on-surface-variant/70 mt-1">Refine Events</p>
                     </div>
+                    
+                    <Link href={route('admin.events.create')} className="w-full bg-gradient-to-br from-primary to-primary-container text-white flex items-center justify-center gap-2 py-3.5 rounded-xl shadow-lg shadow-primary/20 mb-6 font-bold hover:scale-[0.98] transition-all">
+                        <span className="material-symbols-outlined text-[20px]">add_circle</span>
+                        <span>Create Event</span>
+                    </Link>
 
-                    <div className="metric-card">
-                        <p className="text-xs font-bold uppercase tracking-[0.24em] text-[color:var(--on-surface-variant)]">
-                            Registration open
-                        </p>
-                        <p className="mt-4 font-['Lexend'] text-5xl font-bold tracking-tight text-[color:var(--secondary)]">
-                            {openEvents}
-                        </p>
-                    </div>
+                    <nav className="flex lg:flex-col gap-1 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0 scroll-smooth snap-x">
+                        {filters.map((filter) => {
+                            const isActive = filter.id === selectedFilter;
 
-                    <div className="metric-card">
-                        <p className="text-xs font-bold uppercase tracking-[0.24em] text-[color:var(--on-surface-variant)]">
-                            Participants tracked
-                        </p>
-                        <p className="mt-4 font-['Lexend'] text-5xl font-bold tracking-tight text-[color:var(--primary)]">
-                            {totalParticipants}
-                        </p>
-                    </div>
-                </div>
+                            return (
+                                <button
+                                    key={filter.id}
+                                    type="button"
+                                    onClick={() => setSelectedFilter(filter.id)}
+                                    className={`snap-start flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 font-medium text-sm shrink-0 lg:shrink whitespace-nowrap ${
+                                        isActive
+                                            ? 'bg-primary text-on-primary shadow-lg shadow-primary/20'
+                                            : 'text-on-surface-variant hover:bg-surface-container'
+                                    }`}
+                                >
+                                    <span className="material-symbols-outlined text-[20px]">{filter.icon}</span>
+                                    {filter.label}
+                                </button>
+                            );
+                        })}
+                    </nav>
+                </aside>
 
-                {events.length === 0 ? (
-                    <div className="surface-panel text-center">
-                        <p className="editorial-kicker">Empty board</p>
-                        <h3 className="mt-3 text-2xl font-bold text-[color:var(--primary)]">
-                            No events have been created yet.
-                        </h3>
-                    </div>
-                ) : (
-                    <div className="grid gap-5 xl:grid-cols-2">
-                        {events.map((event) => (
-                            <article key={event.id} className="surface-panel">
-                                <div className="flex items-start justify-between gap-4">
-                                    <div>
-                                        <p className="editorial-kicker">{event.recurrence}</p>
-                                        <h3 className="mt-3 text-2xl font-bold text-[color:var(--on-surface)]">
-                                            {event.name}
-                                        </h3>
-                                    </div>
-                                    <span className={event.registration_is_open ? 'pill-open' : 'pill-closed'}>
-                                        {event.registration_is_open ? 'Open' : 'Closed'}
-                                    </span>
+                {/* Main Content Area */}
+                <main className="flex-1 w-full min-w-0 pb-16">
+                    <div className="space-y-12">
+                        {flash?.success && (
+                            <div className="p-4 bg-secondary-fixed text-on-secondary-fixed rounded-2xl font-semibold shadow-sm flex items-center gap-3 border border-secondary-fixed-dim/30">
+                                <span className="material-symbols-outlined shrink-0 text-primary">check_circle</span>
+                                {flash.success}
+                            </div>
+                        )}
+                        
+                        {/* Hero Bento Header */}
+                        <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <div className="lg:col-span-2 bg-gradient-to-br from-primary to-primary-container p-8 sm:p-10 rounded-[2rem] text-on-primary relative overflow-hidden flex flex-col justify-between min-h-[320px] shadow-xl shadow-primary/10">
+                                <div className="relative z-10">
+                                    <span className="text-[10px] uppercase tracking-[0.2em] font-bold opacity-80 backdrop-blur-sm bg-white/10 px-3 py-1 rounded-full">Live Registration Health</span>
+                                    <h1 className="text-4xl sm:text-5xl lg:text-6xl font-headline font-black mt-6 leading-[1.1] tracking-tighter drop-shadow-md">
+                                        OPEN EVENT <br/><span className="text-primary-fixed italic font-light">RATE</span>
+                                    </h1>
                                 </div>
-
-                                <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                                    <div className="surface-subtle">
-                                        <p className="text-xs font-bold uppercase tracking-[0.24em] text-[color:var(--on-surface-variant)]">
-                                            Schedule
-                                        </p>
-                                        <p className="mt-2 text-sm font-semibold text-[color:var(--on-surface)]">
-                                            {formatDateTime(event.starts_at)}
-                                        </p>
-                                        {event.ends_at && (
-                                            <p className="mt-1 text-sm text-[color:var(--on-surface-variant)]">
-                                                Ends {formatDateTime(event.ends_at)}
-                                            </p>
-                                        )}
+                                <div className="flex flex-col sm:flex-row sm:items-end justify-between relative z-10 mt-8 gap-4">
+                                    <div className="flex items-baseline gap-1">
+                                        <span className="text-7xl sm:text-8xl font-headline font-black tracking-tighter drop-shadow-lg">{momentumScore}</span>
+                                        <span className="text-3xl font-bold opacity-60">%</span>
                                     </div>
-
-                                    <div className="surface-subtle">
-                                        <p className="text-xs font-bold uppercase tracking-[0.24em] text-[color:var(--on-surface-variant)]">
-                                            Venue
-                                        </p>
-                                        <p className="mt-2 text-sm font-semibold text-[color:var(--on-surface)]">
-                                            {event.venue.name}
-                                        </p>
-                                        <p className="mt-1 text-sm text-[color:var(--on-surface-variant)]">
-                                            {event.venue.address}, {event.venue.city}
-                                        </p>
+                                    <div className="sm:text-right">
+                                        <p className="text-lg font-bold text-primary-fixed">{openEvents} event{openEvents === 1 ? '' : 's'} currently open</p>
+                                        <p className="text-sm text-primary-fixed-dim opacity-90 mt-1">Based on {events.length} scheduled event{events.length === 1 ? '' : 's'}</p>
                                     </div>
                                 </div>
-
-                                <div className="mt-4 surface-subtle">
-                                    <p className="text-xs font-bold uppercase tracking-[0.24em] text-[color:var(--on-surface-variant)]">
-                                        Participants
-                                    </p>
-                                    <p className="mt-2 text-sm font-semibold text-[color:var(--on-surface)]">
-                                        {event.participants_count} registered users
-                                    </p>
-                                    {event.participants && event.participants.length > 0 ? (
-                                        <div className="mt-4 flex flex-wrap gap-2">
-                                            {event.participants.map((participant) => (
-                                                <span key={participant.id} className="chip">
-                                                    {participant.name}
-                                                </span>
-                                            ))}
+                                {/* Decorative Abstract Background */}
+                                <div className="absolute -right-20 -bottom-20 w-[400px] h-[400px] bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
+                                <div className="absolute right-0 top-0 w-full h-full opacity-20 pointer-events-none mix-blend-overlay">
+                                    <img className="w-full h-full object-cover" alt="stadium lights" src="https://images.unsplash.com/photo-1556056504-5c7696c4c28d?q=80&w=2076&auto=format&fit=crop" />
+                                </div>
+                            </div>
+                            
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
+                                <div className="bg-surface-container-lowest p-6 rounded-[2rem] shadow-[0_20px_25px_-5px_rgba(25,28,32,0.03)] flex flex-col justify-between border-l-4 border-l-tertiary">
+                                    <div className="flex justify-between items-start mb-4">
+                                        <div className="w-12 h-12 rounded-xl bg-tertiary/10 text-tertiary flex items-center justify-center">
+                                            <span className="material-symbols-outlined text-3xl">groups</span>
                                         </div>
-                                    ) : (
-                                        <p className="mt-3 text-sm text-[color:var(--on-surface-variant)]">
-                                            No registered users yet.
-                                        </p>
-                                    )}
+                                        <span className="text-[10px] font-bold text-secondary-fixed-dim bg-secondary-fixed/20 px-2.5 py-1 rounded-full">Open {openEvents}</span>
+                                    </div>
+                                    <div>
+                                        <h3 className="text-4xl font-headline font-black text-on-surface tracking-tight leading-none mb-1">{totalParticipants}</h3>
+                                        <p className="text-xs font-bold text-on-surface-variant uppercase tracking-widest">Total Registrations</p>
+                                    </div>
                                 </div>
-
-                                <div className="mt-6 flex flex-wrap gap-3">
-                                    <Link
-                                        href={route('admin.events.edit', event.id)}
-                                        className="button-secondary"
-                                    >
-                                        Edit event
-                                    </Link>
-
-                                    {event.registration_is_open && (
-                                        <Link
-                                            href={route('admin.events.close-registration', event.id)}
-                                            method="patch"
-                                            as="button"
-                                            className="button-danger"
-                                        >
-                                            Close registration
-                                        </Link>
-                                    )}
+                                <div className="bg-surface-container-lowest p-6 rounded-[2rem] shadow-[0_20px_25px_-5px_rgba(25,28,32,0.03)] flex flex-col justify-between border-l-4 border-l-primary">
+                                    <div className="flex justify-between items-start mb-4">
+                                        <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                                            <span className="material-symbols-outlined text-3xl">event_available</span>
+                                        </div>
+                                        <span className="text-[10px] font-bold text-on-surface-variant bg-surface-container px-2.5 py-1 rounded-full">{closedEvents} closed</span>
+                                    </div>
+                                    <div>
+                                        <h3 className="text-4xl font-headline font-black text-on-surface tracking-tight leading-none mb-1">{uniqueCities}</h3>
+                                        <p className="text-xs font-bold text-on-surface-variant uppercase tracking-widest">Active Cities</p>
+                                    </div>
                                 </div>
-                            </article>
-                        ))}
+                            </div>
+                        </section>
+
+                        {/* Active Events List */}
+                        <section className="space-y-6">
+                            <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-4 px-2">
+                                <div>
+                                    <h2 className="text-3xl font-headline font-black tracking-tight text-on-surface">Active Events</h2>
+                                    <p className="text-on-surface-variant mt-1 font-medium">{activeFilter.label} · {filteredEvents.length} event{filteredEvents.length === 1 ? '' : 's'} shown</p>
+                                </div>
+                                <Link href={route('events.index')} className="text-primary font-bold flex items-center gap-2 hover:gap-3 transition-all">
+                                    View Public <span className="material-symbols-outlined text-xl">arrow_forward</span>
+                                </Link>
+                            </div>
+                            
+                            <div className="space-y-4">
+                                {filteredEvents.length === 0 ? (
+                                    <div className="bg-surface-container-lowest p-12 rounded-[2rem] text-center border border-surface-container shadow-sm">
+                                        <div className="w-16 h-16 rounded-full bg-surface-container text-on-surface-variant mx-auto flex items-center justify-center mb-4">
+                                            <span className="material-symbols-outlined text-3xl">inbox</span>
+                                        </div>
+                                        <p className="text-lg font-bold text-on-surface">No events match this filter</p>
+                                        <p className="text-on-surface-variant text-sm mt-2">Switch filters or create a new event to expand the current schedule.</p>
+                                    </div>
+                                ) : (
+                                    filteredEvents.map((event, index) => {
+                                        const eventImage = STUB_IMAGES[index % STUB_IMAGES.length];
+                                        const borderColor = ['border-l-primary', 'border-l-tertiary', 'border-l-secondary'][index % 3];
+                                        const progressColor = ['bg-primary', 'bg-tertiary', 'bg-secondary'][index % 3];
+                                        const fillPercentage = maxParticipants > 0
+                                            ? Math.round((event.participants_count / maxParticipants) * 100)
+                                            : 0;
+
+                                        return (
+                                            <div key={event.id} className={`bg-surface-container-lowest p-5 sm:p-6 rounded-[1.5rem] flex flex-wrap xl:flex-nowrap items-center gap-6 xl:gap-8 transition-all hover:translate-x-1 border-l-4 ${borderColor} shadow-[0_8px_16px_-6px_rgba(25,28,32,0.05)] border-y border-r border-surface-container-high/50`}>
+                                                
+                                                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden shrink-0 shadow-inner">
+                                                    <img className="w-full h-full object-cover" alt={event.name} src={eventImage} />
+                                                </div>
+                                                
+                                                <div className="flex-1 min-w-[200px]">
+                                                    <div className="flex items-center gap-2 mb-1">
+                                                        <h4 className="text-lg sm:text-xl font-headline font-bold text-on-surface leading-tight">{event.name}</h4>
+                                                        {!event.registration_is_open && (
+                                                            <span className="bg-error-container text-on-error-container text-[10px] font-black px-2 py-0.5 rounded uppercase tracking-wider">Closed</span>
+                                                        )}
+                                                    </div>
+                                                    <p className="text-on-surface-variant text-sm font-medium">{event.recurrence || 'General Division'} • {event.venue.city}</p>
+                                                    <p className="text-primary text-xs font-bold mt-1.5 flex items-center gap-1">
+                                                        <span className="material-symbols-outlined text-[14px]">schedule</span> {formatDateTime(event.starts_at)}
+                                                    </p>
+                                                </div>
+                                                
+                                                <div className="flex flex-col gap-1.5 w-full sm:w-48 xl:w-56 shrink-0 mt-2 xl:mt-0">
+                                                    <div className="flex justify-between items-end">
+                                                        <span className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Relative turnout</span>
+                                                        <span className="text-xs font-bold text-on-surface">{event.participants_count} joined</span>
+                                                    </div>
+                                                    <div className="w-full h-2.5 bg-surface-container rounded-full overflow-hidden">
+                                                        <div className={`h-full ${progressColor} rounded-full transition-all duration-1000`} style={{ width: `${fillPercentage}%` }}></div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div className="flex flex-wrap sm:flex-nowrap gap-3 w-full sm:w-auto mt-4 xl:mt-0 ml-auto">
+                                                    <Link href={route('admin.events.edit', event.id)} className="flex-1 sm:flex-none text-center px-5 py-2.5 bg-surface-container hover:bg-surface-container-high text-on-surface font-bold rounded-xl transition-colors text-sm">
+                                                        Edit
+                                                    </Link>
+                                                    {event.registration_is_open && (
+                                                        <Link href={route('admin.events.close-registration', event.id)} method="patch" as="button" className="flex-1 sm:flex-none text-center px-5 py-2.5 border-2 border-outline-variant/50 text-on-surface-variant font-bold rounded-xl hover:border-error hover:text-error hover:bg-error/5 transition-colors text-sm">
+                                                            Close Reg
+                                                        </Link>
+                                                    )}
+                                                </div>
+
+                                            </div>
+                                        );
+                                    })
+                                )}
+                            </div>
+                        </section>
                     </div>
-                )}
+                </main>
             </div>
         </AuthenticatedLayout>
     );
