@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class SportsEvent extends Model
 {
@@ -41,6 +42,11 @@ class SportsEvent extends Model
     public function registrations(): HasMany
     {
         return $this->hasMany(Registration::class);
+    }
+
+    public function tournament(): HasOne
+    {
+        return $this->hasOne(Tournament::class);
     }
 
     public function participants(): BelongsToMany

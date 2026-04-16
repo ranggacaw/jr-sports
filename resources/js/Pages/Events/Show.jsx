@@ -1,5 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, usePage } from '@inertiajs/react';
+import TournamentBracket from '@/Components/TournamentBracket';
 
 const formatDateTime = (dateString) =>
     new Intl.DateTimeFormat('en-ID', {
@@ -20,9 +21,17 @@ const getParticipantInitials = (name) =>
         .map((part) => part.charAt(0).toUpperCase())
         .join('');
 
+const formatTournamentState = (value) =>
+    ({
+        group_stage: 'Group Stage',
+        bracket_stage: 'Bracket Stage',
+        completed: 'Completed',
+    })[value] || 'Pending';
+
 export default function Show({ event }) {
     const { errors } = usePage().props;
     const venueUrl = getVenueMapUrl(event.venue);
+    const hasTournament = Boolean(event.tournament);
     const statusText = event.is_registered
         ? 'Registered'
         : event.registration_is_open
@@ -136,9 +145,9 @@ export default function Show({ event }) {
                     </div>
 
                     {/* Participants Section */}
-                    <div>
-                        <h2 className="text-2xl sm:text-3xl font-black tracking-tight mb-6 font-headline">Confirmed Participants</h2>
-                        {event.participants.length === 0 ? (
+                     <div>
+                         <h2 className="text-2xl sm:text-3xl font-black tracking-tight mb-6 font-headline">Confirmed Participants</h2>
+                         {event.participants.length === 0 ? (
                             <div className="rounded-[1rem] bg-[color:var(--surface-container-low)] px-6 py-8 text-center text-sm leading-7 text-[color:var(--on-surface-variant)]">
                                 No one has joined this event yet.
                             </div>
@@ -155,10 +164,155 @@ export default function Show({ event }) {
                                         </div>
                                     </div>
                                 ))}
+                             </div>
+                         )}
+                     </div>
+
+                    {hasTournament && (
+                        <section className="space-y-8">
+                            <div className="rounded-[1.5rem] bg-[color:var(--surface-container-lowest)] p-6 shadow-[0_40px_40px_-5px_rgba(25,28,32,0.06)]">
+                                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                    <div>
+                                        <h2 className="text-2xl sm:text-3xl font-black tracking-tight font-headline">Tournament Standings &amp; Brackets</h2>
+                                        <p className="mt-2 text-sm text-[color:var(--on-surface-variant)]">
+                                            Read-only tournament tracking for the active 16-player flow.
+                                        </p>
+                                    </div>
+                                    <span className="inline-flex self-start rounded-full bg-[color:var(--primary)]/10 px-4 py-2 text-xs font-black uppercase tracking-[0.25em] text-[color:var(--primary)]">
+                                        {formatTournamentState(event.tournament.state)}
+                                    </span>
+                                </div>
                             </div>
-                        )}
-                    </div>
-                </div>
+
+                            <div>
+                                <h3 className="mb-4 text-xl font-black tracking-tight">Group Standings</h3>
+                                <div className="grid gap-4 xl:grid-cols-2">
+                                    {event.tournament.groups.map((group) => (
+                                        <div key={group.name} className="rounded-[1.25rem] bg-[color:var(--surface-container-lowest)] p-5 shadow-[0_40px_40px_-5px_rgba(25,28,32,0.06)]">
+                                            <div className="mb-4 flex items-center justify-between">
+                                                <h4 className="text-lg font-black text-[color:var(--primary)]">Group {group.name}</h4>
+                                                <span className="text-[10px] font-black uppercase tracking-[0.25em] text-[color:var(--on-surface-variant)]">
+                                                    Points / Diff
+                                                </span>
+                                            </div>
+                                            <div className="space-y-3">
+                                                {group.entries.map((entry) => (
+                                                    <div key={entry.registration_id} className="grid grid-cols-[auto_1fr_auto] items-center gap-3 rounded-2xl bg-[color:var(--surface-container-low)] px-4 py-3">
+                                                        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[color:var(--primary)] text-sm font-black text-white">
+                                                            {entry.rank || '-'}
+                                                        </span>
+                                                        <div>
+                                                            <p className="font-bold text-[color:var(--on-surface)]">{entry.player_name}</p>
+                                                            <p className="text-xs uppercase tracking-widest text-[color:var(--on-surface-variant)]">
+                                                                {entry.wins}W {entry.losses}L
+                                                            </p>
+                                                            {entry.qualification_rank && (
+                                                                <p className="mt-1 text-[11px] font-bold uppercase tracking-widest text-[color:var(--tertiary)]">
+                                                                    Qual #{entry.qualification_rank} · {entry.bracket_label}
+                                                                </p>
+                                                            )}
+                                                        </div>
+                                                        <div className="text-right">
+                                                            <p className="text-sm font-black text-[color:var(--primary)]">{entry.points} pts</p>
+                                                            <p className="text-xs text-[color:var(--on-surface-variant)]">{entry.point_differential >= 0 ? '+' : ''}{entry.point_differential}</p>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {event.tournament.qualification.length > 0 && (
+                                <div>
+                                    <h3 className="mb-4 text-xl font-black tracking-tight">Qualification Outcome</h3>
+                                    <div className="grid gap-4 xl:grid-cols-[minmax(0,18rem)_1fr]">
+                                        {event.tournament.my_qualification && (
+                                            <div className="rounded-[1.25rem] bg-[color:var(--surface-container-lowest)] p-5 shadow-[0_40px_40px_-5px_rgba(25,28,32,0.06)]">
+                                                <p className="text-xs font-black uppercase tracking-[0.25em] text-[color:var(--on-surface-variant)]">
+                                                    Your Placement
+                                                </p>
+                                                <p className="mt-3 text-4xl font-black text-[color:var(--primary)]">
+                                                    #{event.tournament.my_qualification.qualification_rank}
+                                                </p>
+                                                <p className="mt-2 text-sm font-bold text-[color:var(--on-surface)]">
+                                                    {event.tournament.my_qualification.bracket_label}
+                                                </p>
+                                                <p className="mt-1 text-sm text-[color:var(--on-surface-variant)]">
+                                                    {event.tournament.my_qualification.points} pts · {event.tournament.my_qualification.point_differential >= 0 ? '+' : ''}{event.tournament.my_qualification.point_differential} diff
+                                                </p>
+                                            </div>
+                                        )}
+
+                                        <div className="rounded-[1.25rem] bg-[color:var(--surface-container-lowest)] p-5 shadow-[0_40px_40px_-5px_rgba(25,28,32,0.06)]">
+                                            <div className="mb-4 flex items-center justify-between gap-3">
+                                                <h4 className="text-lg font-black text-[color:var(--primary)]">Overall Ranking</h4>
+                                                <span className="text-[10px] font-black uppercase tracking-[0.25em] text-[color:var(--on-surface-variant)]">
+                                                    Points / Diff
+                                                </span>
+                                            </div>
+                                            <div className="space-y-3">
+                                                {event.tournament.qualification.map((entry) => (
+                                                    <div key={entry.registration_id} className="grid grid-cols-[auto_1fr_auto] items-center gap-3 rounded-2xl bg-[color:var(--surface-container-low)] px-4 py-3">
+                                                        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[color:var(--tertiary)] text-sm font-black text-white">
+                                                            {entry.qualification_rank}
+                                                        </span>
+                                                        <div>
+                                                            <p className="font-bold text-[color:var(--on-surface)]">{entry.player_name}</p>
+                                                            <p className="text-xs uppercase tracking-widest text-[color:var(--on-surface-variant)]">
+                                                                Group {entry.group_name} · Rank {entry.group_rank}
+                                                            </p>
+                                                        </div>
+                                                        <div className="text-right">
+                                                            <p className="text-sm font-black text-[color:var(--primary)]">{entry.bracket_label}</p>
+                                                            <p className="text-xs text-[color:var(--on-surface-variant)]">{entry.points} pts · {entry.point_differential >= 0 ? '+' : ''}{entry.point_differential}</p>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {event.tournament.my_matches.length > 0 && (
+                                <div>
+                                    <h3 className="mb-4 text-xl font-black tracking-tight">Your Tournament Matches</h3>
+                                    <div className="grid gap-4 lg:grid-cols-2">
+                                        {event.tournament.my_matches.map((match) => (
+                                            <div key={match.id} className="rounded-[1.25rem] bg-[color:var(--surface-container-lowest)] p-5 shadow-[0_40px_40px_-5px_rgba(25,28,32,0.06)]">
+                                                <div className="flex items-center justify-between gap-3">
+                                                    <div>
+                                                        <p className="text-xs font-black uppercase tracking-[0.25em] text-[color:var(--on-surface-variant)]">
+                                                            {match.group_name ? `Group ${match.group_name}` : match.round_name}
+                                                        </p>
+                                                        <p className="mt-2 font-bold text-[color:var(--on-surface)]">
+                                                            {match.player_one_name} vs {match.player_two_name}
+                                                        </p>
+                                                    </div>
+                                                    <span className="rounded-full bg-[color:var(--tertiary)]/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.25em] text-[color:var(--tertiary)]">
+                                                        {match.status}
+                                                    </span>
+                                                </div>
+                                                <div className="mt-4 rounded-2xl bg-[color:var(--surface-container-low)] px-4 py-3 text-sm font-semibold text-[color:var(--on-surface)]">
+                                                    {match.player_one_score !== null && match.player_two_score !== null
+                                                        ? `${match.player_one_score} - ${match.player_two_score}`
+                                                        : 'Awaiting result'}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            <div>
+                                <h3 className="mb-4 text-xl font-black tracking-tight">Bracket Overview</h3>
+                                <TournamentBracket tournament={event.tournament} />
+                            </div>
+                        </section>
+                    )}
+                 </div>
 
                 {/* Sidebar / Venue Section */}
                 <aside className="w-full lg:w-96 flex flex-col gap-8">

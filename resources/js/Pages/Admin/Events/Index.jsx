@@ -265,46 +265,61 @@ export default function Index({ events }) {
                                             : 0;
 
                                         return (
-                                            <div key={event.id} className={`bg-surface-container-lowest p-5 sm:p-6 rounded-[1.5rem] flex flex-wrap xl:flex-nowrap items-center gap-6 xl:gap-8 transition-all hover:translate-x-1 border-l-4 ${borderColor} shadow-[0_8px_16px_-6px_rgba(25,28,32,0.05)] border-y border-r border-surface-container-high/50`}>
-                                                
-                                                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden shrink-0 shadow-inner">
-                                                    <img className="w-full h-full object-cover" alt={event.name} src={eventImage} />
-                                                </div>
-                                                
-                                                <div className="flex-1 min-w-[200px]">
-                                                    <div className="flex items-center gap-2 mb-1">
-                                                        <h4 className="text-lg sm:text-xl font-headline font-bold text-on-surface leading-tight">{event.name}</h4>
-                                                        {!event.registration_is_open && (
-                                                            <span className="bg-error-container text-on-error-container text-[10px] font-black px-2 py-0.5 rounded uppercase tracking-wider">Closed</span>
-                                                        )}
+                                            <div key={event.id} className={`bg-surface-container-lowest p-5 sm:p-6 rounded-[2rem] transition-all hover:-translate-y-0.5 border-l-[3px] ${borderColor} shadow-[0_8px_20px_-6px_rgba(0,0,0,0.05)] border border-surface-container-highest/20 overflow-hidden`}>
+                                                <div className="flex flex-col lg:flex-row lg:items-center gap-5 sm:gap-6">
+                                                    
+                                                    <div className="flex flex-row items-center gap-4 sm:gap-6 flex-1 min-w-0">
+                                                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-[1.25rem] overflow-hidden shrink-0 shadow-sm border border-outline-variant/20 bg-surface-container-highest">
+                                                            <img 
+                                                                className="w-full h-full object-cover" 
+                                                                alt={event.name} 
+                                                                src={eventImage} 
+                                                                onError={(e) => { e.target.onerror = null; e.target.src = "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=2070&auto=format&fit=crop"; }} 
+                                                            />
+                                                        </div>
+                                                        <div className="flex-1 min-w-0 py-1">
+                                                            <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-1">
+                                                                <h4 className="text-lg sm:text-xl font-headline font-bold text-on-surface leading-tight truncate">{event.name}</h4>
+                                                                {!event.registration_is_open && (
+                                                                    <span className="bg-error-container text-on-error-container text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider shrink-0">Closed</span>
+                                                                )}
+                                                            </div>
+                                                            <p className="text-on-surface-variant text-sm tracking-wide truncate">{event.recurrence || 'General Division'} • {event.venue.city}</p>
+                                                            <p className="text-on-surface text-xs font-semibold mt-1.5 flex items-center gap-1.5 opacity-80">
+                                                                <span className="material-symbols-outlined text-[14px]">schedule</span> {formatDateTime(event.starts_at)}
+                                                            </p>
+                                                        </div>
                                                     </div>
-                                                    <p className="text-on-surface-variant text-sm font-medium">{event.recurrence || 'General Division'} • {event.venue.city}</p>
-                                                    <p className="text-primary text-xs font-bold mt-1.5 flex items-center gap-1">
-                                                        <span className="material-symbols-outlined text-[14px]">schedule</span> {formatDateTime(event.starts_at)}
-                                                    </p>
-                                                </div>
-                                                
-                                                <div className="flex flex-col gap-1.5 w-full sm:w-48 xl:w-56 shrink-0 mt-2 xl:mt-0">
-                                                    <div className="flex justify-between items-end">
-                                                        <span className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Relative turnout</span>
-                                                        <span className="text-xs font-bold text-on-surface">{event.participants_count} joined</span>
+                                                    
+                                                    <div className="flex flex-col xl:flex-row items-start xl:items-center gap-5 sm:gap-6 shrink-0 w-full lg:w-auto mt-2 lg:mt-0">
+                                                        <div className="flex flex-row items-center justify-between xl:justify-start gap-4 sm:gap-6 w-full xl:w-auto ml-0 xl:ml-4">
+                                                            <div className="flex flex-col gap-2 w-full sm:w-32 xl:w-28 shrink-0">
+                                                                <span className="text-[9px] font-bold uppercase tracking-[0.15em] text-on-surface-variant">Relative turnout</span>
+                                                                <div className="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+                                                                    <div className={`h-full ${progressColor} rounded-full`} style={{ width: `${fillPercentage}%` }}></div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="text-sm font-medium text-on-surface whitespace-nowrap text-right xl:text-left min-w-[60px]">
+                                                                {event.participants_count} joined
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div className="flex flex-row flex-wrap items-center gap-2 w-full xl:w-auto">
+                                                            <Link href={route('admin.events.show', event.id)} className="flex-1 xl:flex-none justify-center px-4 py-2.5 bg-[#002B59] hover:bg-[#001f40] text-white font-bold rounded-xl transition-colors text-sm shadow-sm inline-flex items-center whitespace-nowrap">
+                                                                Show Details
+                                                            </Link>
+                                                            <Link href={route('admin.events.edit', event.id)} className="flex-1 xl:flex-none justify-center px-4 py-2.5 bg-surface-container hover:bg-surface-container-high text-on-surface font-semibold rounded-xl transition-colors text-sm inline-flex items-center whitespace-nowrap">
+                                                                Edit
+                                                            </Link>
+                                                            {event.registration_is_open && (
+                                                                <Link href={route('admin.events.close-registration', event.id)} method="patch" as="button" className="flex-1 xl:flex-none justify-center px-4 py-2.5 bg-white border border-outline-variant/60 text-on-surface-variant font-semibold rounded-xl hover:bg-surface-container hover:text-on-surface transition-colors text-sm whitespace-nowrap shadow-sm inline-flex items-center">
+                                                                    Close Reg
+                                                                </Link>
+                                                            )}
+                                                        </div>
                                                     </div>
-                                                    <div className="w-full h-2.5 bg-surface-container rounded-full overflow-hidden">
-                                                        <div className={`h-full ${progressColor} rounded-full transition-all duration-1000`} style={{ width: `${fillPercentage}%` }}></div>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div className="flex flex-wrap sm:flex-nowrap gap-3 w-full sm:w-auto mt-4 xl:mt-0 ml-auto">
-                                                    <Link href={route('admin.events.edit', event.id)} className="flex-1 sm:flex-none text-center px-5 py-2.5 bg-surface-container hover:bg-surface-container-high text-on-surface font-bold rounded-xl transition-colors text-sm">
-                                                        Edit
-                                                    </Link>
-                                                    {event.registration_is_open && (
-                                                        <Link href={route('admin.events.close-registration', event.id)} method="patch" as="button" className="flex-1 sm:flex-none text-center px-5 py-2.5 border-2 border-outline-variant/50 text-on-surface-variant font-bold rounded-xl hover:border-error hover:text-error hover:bg-error/5 transition-colors text-sm">
-                                                            Close Reg
-                                                        </Link>
-                                                    )}
-                                                </div>
 
+                                                </div>
                                             </div>
                                         );
                                     })

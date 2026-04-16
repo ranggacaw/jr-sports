@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\EventController as AdminEventController;
+use App\Http\Controllers\Admin\MatchScoreController;
+use App\Http\Controllers\Admin\TournamentController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventRegistrationController;
 use App\Http\Controllers\ProfileController;
@@ -22,10 +24,15 @@ Route::middleware(['auth', 'admin'])
         Route::get('/events', [AdminEventController::class, 'index'])->name('events.index');
         Route::get('/events/create', [AdminEventController::class, 'create'])->name('events.create');
         Route::post('/events', [AdminEventController::class, 'store'])->name('events.store');
+        Route::get('/events/{sportsEvent}', [AdminEventController::class, 'show'])->name('events.show');
         Route::get('/events/{sportsEvent}/edit', [AdminEventController::class, 'edit'])->name('events.edit');
         Route::put('/events/{sportsEvent}', [AdminEventController::class, 'update'])->name('events.update');
         Route::patch('/events/{sportsEvent}/close-registration', [AdminEventController::class, 'closeRegistration'])
             ->name('events.close-registration');
+        Route::post('/events/{sportsEvent}/tournament/start', TournamentController::class)
+            ->name('events.tournament.start');
+        Route::post('/matches/{match}/score', MatchScoreController::class)
+            ->name('matches.score');
     });
 
 Route::middleware('auth')->group(function () {

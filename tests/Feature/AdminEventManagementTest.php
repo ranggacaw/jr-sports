@@ -3,8 +3,11 @@
 namespace Tests\Feature;
 
 use App\Models\SportsEvent;
+use App\Models\Tournament;
+use App\Models\TournamentMatch;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
 class AdminEventManagementTest extends TestCase
@@ -48,5 +51,62 @@ class AdminEventManagementTest extends TestCase
         $event->refresh();
 
         $this->assertNotNull($event->registration_closed_at);
+    }
+
+    public function test_admin_can_view_qualification_data_on_the_event_management_screen(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $firstPlayer = User::factory()->create(['name' => 'Seed One']);
+        $secondPlayer = User::factory()->create(['name' => 'Seed Two']);
+        $event = SportsEvent::factory()->create();
+
+        $firstRegistration = $event->registrations()->create(['user_id' => $firstPlayer->id]);
+        $secondRegistration = $event->registrations()->create(['user_id' => $secondPlayer->id]);
+
+        $tournament = Tournament::factory()->create([
+            'sports_event_id' => $event->id,
+            'state' => Tournament::STATE_BRACKET_STAGE,
+        ]);
+
+        $tournament->groupStandings()->createMany([
+            [
+                'sports_event_id' => $event->id,
+                'registration_id' => $firstRegistration->id,
+                'group_name' => 'A',
+                'points' => 3,
+                'point_differential' => 4,
+                'rank' => 1,
+            ],
+            [
+                'sports_event_id' => $event->id,
+                'registration_id' => $secondRegistration->id,
+                'group_name' => 'A',
+                'points' => 0,
+                'point_differential' => -4,
+                'rank' => 2,
+            ],
+        ]);
+
+        $tournament->matches()->create([
+            'sports_event_id' => $event->id,
+            'code' => 'U1',
+            'stage' => TournamentMatch::STAGE_UPPER,
+            'status' => TournamentMatch::STATUS_SCHEDULED,
+            'round_name' => 'Upper Round 1',
+            'sort_order' => 101,
+            'player_one_registration_id' => $firstRegistration->id,
+            'player_two_registration_id' => $secondRegistration->id,
+        ]);
+
+        $this->actingAs($admin)
+            ->get(route('admin.events.show', $event))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Admin/Events/Show')
+                ->where('event.tournament.groups.0.entries.0.qualification_rank', 1)
+                ->where('event.tournament.groups.0.entries.0.bracket_label', 'Upper Bracket')
+                ->where('event.tournament.qualification.0.player_name', 'Seed One')
+                ->where('event.tournament.qualification.1.player_name', 'Seed Two')
+            );
     }
 }
