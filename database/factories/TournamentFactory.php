@@ -21,6 +21,10 @@ class TournamentFactory extends Factory
         return [
             'sports_event_id' => SportsEvent::factory(),
             'state' => Tournament::STATE_PENDING,
+            'format' => Tournament::FORMAT_SINGLES,
+            'entrant_count' => 16,
+            'entrants' => [],
+            'reserve_registration_ids' => [],
             'champion_registration_id' => null,
         ];
     }

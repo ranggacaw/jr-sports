@@ -18,7 +18,7 @@ Use `@/prompter/AGENTS.md` to learn:
 
 # Project Summary
 
-JR Sports is an internal sports-event MVP built with Laravel 12 and Inertia.js. Public visitors can browse upcoming events, authenticated users can register once per event and open authenticated event details with participant visibility, and admins can create events, close registration, and operate a fixed 16-player tournament flow with group standings and bracket progression.
+JR Sports is an internal sports-event MVP built with Laravel 12 and Inertia.js. Public visitors can browse upcoming events, authenticated users can register once per event and open authenticated event details with participant visibility, and admins can create events, close registration, and operate badminton tournaments in configurable singles or doubles formats with 4, 8, or 16 active entrants plus optional reserves.
 
 # Tech Stack
 
@@ -54,7 +54,7 @@ A project-level design system is generated and maintained at `prompter/design-sy
 
 - `app/Http/Controllers/` HTTP controllers for public, auth, admin, and authenticated event detail flows
 - `app/Models/` Eloquent models for users, venues, sports events, registrations, tournaments, standings, and tournament matches
-- `app/Services/Tournaments/` tournament initialization, standings refresh, bracket seeding, and score progression services
+- `app/Services/Tournaments/` tournament initialization, standings refresh, bracket seeding, and score progression services for configurable singles and doubles draws
 - `database/migrations/` schema for auth tables plus sports event domain tables
 - `database/factories/` factories used by feature tests
 - `resources/js/Pages/` Inertia React pages, including public listing, authenticated tournament detail screens, and admin result management
@@ -68,6 +68,8 @@ A project-level design system is generated and maintained at `prompter/design-sy
 - Use `SportsEvent`, `Venue`, `Registration`, `Tournament`, and `GroupStanding` as the canonical domain model names.
 - Use `TournamentMatch` for the match model because `Match` collides with PHP's reserved keyword.
 - Use `registration_closed_at` as the source of truth for whether sign-up is open.
+- Treat event `registrations` as the source roster; tournament setup selects active entrants and optional reserves from those registrations.
+- In doubles mode, each active entrant is a named team with exactly two unique registrations.
 - Keep React pages simple and page-focused; only extract shared components when at least two screens genuinely share the same UI.
 
 # Development Rules For AI Agents

@@ -20,9 +20,11 @@ class BuildQualificationRanking
             ->sort(fn (GroupStanding $left, GroupStanding $right) => $this->compareStandings($left, $right))
             ->values();
 
-        return $standings->map(function (GroupStanding $standing, int $index) {
+        $upperBracketSize = max(1, (int) (($tournament->entrant_count ?: 16) / 2));
+
+        return $standings->map(function (GroupStanding $standing, int $index) use ($upperBracketSize) {
             $qualificationRank = $index + 1;
-            $isUpperBracket = $qualificationRank <= 8;
+            $isUpperBracket = $qualificationRank <= $upperBracketSize;
 
             return [
                 'registration_id' => $standing->registration_id,

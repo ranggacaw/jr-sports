@@ -53,6 +53,31 @@ class AdminEventManagementTest extends TestCase
         $this->assertNotNull($event->registration_closed_at);
     }
 
+    public function test_admin_can_add_players_to_an_event_roster(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $firstUser = User::factory()->create();
+        $secondUser = User::factory()->create();
+        $event = SportsEvent::factory()->create();
+
+        $this->actingAs($admin)
+            ->from(route('admin.events.show', $event))
+            ->post(route('admin.events.registrations.store', $event), [
+                'user_ids' => [$firstUser->id, $secondUser->id],
+            ])
+            ->assertRedirect(route('admin.events.show', $event));
+
+        $this->assertDatabaseHas('registrations', [
+            'sports_event_id' => $event->id,
+            'user_id' => $firstUser->id,
+        ]);
+
+        $this->assertDatabaseHas('registrations', [
+            'sports_event_id' => $event->id,
+            'user_id' => $secondUser->id,
+        ]);
+    }
+
     public function test_admin_can_view_qualification_data_on_the_event_management_screen(): void
     {
         $admin = User::factory()->admin()->create();

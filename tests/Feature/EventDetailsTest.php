@@ -165,4 +165,106 @@ class EventDetailsTest extends TestCase
                 ->where('event.tournament.my_matches', fn ($matches) => collect($matches)->pluck('code')->all() === ['GA1', 'U1'])
             );
     }
+
+    public function test_authenticated_user_can_view_doubles_team_names_members_and_reserves(): void
+    {
+        $viewer = User::factory()->create(['name' => 'Alex Viewer']);
+        $partner = User::factory()->create(['name' => 'Jamie Partner']);
+        $teamTwoA = User::factory()->create(['name' => 'Nina Smash']);
+        $teamTwoB = User::factory()->create(['name' => 'Rafi Net']);
+        $teamThreeA = User::factory()->create(['name' => 'Dina Rally']);
+        $teamThreeB = User::factory()->create(['name' => 'Tono Drive']);
+        $teamFourA = User::factory()->create(['name' => 'Mira Court']);
+        $teamFourB = User::factory()->create(['name' => 'Bima Drop']);
+        $reserve = User::factory()->create(['name' => 'Sari Reserve']);
+        $event = SportsEvent::factory()->create();
+
+        $viewerRegistration = $event->registrations()->create(['user_id' => $viewer->id]);
+        $partnerRegistration = $event->registrations()->create(['user_id' => $partner->id]);
+        $teamTwoARegistration = $event->registrations()->create(['user_id' => $teamTwoA->id]);
+        $teamTwoBRegistration = $event->registrations()->create(['user_id' => $teamTwoB->id]);
+        $teamThreeARegistration = $event->registrations()->create(['user_id' => $teamThreeA->id]);
+        $teamThreeBRegistration = $event->registrations()->create(['user_id' => $teamThreeB->id]);
+        $teamFourARegistration = $event->registrations()->create(['user_id' => $teamFourA->id]);
+        $teamFourBRegistration = $event->registrations()->create(['user_id' => $teamFourB->id]);
+        $reserveRegistration = $event->registrations()->create(['user_id' => $reserve->id]);
+
+        $tournament = Tournament::factory()->create([
+            'sports_event_id' => $event->id,
+            'state' => Tournament::STATE_GROUP_STAGE,
+            'format' => Tournament::FORMAT_DOUBLES,
+            'entrant_count' => 4,
+            'entrants' => [
+                ['registration_id' => $viewerRegistration->id, 'team_name' => 'Sky Shuttlers', 'member_registration_ids' => [$viewerRegistration->id, $partnerRegistration->id]],
+                ['registration_id' => $teamTwoARegistration->id, 'team_name' => 'Net Rush', 'member_registration_ids' => [$teamTwoARegistration->id, $teamTwoBRegistration->id]],
+                ['registration_id' => $teamThreeARegistration->id, 'team_name' => 'Court Storm', 'member_registration_ids' => [$teamThreeARegistration->id, $teamThreeBRegistration->id]],
+                ['registration_id' => $teamFourARegistration->id, 'team_name' => 'Rapid Rally', 'member_registration_ids' => [$teamFourARegistration->id, $teamFourBRegistration->id]],
+            ],
+            'reserve_registration_ids' => [$reserveRegistration->id],
+        ]);
+
+        $tournament->groupStandings()->createMany([
+            [
+                'sports_event_id' => $event->id,
+                'registration_id' => $viewerRegistration->id,
+                'group_name' => 'A',
+                'points' => 3,
+                'point_differential' => 4,
+                'rank' => 1,
+            ],
+            [
+                'sports_event_id' => $event->id,
+                'registration_id' => $teamTwoARegistration->id,
+                'group_name' => 'A',
+                'points' => 0,
+                'point_differential' => -4,
+                'rank' => 2,
+            ],
+            [
+                'sports_event_id' => $event->id,
+                'registration_id' => $teamThreeARegistration->id,
+                'group_name' => 'A',
+                'points' => 3,
+                'point_differential' => 2,
+                'rank' => 3,
+            ],
+            [
+                'sports_event_id' => $event->id,
+                'registration_id' => $teamFourARegistration->id,
+                'group_name' => 'A',
+                'points' => 0,
+                'point_differential' => -2,
+                'rank' => 4,
+            ],
+        ]);
+
+        $tournament->matches()->create([
+            'sports_event_id' => $event->id,
+            'code' => 'GA1',
+            'stage' => TournamentMatch::STAGE_GROUP,
+            'status' => TournamentMatch::STATUS_COMPLETED,
+            'group_name' => 'A',
+            'round_name' => 'Group A',
+            'sort_order' => 1,
+            'player_one_registration_id' => $viewerRegistration->id,
+            'player_two_registration_id' => $teamTwoARegistration->id,
+            'player_one_score' => 2,
+            'player_two_score' => 0,
+            'winner_registration_id' => $viewerRegistration->id,
+            'loser_registration_id' => $teamTwoARegistration->id,
+        ]);
+
+        $this->actingAs($viewer)
+            ->get(route('events.show', $event))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Events/Show')
+                ->where('event.tournament.format', Tournament::FORMAT_DOUBLES)
+                ->where('event.tournament.groups.0.entries.0.player_name', 'Sky Shuttlers')
+                ->where('event.tournament.groups.0.entries.0.member_names', ['Alex Viewer', 'Jamie Partner'])
+                ->where('event.tournament.reserves.0.name', 'Sari Reserve')
+                ->where('event.tournament.my_matches.0.code', 'GA1')
+                ->where('event.tournament.my_matches.0.player_one_name', 'Sky Shuttlers')
+            );
+    }
 }

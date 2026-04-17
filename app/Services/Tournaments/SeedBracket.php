@@ -39,21 +39,12 @@ class SeedBracket
                 return;
             }
 
+            $entrantCount = $lockedTournament->entrant_count ?: 16;
             $qualification = $this->buildQualificationRanking->handle($lockedTournament)
                 ->keyBy('qualification_rank');
+            $initialAssignments = $this->initialAssignments($qualification, $entrantCount);
 
-            $initialAssignments = [
-                'U1' => [$this->registrationIdFor($qualification, 1), $this->registrationIdFor($qualification, 8)],
-                'U2' => [$this->registrationIdFor($qualification, 4), $this->registrationIdFor($qualification, 5)],
-                'U3' => [$this->registrationIdFor($qualification, 2), $this->registrationIdFor($qualification, 7)],
-                'U4' => [$this->registrationIdFor($qualification, 3), $this->registrationIdFor($qualification, 6)],
-                'L1' => [$this->registrationIdFor($qualification, 9), $this->registrationIdFor($qualification, 16)],
-                'L2' => [$this->registrationIdFor($qualification, 12), $this->registrationIdFor($qualification, 13)],
-                'L3' => [$this->registrationIdFor($qualification, 10), $this->registrationIdFor($qualification, 15)],
-                'L4' => [$this->registrationIdFor($qualification, 11), $this->registrationIdFor($qualification, 14)],
-            ];
-
-            foreach (BracketTopology::matches() as $config) {
+            foreach (BracketTopology::matchesForEntrantCount($entrantCount) as $config) {
                 [$playerOneRegistrationId, $playerTwoRegistrationId] = $initialAssignments[$config['code']] ?? [null, null];
 
                 $lockedTournament->matches()->create([
@@ -78,6 +69,51 @@ class SeedBracket
                 'state' => Tournament::STATE_BRACKET_STAGE,
             ]);
         });
+    }
+
+    /**
+     * @param  Collection<int, array<string, int|string|null>>  $qualification
+     * @return array<string, array{0: int|null, 1: int|null}>
+     */
+    private function initialAssignments(Collection $qualification, int $entrantCount): array
+    {
+        $half = (int) ($entrantCount / 2);
+        $pairings = $this->pairingsForBracketSize($half);
+        $matchCodes = BracketTopology::initialMatchCodesForEntrantCount($entrantCount);
+        $assignments = [];
+
+        foreach ($matchCodes['upper'] as $index => $code) {
+            [$seedOne, $seedTwo] = $pairings[$index];
+
+            $assignments[$code] = [
+                $this->registrationIdFor($qualification, $seedOne),
+                $this->registrationIdFor($qualification, $seedTwo),
+            ];
+        }
+
+        foreach ($matchCodes['lower'] as $index => $code) {
+            [$seedOne, $seedTwo] = $pairings[$index];
+
+            $assignments[$code] = [
+                $this->registrationIdFor($qualification, $half + $seedOne),
+                $this->registrationIdFor($qualification, $half + $seedTwo),
+            ];
+        }
+
+        return $assignments;
+    }
+
+    /**
+     * @return array<int, array{0: int, 1: int}>
+     */
+    private function pairingsForBracketSize(int $bracketSize): array
+    {
+        return match ($bracketSize) {
+            2 => [[1, 2]],
+            4 => [[1, 4], [2, 3]],
+            8 => [[1, 8], [4, 5], [2, 7], [3, 6]],
+            default => [],
+        };
     }
 
     /**

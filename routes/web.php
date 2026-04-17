@@ -30,6 +30,8 @@ Route::middleware(['auth', 'admin'])
         Route::put('/events/{sportsEvent}', [AdminEventController::class, 'update'])->name('events.update');
         Route::patch('/events/{sportsEvent}/close-registration', [AdminEventController::class, 'closeRegistration'])
             ->name('events.close-registration');
+        Route::post('/events/{sportsEvent}/registrations', [AdminEventController::class, 'addRegistration'])
+            ->name('events.registrations.store');
         Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
         Route::get('/users/create', [AdminUserController::class, 'create'])->name('users.create');
         Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
