@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Http\Requests\Admin;
+
+use App\Models\User;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
+
+class StoreUserRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)],
+            'division' => ['nullable', 'string', 'max:255'],
+            'is_admin' => ['required', 'boolean'],
+            'password' => ['required', 'confirmed', Password::defaults()],
+        ];
+    }
+
+    public function userData(): array
+    {
+        $validated = $this->validated();
+
+        return [
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'division' => $validated['division'] ?? null,
+            'is_admin' => $this->boolean('is_admin'),
+            'password' => $validated['password'],
+        ];
+    }
+}

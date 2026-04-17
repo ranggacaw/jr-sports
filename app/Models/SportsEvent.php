@@ -52,6 +52,7 @@ class SportsEvent extends Model
     public function participants(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'registrations')
+            ->withTrashed()
             ->withTimestamps();
     }
 

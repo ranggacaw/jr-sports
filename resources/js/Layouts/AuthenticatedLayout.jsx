@@ -51,7 +51,15 @@ export default function AuthenticatedLayout({ header, children }) {
                                         href={route('admin.events.index')}
                                         active={route().current('admin.events.*')}
                                     >
-                                        Admin
+                                        Events Admin
+                                    </NavLink>
+                                )}
+                                {user && user.is_admin && (
+                                    <NavLink
+                                        href={route('admin.users.index')}
+                                        active={route().current('admin.users.*')}
+                                    >
+                                        Users
                                     </NavLink>
                                 )}
                             </div>
@@ -184,7 +192,15 @@ export default function AuthenticatedLayout({ header, children }) {
                                 href={route('admin.events.index')}
                                 active={route().current('admin.events.*')}
                             >
-                                Admin
+                                Events Admin
+                            </ResponsiveNavLink>
+                        )}
+                        {user && user.is_admin && (
+                            <ResponsiveNavLink
+                                href={route('admin.users.index')}
+                                active={route().current('admin.users.*')}
+                            >
+                                Users
                             </ResponsiveNavLink>
                         )}
 

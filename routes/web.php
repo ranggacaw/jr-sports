@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\MatchScoreController;
 use App\Http\Controllers\Admin\TournamentController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventRegistrationController;
 use App\Http\Controllers\ProfileController;
@@ -29,6 +30,12 @@ Route::middleware(['auth', 'admin'])
         Route::put('/events/{sportsEvent}', [AdminEventController::class, 'update'])->name('events.update');
         Route::patch('/events/{sportsEvent}/close-registration', [AdminEventController::class, 'closeRegistration'])
             ->name('events.close-registration');
+        Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+        Route::get('/users/create', [AdminUserController::class, 'create'])->name('users.create');
+        Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
+        Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
+        Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
+        Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
         Route::post('/events/{sportsEvent}/tournament/start', TournamentController::class)
             ->name('events.tournament.start');
         Route::post('/matches/{match}/score', MatchScoreController::class)
