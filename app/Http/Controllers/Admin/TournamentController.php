@@ -10,13 +10,14 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
+
 class TournamentController extends Controller
 {
     public function __invoke(Request $request, SportsEvent $sportsEvent, StartTournament $startTournament): RedirectResponse
     {
         $validated = $request->validate([
             'format' => ['required', 'string', Rule::in([Tournament::FORMAT_SINGLES, Tournament::FORMAT_DOUBLES])],
-            'entrant_count' => ['required', 'integer', Rule::in(Tournament::SUPPORTED_ENTRANT_COUNTS)],
+            'entrant_count' => ['required', 'integer', 'min:2'],
             'active_registration_ids' => ['exclude_unless:format,'.Tournament::FORMAT_SINGLES, 'nullable', 'array'],
             'active_registration_ids.*' => ['exclude_unless:format,'.Tournament::FORMAT_SINGLES, 'integer'],
             'reserve_registration_ids' => ['nullable', 'array'],

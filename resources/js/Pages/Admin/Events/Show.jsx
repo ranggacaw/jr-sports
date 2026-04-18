@@ -4,7 +4,7 @@ import SearchablePlayerSelect from '@/Components/SearchablePlayerSelect';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
 
-const SUPPORTED_ENTRANT_COUNTS = [4, 8, 16];
+
 
 const formatDateTime = (dateString) =>
     new Intl.DateTimeFormat('en-ID', {
@@ -237,16 +237,18 @@ function TournamentSetupForm({ event }) {
 
                 <label className="space-y-2">
                     <span className="text-xs font-black uppercase tracking-widest text-on-surface-variant">Active Entrant Count</span>
-                    <select
+                    <input
+                        type="number"
+                        min="2"
+                        step="1"
                         value={data.entrant_count}
                         onChange={(event) => setData('entrant_count', Number(event.target.value))}
                         className="block w-full rounded-xl border border-outline-variant/40 bg-white px-3 py-3 text-sm font-semibold text-on-surface shadow-sm"
-                    >
-                        {SUPPORTED_ENTRANT_COUNTS.map((count) => (
-                            <option key={count} value={count}>{count}</option>
-                        ))}
-                    </select>
+                    />
                     {errors.entrant_count && <p className="text-sm font-semibold text-error">{errors.entrant_count}</p>}
+                    {data.entrant_count % 2 !== 0 && (
+                        <p className="text-sm font-semibold text-amber-600">Consider using an even number of players for optimal grouping.</p>
+                    )}
                 </label>
             </div>
 
@@ -456,7 +458,7 @@ export default function Show({ event, availableUsers }) {
                         <section className="space-y-4">
                             <h3 className="text-xl font-black text-on-surface">Group Standings</h3>
                             <div className="grid gap-4 xl:grid-cols-2">
-                                {event.tournament.groups.slice(0, 2).map((group) => (
+                                {event.tournament.groups.map((group) => (
                                     <div key={group.name} className="rounded-2xl border border-surface-container-high bg-surface-container-lowest p-5 shadow-sm">
                                         <div className="mb-4 flex items-center justify-between">
                                             <h4 className="text-lg font-black text-primary">Group {group.name}</h4>

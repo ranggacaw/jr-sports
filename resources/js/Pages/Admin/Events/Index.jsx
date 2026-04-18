@@ -102,14 +102,26 @@ export default function Index({ events }) {
         ];
     }, [events]);
 
+    const [searchQuery, setSearchQuery] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const PAGE_SIZE = 6;
+
     const activeFilter = filters.find((filter) => filter.id === selectedFilter) || filters[0];
     const filteredEvents = events.filter((event) => activeFilter.predicate(event));
+    const searchedEvents = filteredEvents.filter((event) =>
+        event.name.toLowerCase().includes(searchQuery.toLowerCase().trim())
+    );
+    const totalPages = Math.max(1, Math.ceil(searchedEvents.length / PAGE_SIZE));
+    const paginatedEvents = searchedEvents.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
     useEffect(() => {
         if (!filters.some((filter) => filter.id === selectedFilter)) {
             setSelectedFilter('all');
         }
     }, [filters, selectedFilter]);
+
+    // Reset to page 1 whenever filter or search changes
+    useEffect(() => { setCurrentPage(1); }, [selectedFilter, searchQuery]);
 
     useEffect(() => {
         if (typeof window === 'undefined') {
@@ -242,27 +254,52 @@ export default function Index({ events }) {
 
                         {/* Active Events List */}
                         <section className="space-y-6">
-                            <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-4 px-2">
-                                <div>
-                                    <h2 className="text-3xl font-headline font-black tracking-tight text-on-surface">Active Events</h2>
-                                    <p className="text-on-surface-variant mt-1 font-medium">{activeFilter.label} · {filteredEvents.length} event{filteredEvents.length === 1 ? '' : 's'} shown</p>
+                            <div className="flex flex-col gap-4 px-2">
+                                <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-4">
+                                    <div>
+                                        <h2 className="text-3xl font-headline font-black tracking-tight text-on-surface">Active Events</h2>
+                                        <p className="text-on-surface-variant mt-1 font-medium">
+                                            {activeFilter.label} · {searchedEvents.length} event{searchedEvents.length === 1 ? '' : 's'}{searchQuery && ` for "${searchQuery}"`}
+                                        </p>
+                                    </div>
+                                    <Link href={route('events.index')} className="text-primary font-bold flex items-center gap-2 hover:gap-3 transition-all shrink-0">
+                                        View Public <span className="material-symbols-outlined text-xl">arrow_forward</span>
+                                    </Link>
                                 </div>
-                                <Link href={route('events.index')} className="text-primary font-bold flex items-center gap-2 hover:gap-3 transition-all">
-                                    View Public <span className="material-symbols-outlined text-xl">arrow_forward</span>
-                                </Link>
+
+                                {/* Search bar */}
+                                <div className="relative">
+                                    <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px] pointer-events-none">search</span>
+                                    <input
+                                        type="text"
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                        placeholder="Search events by name…"
+                                        className="w-full pl-12 pr-10 py-3 bg-white border border-surface-container-highest/30 rounded-2xl text-sm text-on-surface placeholder:text-on-surface-variant/60 font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition-all"
+                                    />
+                                    {searchQuery && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setSearchQuery('')}
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface-variant transition-colors"
+                                        >
+                                            <span className="material-symbols-outlined text-[16px]">close</span>
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                             
-                            <div className="space-y-4">
-                                {filteredEvents.length === 0 ? (
-                                    <div className="bg-surface-container-lowest p-12 rounded-[2rem] text-center border border-surface-container shadow-sm">
-                                        <div className="w-16 h-16 rounded-full bg-surface-container text-on-surface-variant mx-auto flex items-center justify-center mb-4">
-                                            <span className="material-symbols-outlined text-3xl">inbox</span>
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 xl:gap-6" key={currentPage}>
+                                {searchedEvents.length === 0 ? (
+                                    <div className="col-span-1 lg:col-span-2 bg-surface-container-lowest p-12 rounded-[2rem] text-center border border-surface-container shadow-sm flex flex-col items-center justify-center min-h-[300px]">
+                                        <div className="w-20 h-20 rounded-full bg-surface-container text-on-surface-variant mx-auto flex items-center justify-center mb-5 shadow-inner">
+                                            <span className="material-symbols-outlined text-4xl">inbox</span>
                                         </div>
-                                        <p className="text-lg font-bold text-on-surface">No events match this filter</p>
-                                        <p className="text-on-surface-variant text-sm mt-2">Switch filters or create a new event to expand the current schedule.</p>
+                                        <p className="text-xl font-headline font-black text-on-surface">No events match this filter</p>
+                                        <p className="text-on-surface-variant text-base mt-2 max-w-md">Switch filters or create a new event to expand the current schedule.</p>
                                     </div>
                                 ) : (
-                                    filteredEvents.map((event, index) => {
+                                    paginatedEvents.map((event, index) => {
                                         const eventImage = STUB_IMAGES[index % STUB_IMAGES.length];
                                         const borderColor = ['border-l-primary', 'border-l-tertiary', 'border-l-secondary'][index % 3];
                                         const progressColor = ['bg-primary', 'bg-tertiary', 'bg-secondary'][index % 3];
@@ -271,61 +308,75 @@ export default function Index({ events }) {
                                             : 0;
 
                                         return (
-                                            <div key={event.id} className={`bg-surface-container-lowest p-5 sm:p-6 rounded-[2rem] transition-all hover:-translate-y-0.5 border-l-[3px] ${borderColor} shadow-[0_8px_20px_-6px_rgba(0,0,0,0.05)] border border-surface-container-highest/20 overflow-hidden`}>
-                                                <div className="flex flex-col lg:flex-row lg:items-center gap-5 sm:gap-6">
+                                            <div key={event.id} className={`bg-white p-5 sm:p-6 rounded-[2rem] transition-all hover:scale-[1.01] hover:-translate-y-1 border-t-4 sm:border-t-0 sm:border-l-[5px] ${borderColor} shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-6px_rgba(0,0,0,0.08)] border border-surface-container-highest/10 overflow-hidden flex flex-col justify-between h-full group`}>
+                                                <div className="flex flex-col h-full">
                                                     
-                                                    <div className="flex flex-row items-center gap-4 sm:gap-6 flex-1 min-w-0">
-                                                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-[1.25rem] overflow-hidden shrink-0 shadow-sm border border-outline-variant/20 bg-surface-container-highest">
+                                                    <div className="flex flex-row items-start gap-4 sm:gap-5 mb-5">
+                                                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-[1.25rem] overflow-hidden shrink-0 shadow-sm border border-outline-variant/10 bg-surface-container-highest relative">
+                                                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10 pointer-events-none"></div>
                                                             <img 
-                                                                className="w-full h-full object-cover" 
+                                                                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" 
                                                                 alt={event.name} 
                                                                 src={eventImage} 
                                                                 onError={(e) => { e.target.onerror = null; e.target.src = "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=2070&auto=format&fit=crop"; }} 
                                                             />
                                                         </div>
-                                                        <div className="flex-1 min-w-0 py-1">
-                                                            <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-1">
-                                                                <h4 className="text-lg sm:text-xl font-headline font-bold text-on-surface leading-tight truncate">{event.name}</h4>
+                                                        <div className="flex-1 min-w-0">
+                                                            <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                                                                <h4 className="text-lg sm:text-xl font-headline font-black text-on-surface leading-tight truncate">{event.name}</h4>
                                                                 {!event.registration_is_open && (
-                                                                    <span className="bg-error-container text-on-error-container text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider shrink-0">Closed</span>
+                                                                    <span className="bg-error-container text-on-error-container text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-sm">Closed</span>
                                                                 )}
                                                                 {event.champion_name && (
-                                                                    <span className="bg-primary text-on-primary text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1 uppercase tracking-wider shrink-0">
+                                                                    <span className="bg-primary/10 text-primary border border-primary/20 text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1 uppercase tracking-wider shrink-0 shadow-sm">
                                                                         <span className="material-symbols-outlined text-[12px]">emoji_events</span>
                                                                         {event.champion_name}
                                                                     </span>
                                                                 )}
                                                             </div>
-                                                            <p className="text-on-surface-variant text-sm tracking-wide truncate">{event.recurrence || 'General Division'} • {event.venue.city}</p>
-                                                            <p className="text-on-surface text-xs font-semibold mt-1.5 flex items-center gap-1.5 opacity-80">
-                                                                <span className="material-symbols-outlined text-[14px]">schedule</span> {formatDateTime(event.starts_at)}
+                                                            <p className="text-on-surface-variant text-sm font-semibold tracking-wide truncate">{event.recurrence || 'General Division'} • {event.venue.city}</p>
+                                                            <p className="text-on-surface-variant text-xs font-medium mt-2 flex items-center gap-1.5 bg-surface-container-lowest w-fit px-2 py-1 rounded-lg shadow-sm border border-surface-container-highest/20">
+                                                                <span className="material-symbols-outlined text-[14px] text-primary">calendar_month</span> {formatDateTime(event.starts_at)}
                                                             </p>
                                                         </div>
                                                     </div>
                                                     
-                                                    <div className="flex flex-col xl:flex-row items-start xl:items-center gap-5 sm:gap-6 shrink-0 w-full lg:w-auto mt-2 lg:mt-0">
-                                                        <div className="flex flex-row items-center justify-between xl:justify-start gap-4 sm:gap-6 w-full xl:w-auto ml-0 xl:ml-4">
-                                                            <div className="flex flex-col gap-2 w-full sm:w-32 xl:w-28 shrink-0">
-                                                                <span className="text-[9px] font-bold uppercase tracking-[0.15em] text-on-surface-variant">Relative turnout</span>
-                                                                <div className="w-full h-2 bg-surface-container rounded-full overflow-hidden">
-                                                                    <div className={`h-full ${progressColor} rounded-full`} style={{ width: `${fillPercentage}%` }}></div>
+                                                    <div className="mt-auto flex flex-col gap-5 border-t border-surface-container/60 pt-5">
+                                                        <div className="flex flex-row items-center justify-between gap-4 bg-surface-container-lowest/50 p-3 rounded-xl border border-surface-container">
+                                                            <div className="flex flex-col gap-2 w-full max-w-[140px] sm:max-w-[180px]">
+                                                                <div className="flex items-center justify-between">
+                                                                    <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-on-surface-variant">Turnout</span>
+                                                                    <span className="text-[10px] font-black text-primary">{fillPercentage}%</span>
+                                                                </div>
+                                                                <div className="w-full h-1.5 bg-surface-container-highest/30 rounded-full overflow-hidden">
+                                                                    <div className={`h-full ${progressColor} rounded-full transition-all duration-1000 ease-out`} style={{ width: `${fillPercentage}%` }}></div>
                                                                 </div>
                                                             </div>
-                                                            <div className="text-sm font-medium text-on-surface whitespace-nowrap text-right xl:text-left min-w-[60px]">
-                                                                {event.tournament ? `${event.tournament.entrant_count} active entrants` : `${event.participants_count} joined`}
+                                                            <div className="text-sm font-black text-on-surface whitespace-nowrap text-right">
+                                                                {event.tournament ? (
+                                                                    <div className="flex flex-col items-end leading-tight">
+                                                                        <span>{event.tournament.entrant_count}</span>
+                                                                        <span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Active</span>
+                                                                    </div>
+                                                                ) : (
+                                                                    <div className="flex flex-col items-end leading-tight">
+                                                                        <span>{event.participants_count}</span>
+                                                                        <span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Joined</span>
+                                                                    </div>
+                                                                )}
                                                             </div>
                                                         </div>
                                                         
-                                                        <div className="flex flex-row flex-wrap items-center gap-2 w-full xl:w-auto">
-                                                            <Link href={route('admin.events.show', event.id)} className="flex-1 xl:flex-none justify-center px-4 py-2.5 bg-[#002B59] hover:bg-[#001f40] text-white font-bold rounded-xl transition-colors text-sm shadow-sm inline-flex items-center whitespace-nowrap">
-                                                                Show Details
+                                                        <div className="grid grid-cols-2 xl:flex xl:flex-row flex-wrap items-center gap-2">
+                                                            <Link href={route('admin.events.show', event.id)} className="col-span-1 xl:flex-[1.2] justify-center px-3 py-2.5 bg-gradient-to-b from-[#002B59] to-[#001f40] hover:from-[#003b7a] hover:to-[#002B59] text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg text-sm flex items-center gap-1.5 whitespace-nowrap active:scale-95">
+                                                                <span className="material-symbols-outlined text-[18px]">visibility</span> Details
                                                             </Link>
-                                                            <Link href={route('admin.events.edit', event.id)} className="flex-1 xl:flex-none justify-center px-4 py-2.5 bg-surface-container hover:bg-surface-container-high text-on-surface font-semibold rounded-xl transition-colors text-sm inline-flex items-center whitespace-nowrap">
-                                                                Edit
+                                                            <Link href={route('admin.events.edit', event.id)} className="col-span-1 xl:flex-[0.8] justify-center px-3 py-2.5 bg-surface-container hover:bg-surface-container-high text-on-surface font-bold rounded-xl transition-all shadow-sm hover:shadow-md text-sm flex items-center gap-1.5 whitespace-nowrap active:scale-95 text-center">
+                                                                <span className="material-symbols-outlined text-[18px] opacity-70">edit</span> Edit
                                                             </Link>
                                                             {event.registration_is_open && (
-                                                                <Link href={route('admin.events.close-registration', event.id)} method="patch" as="button" className="flex-1 xl:flex-none justify-center px-4 py-2.5 bg-white border border-outline-variant/60 text-on-surface-variant font-semibold rounded-xl hover:bg-surface-container hover:text-on-surface transition-colors text-sm whitespace-nowrap shadow-sm inline-flex items-center">
-                                                                    Close Reg
+                                                                <Link href={route('admin.events.close-registration', event.id)} method="patch" as="button" className="col-span-2 xl:flex-1 justify-center px-3 py-2.5 bg-white border border-outline-variant/40 text-on-surface-variant/80 hover:text-error hover:border-error/50 hover:bg-error/5 font-bold rounded-xl transition-all shadow-sm hover:shadow-md text-sm flex items-center gap-1.5 whitespace-nowrap w-full active:scale-95">
+                                                                    <span className="material-symbols-outlined text-[18px]">lock</span> Close Reg
                                                                 </Link>
                                                             )}
                                                         </div>
@@ -337,6 +388,64 @@ export default function Index({ events }) {
                                     })
                                 )}
                             </div>
+
+                            {/* Pagination */}
+                            {totalPages > 1 && (
+                                <div className="flex items-center justify-between gap-4 px-2 pt-2">
+                                    <p className="text-sm text-on-surface-variant font-medium hidden sm:block">
+                                        Page <span className="font-black text-on-surface">{currentPage}</span> of <span className="font-black text-on-surface">{totalPages}</span>
+                                        <span className="ml-2 opacity-60">· {searchedEvents.length} total</span>
+                                    </p>
+
+                                    <div className="flex items-center gap-1.5 mx-auto sm:mx-0">
+                                        {/* Prev */}
+                                        <button
+                                            type="button"
+                                            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                                            disabled={currentPage === 1}
+                                            className="w-9 h-9 rounded-xl flex items-center justify-center bg-white border border-surface-container-highest/30 text-on-surface-variant hover:bg-surface-container hover:text-on-surface disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-sm"
+                                        >
+                                            <span className="material-symbols-outlined text-[18px]">chevron_left</span>
+                                        </button>
+
+                                        {/* Page numbers */}
+                                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                                            const isActive = page === currentPage;
+                                            const isNear = Math.abs(page - currentPage) <= 1 || page === 1 || page === totalPages;
+                                            if (!isNear) {
+                                                const isEllipsis = page === 2 || page === totalPages - 1;
+                                                return isEllipsis ? (
+                                                    <span key={page} className="w-9 h-9 flex items-center justify-center text-on-surface-variant text-sm font-bold opacity-40">…</span>
+                                                ) : null;
+                                            }
+                                            return (
+                                                <button
+                                                    key={page}
+                                                    type="button"
+                                                    onClick={() => setCurrentPage(page)}
+                                                    className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm font-black transition-all shadow-sm ${
+                                                        isActive
+                                                            ? 'bg-gradient-to-b from-[#002B59] to-[#001f40] text-white shadow-md'
+                                                            : 'bg-white border border-surface-container-highest/30 text-on-surface-variant hover:bg-surface-container hover:text-on-surface'
+                                                    }`}
+                                                >
+                                                    {page}
+                                                </button>
+                                            );
+                                        })}
+
+                                        {/* Next */}
+                                        <button
+                                            type="button"
+                                            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                                            disabled={currentPage === totalPages}
+                                            className="w-9 h-9 rounded-xl flex items-center justify-center bg-white border border-surface-container-highest/30 text-on-surface-variant hover:bg-surface-container hover:text-on-surface disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-sm"
+                                        >
+                                            <span className="material-symbols-outlined text-[18px]">chevron_right</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
                         </section>
                     </div>
                 </main>

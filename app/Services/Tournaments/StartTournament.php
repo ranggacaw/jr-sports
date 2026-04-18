@@ -40,11 +40,6 @@ class StartTournament
                 ]);
             }
 
-            if (! in_array($entrantCount, Tournament::SUPPORTED_ENTRANT_COUNTS, true)) {
-                throw ValidationException::withMessages([
-                    'entrant_count' => 'Select a supported entrant count of 4, 8, or 16.',
-                ]);
-            }
 
             $registrationLookup = $lockedEvent->registrations->keyBy('id');
             $reserveIds = $this->validatedReserveIds($configuration['reserve_registration_ids'] ?? [], $registrationLookup);
@@ -66,7 +61,7 @@ class StartTournament
                 'reserve_registration_ids' => $reserveIds,
             ]);
 
-            $groupedEntrants = $entrants->values()->chunk(4);
+            $groupedEntrants = $entrants->values()->splitIn(2);
             $groupNames = range('A', 'Z');
 
             foreach ($groupedEntrants as $groupIndex => $groupEntrants) {
