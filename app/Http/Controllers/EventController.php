@@ -83,6 +83,7 @@ class EventController extends Controller
         return [
             'id' => $event->id,
             'name' => $event->name,
+            'banner_url' => $event->banner_url,
             'recurrence' => $event->recurrence,
             'starts_at' => $event->starts_at?->toIso8601String(),
             'ends_at' => $event->ends_at?->toIso8601String(),

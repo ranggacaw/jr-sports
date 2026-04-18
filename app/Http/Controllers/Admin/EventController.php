@@ -12,6 +12,7 @@ use App\Services\Tournaments\BuildQualificationRanking;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -54,8 +55,14 @@ class EventController extends Controller
 
         $venue = Venue::create($payload['venue']);
 
+        $eventData = $payload['event'];
+        if ($request->hasFile('banner_file')) {
+            $path = $request->file('banner_file')->store('banners', 'public');
+            $eventData['banner_url'] = Storage::url($path);
+        }
+
         SportsEvent::create([
-            ...$payload['event'],
+            ...$eventData,
             'venue_id' => $venue->id,
         ]);
 
@@ -91,6 +98,7 @@ class EventController extends Controller
             'event' => [
                 'id' => $sportsEvent->id,
                 'name' => $sportsEvent->name,
+                'banner_url' => $sportsEvent->banner_url,
                 'recurrence' => $sportsEvent->recurrence,
                 'starts_at' => $sportsEvent->starts_at?->format('Y-m-d\TH:i'),
                 'ends_at' => $sportsEvent->ends_at?->format('Y-m-d\TH:i'),
@@ -109,8 +117,19 @@ class EventController extends Controller
     {
         $payload = $this->validatedPayload($request);
 
+        $eventData = $payload['event'];
+        if ($request->hasFile('banner_file')) {
+            // Delete old stored banner if it was a local file
+            if ($sportsEvent->banner_url && str_starts_with($sportsEvent->banner_url, '/storage/banners/')) {
+                $oldPath = str_replace('/storage/', '', $sportsEvent->banner_url);
+                Storage::disk('public')->delete($oldPath);
+            }
+            $path = $request->file('banner_file')->store('banners', 'public');
+            $eventData['banner_url'] = Storage::url($path);
+        }
+
         $sportsEvent->venue->update($payload['venue']);
-        $sportsEvent->update($payload['event']);
+        $sportsEvent->update($eventData);
 
         return redirect()->route('admin.events.index')
             ->with('success', 'Event updated successfully.');
@@ -160,22 +179,25 @@ class EventController extends Controller
     private function validatedPayload(Request $request): array
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'recurrence' => ['required', 'string', 'max:50'],
-            'starts_at' => ['required', 'date'],
-            'ends_at' => ['nullable', 'date', 'after_or_equal:starts_at'],
-            'venue.name' => ['required', 'string', 'max:255'],
-            'venue.address' => ['required', 'string', 'max:255'],
-            'venue.city' => ['required', 'string', 'max:255'],
-            'venue.google_maps_url' => ['nullable', 'url', 'max:255'],
+            'name'                   => ['required', 'string', 'max:255'],
+            'banner_url'             => ['nullable', 'url', 'max:2048'],
+            'banner_file'            => ['nullable', 'file', 'image', 'max:5120'],
+            'recurrence'             => ['required', 'string', 'max:50'],
+            'starts_at'              => ['required', 'date'],
+            'ends_at'                => ['nullable', 'date', 'after_or_equal:starts_at'],
+            'venue.name'             => ['required', 'string', 'max:255'],
+            'venue.address'          => ['required', 'string', 'max:255'],
+            'venue.city'             => ['required', 'string', 'max:255'],
+            'venue.google_maps_url'  => ['nullable', 'url', 'max:255'],
         ]);
 
         return [
             'event' => [
-                'name' => $validated['name'],
+                'name'       => $validated['name'],
+                'banner_url' => $validated['banner_url'] ?? null,
                 'recurrence' => $validated['recurrence'],
-                'starts_at' => $validated['starts_at'],
-                'ends_at' => $validated['ends_at'] ?? null,
+                'starts_at'  => $validated['starts_at'],
+                'ends_at'    => $validated['ends_at'] ?? null,
             ],
             'venue' => $validated['venue'],
         ];
@@ -186,6 +208,7 @@ class EventController extends Controller
         return [
             'id' => $event->id,
             'name' => $event->name,
+            'banner_url' => $event->banner_url,
             'recurrence' => $event->recurrence,
             'starts_at' => $event->starts_at?->toIso8601String(),
             'ends_at' => $event->ends_at?->toIso8601String(),

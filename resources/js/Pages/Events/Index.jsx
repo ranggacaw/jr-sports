@@ -185,7 +185,7 @@ export default function Index({ events }) {
     };
 
     const renderEventCard = (event, index) => {
-        const bgImage = STUB_IMAGES[index % STUB_IMAGES.length];
+        const bgImage = event.banner_url || STUB_IMAGES[index % STUB_IMAGES.length];
         const isRegistered = user && event.is_registered;
         const isOpen = event.registration_is_open;
         const venueUrl = getVenueMapUrl(event.venue);

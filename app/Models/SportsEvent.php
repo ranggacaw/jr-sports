@@ -19,6 +19,7 @@ class SportsEvent extends Model
     protected $fillable = [
         'venue_id',
         'name',
+        'banner_url',
         'recurrence',
         'starts_at',
         'ends_at',
