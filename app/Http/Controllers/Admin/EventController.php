@@ -216,6 +216,9 @@ class EventController extends Controller
                 'address' => $event->venue->address,
                 'city' => $event->venue->city,
             ],
+            'champion_name' => $event->relationLoaded('tournament') && $event->tournament?->championRegistration
+                ? $event->tournament->championRegistration->user->name
+                : null,
         ];
     }
 

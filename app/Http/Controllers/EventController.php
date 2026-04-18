@@ -23,9 +23,9 @@ class EventController extends Controller
         $userId = $request->user()?->id;
 
         $events = SportsEvent::query()
-            ->with('venue')
+            ->with(['venue', 'tournament.championRegistration.user'])
             ->withCount('participants')
-            ->upcoming();
+            ->orderByDesc('starts_at');
 
         if ($userId) {
             $events->with(['participants:id,name']);
@@ -107,7 +107,10 @@ class EventController extends Controller
                 'city' => $event->venue->city,
                 'google_maps_url' => $event->venue->google_maps_url,
             ],
-            'tournament' => $event->relationLoaded('tournament') && $event->tournament !== null
+            'champion_name' => $event->relationLoaded('tournament') && $event->tournament?->championRegistration
+                ? $event->tournament->championRegistration->user->name
+                : null,
+            'tournament' => $event->relationLoaded('tournament') && $event->tournament !== null && $event->tournament->relationLoaded('matches')
                 ? $this->tournamentPayload($event, $event->tournament, $viewerRegistrationId)
                 : null,
         ];

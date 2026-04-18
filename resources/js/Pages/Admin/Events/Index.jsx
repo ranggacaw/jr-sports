@@ -90,7 +90,13 @@ export default function Index({ events }) {
                 id: 'closed',
                 label: 'Closed Registration',
                 icon: 'event_busy',
-                predicate: (event) => !event.registration_is_open,
+                predicate: (event) => !event.registration_is_open && !event.champion_name,
+            },
+            {
+                id: 'finished',
+                label: 'Finished Events',
+                icon: 'emoji_events',
+                predicate: (event) => !!event.champion_name,
             },
             ...recurrenceFilters,
         ];
@@ -283,6 +289,12 @@ export default function Index({ events }) {
                                                                 {!event.registration_is_open && (
                                                                     <span className="bg-error-container text-on-error-container text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider shrink-0">Closed</span>
                                                                 )}
+                                                                {event.champion_name && (
+                                                                    <span className="bg-primary text-on-primary text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1 uppercase tracking-wider shrink-0">
+                                                                        <span className="material-symbols-outlined text-[12px]">emoji_events</span>
+                                                                        {event.champion_name}
+                                                                    </span>
+                                                                )}
                                                             </div>
                                                             <p className="text-on-surface-variant text-sm tracking-wide truncate">{event.recurrence || 'General Division'} • {event.venue.city}</p>
                                                             <p className="text-on-surface text-xs font-semibold mt-1.5 flex items-center gap-1.5 opacity-80">
@@ -300,7 +312,7 @@ export default function Index({ events }) {
                                                                 </div>
                                                             </div>
                                                             <div className="text-sm font-medium text-on-surface whitespace-nowrap text-right xl:text-left min-w-[60px]">
-                                                                {event.participants_count} joined
+                                                                {event.tournament ? `${event.tournament.entrant_count} active entrants` : `${event.participants_count} joined`}
                                                             </div>
                                                         </div>
                                                         

@@ -80,20 +80,27 @@ export default function Index({ events }) {
         return [
             {
                 id: 'all',
-                label: 'All Upcoming',
-                icon: 'calendar_today',
-            },
-            ...recurrenceFilters,
-        ];
-    }, [events]);
+                    label: 'All Events',
+                    icon: 'calendar_today',
+                },
+                {
+                    id: 'finished',
+                    label: 'Finished / Champions',
+                    icon: 'emoji_events',
+                },
+                ...recurrenceFilters,
+            ];
+        }, [events]);
 
-    const filterByRecurrence = useMemo(() => {
-        if (selectedFilter === 'all') {
-            return events;
-        }
-
-        return events.filter((event) => slugify(event.recurrence || '') === selectedFilter);
-    }, [events, selectedFilter]);
+        const filterByRecurrence = useMemo(() => {
+            if (selectedFilter === 'all') {
+                return events;
+            }
+            if (selectedFilter === 'finished') {
+                return events.filter((event) => !!event.champion_name);
+            }
+            return events.filter((event) => slugify(event.recurrence || '') === selectedFilter);
+        }, [events, selectedFilter]);
 
     const filteredEvents = useMemo(() => {
         const q = searchQuery.trim().toLowerCase();
@@ -211,7 +218,16 @@ export default function Index({ events }) {
                     </Link>
                 );
             }
-        } else {
+} else if (event.champion_name) {
+                statusBadgeClass = "bg-primary text-on-primary";
+                statusText = "FINISHED";
+                cardAction = (
+                    <Link href={route('events.show', event.id)} className="bg-surface-container text-on-surface px-6 py-2 rounded-full font-bold text-sm w-full sm:w-auto mt-4 sm:mt-0 text-center hover:bg-surface-container-high transition-colors flex items-center justify-center gap-2">
+                        <span className="material-symbols-outlined text-[16px]">emoji_events</span>
+                        View Results
+                    </Link>
+                );
+            } else {
             statusBadgeClass = "bg-error-container text-on-error-container";
             statusText = "CLOSED";
             cardAction = (
@@ -247,6 +263,13 @@ export default function Index({ events }) {
                             {statusText}
                         </span>
                     </div>
+
+                    {event.champion_name && (
+                        <div className="bg-primary/20 text-on-surface px-3 py-2 rounded-lg font-bold text-sm mb-4 flex items-center gap-2 border border-primary/20 shadow-sm">
+                            <span className="material-symbols-outlined text-[18px] text-primary">emoji_events</span>
+                            Champion: {event.champion_name}
+                        </div>
+                    )}
                     
                     <div className="flex flex-col gap-2 text-on-surface-variant text-sm mb-6 font-medium">
                         <span className="flex items-center gap-2">
@@ -262,8 +285,8 @@ export default function Index({ events }) {
                                 <div className="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-[10px] font-bold text-primary border-2 border-surface-container-lowest shadow-sm ring-1 ring-black/5 z-20">
                                     <span className="material-symbols-outlined text-[14px]">person</span>
                                 </div>
-                                <div className="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-[10px] font-bold text-on-surface-variant border-2 border-surface-container-lowest z-10">
-                                    +{event.participants_count > 0 ? event.participants_count : 0}
+                                <div className="min-w-8 h-8 px-2 rounded-full bg-surface-container-high flex items-center justify-center text-[10px] font-bold text-on-surface-variant border-2 border-surface-container-lowest z-10 whitespace-nowrap">
+                                    {event.tournament ? `${event.tournament.entrant_count} entrants` : `+${event.participants_count > 0 ? event.participants_count : 0}`}
                                 </div>
                             </div>
                         </div>
