@@ -51,12 +51,8 @@ const getFilterFromUrl = () => {
 };
 
 // High-quality placeholders for sporting events based on index
-const STUB_IMAGES = [
-    "https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=2090&auto=format&fit=crop", 
-    "https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?q=80&w=2074&auto=format&fit=crop", 
-    "https://images.unsplash.com/photo-1536243298747-ea8f15b4c19a?q=80&w=2070&auto=format&fit=crop", 
-    "https://images.unsplash.com/photo-1518605368461-1ee12375bbdc?q=80&w=2140&auto=format&fit=crop", 
-];
+// Default dummy image for badminton events
+const DEFAULT_BADMINTON_IMAGE = "https://images.unsplash.com/photo-1629824641684-2507b53b8110?q=80&w=2070&auto=format&fit=crop";
 
 export default function Index({ events }) {
     const { auth, flash, errors } = usePage().props;
@@ -185,7 +181,9 @@ export default function Index({ events }) {
     };
 
     const renderEventCard = (event, index) => {
-        const bgImage = event.banner_url || STUB_IMAGES[index % STUB_IMAGES.length];
+        const bgImage = event.banner_url 
+            ? (event.banner_url.startsWith('http') ? event.banner_url : `/storage/${event.banner_url}`) 
+            : DEFAULT_BADMINTON_IMAGE;
         const isRegistered = user && event.is_registered;
         const isOpen = event.registration_is_open;
         const venueUrl = getVenueMapUrl(event.venue);

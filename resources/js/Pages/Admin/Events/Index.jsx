@@ -44,12 +44,8 @@ const getFilterFromUrl = () => {
     return new URLSearchParams(window.location.search).get('filter') || 'all';
 };
 
-// Placedholder image arrays based on sport types
-const STUB_IMAGES = [
-    "https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=2090&auto=format&fit=crop", 
-    "https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?q=80&w=2074&auto=format&fit=crop", 
-    "https://images.unsplash.com/photo-1536243298747-ea8f15b4c19a?q=80&w=2070&auto=format&fit=crop", 
-];
+// Default dummy image for badminton events
+const DEFAULT_BADMINTON_IMAGE = "https://images.unsplash.com/photo-1626721105368-a69248e93b32?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
 export default function Index({ events }) {
     const { flash } = usePage().props;
@@ -300,7 +296,9 @@ export default function Index({ events }) {
                                     </div>
                                 ) : (
                                     paginatedEvents.map((event, index) => {
-                                        const eventImage = STUB_IMAGES[index % STUB_IMAGES.length];
+                                        const eventImage = event.banner_url 
+                                            ? (event.banner_url.startsWith('http') ? event.banner_url : `/storage/${event.banner_url}`) 
+                                            : DEFAULT_BADMINTON_IMAGE;
                                         const borderColor = ['border-l-primary', 'border-l-tertiary', 'border-l-secondary'][index % 3];
                                         const progressColor = ['bg-primary', 'bg-tertiary', 'bg-secondary'][index % 3];
                                         const fillPercentage = maxParticipants > 0
@@ -318,7 +316,7 @@ export default function Index({ events }) {
                                                                 className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" 
                                                                 alt={event.name} 
                                                                 src={eventImage} 
-                                                                onError={(e) => { e.target.onerror = null; e.target.src = "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=2070&auto=format&fit=crop"; }} 
+                                                                onError={(e) => { e.target.onerror = null; e.target.src = DEFAULT_BADMINTON_IMAGE; }} 
                                                             />
                                                         </div>
                                                         <div className="flex-1 min-w-0">

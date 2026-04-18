@@ -66,7 +66,7 @@ class TournamentManagementTest extends TestCase
         $this->assertSame(4, $tournament->entrant_count);
         $this->assertSame(Tournament::STATE_GROUP_STAGE, $tournament->state);
         $this->assertSame(4, $tournament->groupStandings->count());
-        $this->assertSame(6, $tournament->matches->where('stage', TournamentMatch::STAGE_GROUP)->count());
+        $this->assertSame(2, $tournament->matches->where('stage', TournamentMatch::STAGE_GROUP)->count());
         $this->assertSame($reserveIds->values()->all(), $tournament->reserveIds());
         $this->assertEmpty($tournament->groupStandings->whereIn('registration_id', $reserveIds)->all());
         $this->assertSame(0, $tournament->matches

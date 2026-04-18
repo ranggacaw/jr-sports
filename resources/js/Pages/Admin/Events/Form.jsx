@@ -94,7 +94,7 @@ export default function Form({ event }) {
         bannerMode === 'file' && filePreview
             ? filePreview
             : bannerMode === 'url' && data.banner_url
-              ? data.banner_url
+              ? (data.banner_url.startsWith('http') ? data.banner_url : `/storage/${data.banner_url}`)
               : null;
 
     return (
