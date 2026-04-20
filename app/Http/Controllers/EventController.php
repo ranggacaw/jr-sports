@@ -54,8 +54,6 @@ class EventController extends Controller
 
     public function show(Request $request, SportsEvent $sportsEvent): Response
     {
-        abort_unless($sportsEvent->starts_at?->gte(now()->startOfDay()), 404);
-
         $sportsEvent->load([
             'venue',
             'registrations.user',

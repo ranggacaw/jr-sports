@@ -1,6 +1,9 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, usePage } from '@inertiajs/react';
 import TournamentBracket from '@/Components/TournamentBracket';
+import { useState } from 'react';
+
+const INITIAL_VISIBLE_PARTICIPANTS = 12;
 
 const formatDateTime = (dateString) =>
     new Intl.DateTimeFormat('en-ID', {
@@ -38,8 +41,14 @@ const renderMemberNames = (members = []) => {
 
 export default function Show({ event }) {
     const { errors } = usePage().props;
+    const [showAllParticipants, setShowAllParticipants] = useState(false);
     const venueUrl = getVenueMapUrl(event.venue);
     const hasTournament = Boolean(event.tournament);
+    const hasHiddenParticipants = event.participants.length > INITIAL_VISIBLE_PARTICIPANTS;
+    const visibleParticipants = showAllParticipants
+        ? event.participants
+        : event.participants.slice(0, INITIAL_VISIBLE_PARTICIPANTS);
+    const hiddenParticipantCount = Math.max(event.participants.length - INITIAL_VISIBLE_PARTICIPANTS, 0);
     const statusText = event.is_registered
         ? 'Registered'
         : event.registration_is_open
@@ -107,7 +116,7 @@ export default function Show({ event }) {
             <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12 flex flex-col lg:flex-row gap-12">
                 
                 {/* Details & Participants */}
-                <div className="flex-1 flex flex-col gap-10 md:gap-12">
+                <div className="flex-1 flex flex-col gap-10 md:gap-12 min-w-0">
                     
                     {/* Bento Grid Info */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -152,45 +161,76 @@ export default function Show({ event }) {
                         </a>
                     </div>
 
-                    {/* Participants Section */}
-                     <div>
-                         <h2 className="text-2xl sm:text-3xl font-black tracking-tight mb-6 font-headline">Confirmed Participants</h2>
+                     {/* Participants Section */}
+                      <div>
+                         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                             <div>
+                                 <h2 className="text-2xl sm:text-3xl font-black tracking-tight font-headline">Confirmed Participants</h2>
+                                 <p className="mt-2 text-sm font-medium text-[color:var(--on-surface-variant)]">
+                                     {event.participants.length} participant{event.participants.length === 1 ? '' : 's'} confirmed
+                                 </p>
+                             </div>
+
+                             {hasHiddenParticipants && (
+                                 <button
+                                     type="button"
+                                     onClick={() => setShowAllParticipants((value) => !value)}
+                                     aria-expanded={showAllParticipants}
+                                     className="inline-flex items-center justify-center gap-2 self-start rounded-full border border-[color:var(--outline-variant)]/50 bg-white px-5 py-2.5 text-sm font-bold text-[color:var(--primary)] transition-colors hover:bg-[color:var(--surface-container-low)]"
+                                 >
+                                     <span className="material-symbols-outlined text-[18px]">
+                                         {showAllParticipants ? 'unfold_less' : 'unfold_more'}
+                                     </span>
+                                     {showAllParticipants ? 'Show less' : `Show all ${event.participants.length}`}
+                                 </button>
+                             )}
+                         </div>
+
                          {event.participants.length === 0 ? (
                             <div className="rounded-[1rem] bg-[color:var(--surface-container-low)] px-6 py-8 text-center text-sm leading-7 text-[color:var(--on-surface-variant)]">
                                 No one has joined this event yet.
                             </div>
                         ) : (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                                {event.participants.map((participant) => (
-                                    <div key={participant.id} className="bg-[color:var(--surface-container-lowest)] p-4 rounded-[1rem] flex items-center gap-4 transition-colors duration-300 hover:bg-[color:var(--surface-container-low)] shadow-[0_40px_40px_-5px_rgba(25,28,32,0.06)]">
-                                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[color:var(--primary)] font-['Lexend'] text-sm font-bold text-white">
-                                            {getParticipantInitials(participant.name)}
+                            <div className="space-y-4">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                                    {visibleParticipants.map((participant) => (
+                                        <div key={participant.id} className="bg-[color:var(--surface-container-lowest)] p-4 rounded-[1rem] flex items-center gap-4 transition-colors duration-300 hover:bg-[color:var(--surface-container-low)] shadow-[0_40px_40px_-5px_rgba(25,28,32,0.06)]">
+                                            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[color:var(--primary)] font-['Lexend'] text-sm font-bold text-white">
+                                                {getParticipantInitials(participant.name)}
+                                            </div>
+                                            <div className="min-w-0">
+                                                <p className="font-bold text-[color:var(--primary)] truncate">{participant.name}</p>
+                                                <p className="text-[10px] text-[color:var(--on-surface-variant)] uppercase font-bold truncate">Player</p>
+                                            </div>
                                         </div>
-                                        <div className="min-w-0">
-                                            <p className="font-bold text-[color:var(--primary)] truncate">{participant.name}</p>
-                                            <p className="text-[10px] text-[color:var(--on-surface-variant)] uppercase font-bold truncate">Player</p>
-                                        </div>
+                                    ))}
+                                 </div>
+
+                                {hasHiddenParticipants && !showAllParticipants && (
+                                    <div className="rounded-[1rem] bg-[color:var(--surface-container-low)] px-5 py-4 text-sm font-medium text-[color:var(--on-surface-variant)]">
+                                        {hiddenParticipantCount} more participant{hiddenParticipantCount === 1 ? '' : 's'} hidden. Use "Show all" to expand the full roster.
                                     </div>
-                                ))}
-                             </div>
+                                )}
+                            </div>
                          )}
                      </div>
 
                     {hasTournament && (
-                        <section className="space-y-8">
+                      <div> 
+                        <section className="space-y-4">
                             <div className="rounded-[1.5rem] bg-[color:var(--surface-container-lowest)] p-6 shadow-[0_40px_40px_-5px_rgba(25,28,32,0.06)]">
                                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                                     <div>
-                                         <h2 className="text-2xl sm:text-3xl font-black tracking-tight font-headline">Tournament Standings &amp; Brackets</h2>
-                                         <p className="mt-2 text-sm text-[color:var(--on-surface-variant)]">
-                                             Read-only tracking for the {event.tournament.format_label.toLowerCase()} draw with {event.tournament.entrant_count} active entrants.
-                                         </p>
-                                     </div>
-                                     <span className="inline-flex self-start rounded-full bg-[color:var(--primary)]/10 px-4 py-2 text-xs font-black uppercase tracking-[0.25em] text-[color:var(--primary)]">
-                                         {formatTournamentState(event.tournament.state)}
-                                     </span>
-                                 </div>
-                             </div>
+                                    <div>
+                                        <h2 className="text-2xl sm:text-3xl font-black tracking-tight font-headline">Tournament Standings &amp; Brackets</h2>
+                                        <p className="mt-2 text-sm text-[color:var(--on-surface-variant)]">
+                                            Read-only tracking for the {event.tournament.format_label.toLowerCase()} draw with {event.tournament.entrant_count} active entrants.
+                                        </p>
+                                    </div>
+                                    <span className="inline-flex self-start rounded-full bg-[color:var(--primary)]/10 px-4 py-2 text-xs font-black uppercase tracking-[0.25em] text-[color:var(--primary)]">
+                                        {formatTournamentState(event.tournament.state)}
+                                    </span>
+                                </div>
+                            </div>
 
                             {event.tournament.reserves.length > 0 && (
                                 <div>
@@ -206,10 +246,10 @@ export default function Show({ event }) {
                                 </div>
                             )}
 
-                             <div>
-                                 <h3 className="mb-4 text-xl font-black tracking-tight">Group Standings</h3>
-                                 <div className="grid gap-4 xl:grid-cols-2">
-                                     {event.tournament.groups.map((group) => (
+                            <div>
+                                <h3 className="mb-4 text-xl font-black tracking-tight">Group Standings</h3>
+                                <div className="grid gap-4 xl:grid-cols-2">
+                                    {event.tournament.groups.map((group) => (
                                         <div key={group.name} className="rounded-[1.25rem] bg-[color:var(--surface-container-lowest)] p-5 shadow-[0_40px_40px_-5px_rgba(25,28,32,0.06)]">
                                             <div className="mb-4 flex items-center justify-between">
                                                 <h4 className="text-lg font-black text-[color:var(--primary)]">Group {group.name}</h4>
@@ -222,15 +262,15 @@ export default function Show({ event }) {
                                                     <div key={entry.registration_id} className="grid grid-cols-[auto_1fr_auto] items-center gap-3 rounded-2xl bg-[color:var(--surface-container-low)] px-4 py-3">
                                                         <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[color:var(--primary)] text-sm font-black text-white">
                                                             {entry.rank || '-'}
-                                                         </span>
-                                                         <div>
-                                                             <p className="font-bold text-[color:var(--on-surface)]">{entry.player_name}</p>
+                                                        </span>
+                                                        <div>
+                                                            <p className="font-bold text-[color:var(--on-surface)]">{entry.player_name}</p>
                                                             {renderMemberNames(entry.member_names)}
-                                                             <p className="text-xs uppercase tracking-widest text-[color:var(--on-surface-variant)]">
-                                                                 {entry.wins}W {entry.losses}L
-                                                             </p>
-                                                             {entry.qualification_rank && (
-                                                                 <p className="mt-1 text-[11px] font-bold uppercase tracking-widest text-[color:var(--tertiary)]">
+                                                            <p className="text-xs uppercase tracking-widest text-[color:var(--on-surface-variant)]">
+                                                                {entry.wins}W {entry.losses}L
+                                                            </p>
+                                                            {entry.qualification_rank && (
+                                                                <p className="mt-1 text-[11px] font-bold uppercase tracking-widest text-[color:var(--tertiary)]">
                                                                     Qual #{entry.qualification_rank} · {entry.bracket_label}
                                                                 </p>
                                                             )}
@@ -278,16 +318,13 @@ export default function Show({ event }) {
                                             <div className="space-y-3">
                                                 {event.tournament.qualification.map((entry) => (
                                                     <div key={entry.registration_id} className="grid grid-cols-[auto_1fr_auto] items-center gap-3 rounded-2xl bg-[color:var(--surface-container-low)] px-4 py-3">
-                                                         <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[color:var(--tertiary)] text-sm font-black text-white">
-                                                             {entry.qualification_rank}
-                                                         </span>
-                                                         <div>
-                                                             <p className="font-bold text-[color:var(--on-surface)]">{entry.player_name}</p>
+                                                        <div>
+                                                            <p className="font-bold text-[color:var(--on-surface)]">{entry.player_name}</p>
                                                             {renderMemberNames(entry.member_names)}
-                                                             <p className="text-xs uppercase tracking-widest text-[color:var(--on-surface-variant)]">
-                                                                 Group {entry.group_name} · Rank {entry.group_rank}
-                                                             </p>
-                                                         </div>
+                                                            <p className="text-xs uppercase tracking-widest text-[color:var(--on-surface-variant)]">
+                                                                Group {entry.group_name} · Rank {entry.group_rank}
+                                                            </p>
+                                                        </div>
                                                         <div className="text-right">
                                                             <p className="text-sm font-black text-[color:var(--primary)]">{entry.bracket_label}</p>
                                                             <p className="text-xs text-[color:var(--on-surface-variant)]">{entry.points} pts · {entry.point_differential >= 0 ? '+' : ''}{entry.point_differential}</p>
@@ -307,20 +344,20 @@ export default function Show({ event }) {
                                         {event.tournament.my_matches.map((match) => (
                                             <div key={match.id} className="rounded-[1.25rem] bg-[color:var(--surface-container-lowest)] p-5 shadow-[0_40px_40px_-5px_rgba(25,28,32,0.06)]">
                                                 <div className="flex items-center justify-between gap-3">
-                                                     <div>
-                                                         <p className="text-xs font-black uppercase tracking-[0.25em] text-[color:var(--on-surface-variant)]">
-                                                             {match.group_name ? `Group ${match.group_name}` : match.round_name}
-                                                         </p>
-                                                         <p className="mt-2 font-bold text-[color:var(--on-surface)]">
-                                                             {match.player_one_name} vs {match.player_two_name}
-                                                         </p>
+                                                    <div>
+                                                        <p className="text-xs font-black uppercase tracking-[0.25em] text-[color:var(--on-surface-variant)]">
+                                                            {match.group_name ? `Group ${match.group_name}` : match.round_name}
+                                                        </p>
+                                                        <p className="mt-2 font-bold text-[color:var(--on-surface)]">
+                                                            {match.player_one_name} vs {match.player_two_name}
+                                                        </p>
                                                         {renderMemberNames(match.player_one_members)}
                                                         {renderMemberNames(match.player_two_members)}
-                                                     </div>
-                                                     <span className="rounded-full bg-[color:var(--tertiary)]/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.25em] text-[color:var(--tertiary)]">
-                                                         {match.status}
-                                                     </span>
-                                                 </div>
+                                                    </div>
+                                                    <span className="rounded-full bg-[color:var(--tertiary)]/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.25em] text-[color:var(--tertiary)]">
+                                                        {match.status}
+                                                    </span>
+                                                </div>
                                                 <div className="mt-4 rounded-2xl bg-[color:var(--surface-container-low)] px-4 py-3 text-sm font-semibold text-[color:var(--on-surface)]">
                                                     {match.player_one_score !== null && match.player_two_score !== null
                                                         ? `${match.player_one_score} - ${match.player_two_score}`
@@ -337,6 +374,7 @@ export default function Show({ event }) {
                                 <TournamentBracket tournament={event.tournament} />
                             </div>
                         </section>
+                      </div>
                     )}
                  </div>
 

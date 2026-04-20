@@ -52,6 +52,41 @@ class EventDetailsTest extends TestCase
             );
     }
 
+    public function test_authenticated_user_can_view_a_finished_event_details_page(): void
+    {
+        $viewer = User::factory()->create(['name' => 'Alex Viewer']);
+        $participant = User::factory()->create(['name' => 'Jordan Player']);
+        $event = SportsEvent::factory()
+            ->for(Venue::factory()->state([
+                'name' => 'Arena Court',
+                'address' => 'Jl. Gatot Subroto No. 5',
+                'city' => 'Jakarta',
+            ]))
+            ->create([
+                'name' => 'Finished Badminton',
+                'recurrence' => 'Weekly',
+                'starts_at' => now()->subDays(3),
+                'ends_at' => now()->subDays(3)->addHours(2),
+                'registration_closed_at' => now()->subDays(4),
+            ]);
+
+        $event->registrations()->createMany([
+            ['user_id' => $viewer->id],
+            ['user_id' => $participant->id],
+        ]);
+
+        $this->actingAs($viewer)
+            ->get(route('events.show', $event))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Events/Show')
+                ->where('event.name', 'Finished Badminton')
+                ->where('event.registration_is_open', false)
+                ->where('event.is_registered', true)
+                ->where('event.participants_count', 2)
+            );
+    }
+
     public function test_guests_are_redirected_to_login_when_opening_event_details(): void
     {
         $event = SportsEvent::factory()->create();
