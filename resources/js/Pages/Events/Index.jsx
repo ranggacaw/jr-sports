@@ -180,131 +180,142 @@ export default function Index({ events }) {
         setSelectedFilter(filters[nextIndex].id);
     };
 
+    const maxParticipants = useMemo(
+        () => Math.max(...events.map((event) => event.participants_count), 0),
+        [events],
+    );
+
     const renderEventCard = (event, index) => {
-        const bgImage = event.banner_url 
+        const eventImage = event.banner_url 
             ? (event.banner_url.startsWith('http') ? event.banner_url : `/storage/${event.banner_url}`) 
             : DEFAULT_BADMINTON_IMAGE;
         const isRegistered = user && event.is_registered;
         const isOpen = event.registration_is_open;
         const venueUrl = getVenueMapUrl(event.venue);
         
-        let statusBadgeClass = "bg-secondary-container text-on-secondary-container";
+        let statusBadgeClass = "bg-surface-container text-on-surface-variant border-surface-container-highest/20";
         let statusText = "OPEN";
         let cardAction = null;
+        const actionBaseClass = "justify-center px-3 py-2.5 font-bold rounded-xl transition-all shadow-sm hover:shadow-md text-sm flex items-center gap-1.5 whitespace-nowrap active:scale-95 text-center flex-1";
         
         if (isRegistered) {
-            statusBadgeClass = "bg-tertiary-container text-on-tertiary-container";
+            statusBadgeClass = "bg-tertiary/10 text-tertiary border-tertiary/20";
             statusText = "REGISTERED";
             cardAction = (
-                <a href={venueUrl} target="_blank" rel="noreferrer" className="bg-surface-container text-on-surface px-6 py-2 rounded-full font-bold text-sm w-full sm:w-auto mt-4 sm:mt-0 text-center hover:bg-surface-container-high transition-colors">
-                    View Venue
+                <a href={venueUrl} target="_blank" rel="noreferrer" className={`${actionBaseClass} bg-surface-container hover:bg-surface-container-high text-on-surface`}>
+                    <span className="material-symbols-outlined text-[18px] opacity-70">location_on</span> View Venue
                 </a>
             );
         } else if (isOpen) {
-            statusBadgeClass = "bg-primary-container text-on-primary-container";
+            statusBadgeClass = "bg-primary/10 text-primary border-primary/20";
             statusText = "LIVE";
             if (user) {
                 cardAction = (
-                    <Link href={route('events.registrations.store', event.id)} method="post" as="button" className="bg-gradient-to-br from-primary to-primary-container text-white px-6 py-2 rounded-full font-bold text-sm active:scale-95 transition-transform w-full sm:w-auto text-center shadow-lg shadow-primary/20 mt-4 sm:mt-0 cursor-pointer">
-                        Join Event
+                    <Link href={route('events.registrations.store', event.id)} method="post" as="button" className={`${actionBaseClass} bg-gradient-to-br from-primary to-primary-container text-white shadow-md hover:shadow-lg w-full`}>
+                        <span className="material-symbols-outlined text-[18px]">how_to_reg</span> Join Event
                     </Link>
                 );
             } else {
                 cardAction = (
-                    <Link href={route('login')} className="bg-primary text-white border-2 border-primary px-6 py-2 rounded-full font-bold text-sm hover:bg-transparent hover:text-primary transition-colors w-full sm:w-auto text-center mt-4 sm:mt-0 cursor-pointer">
-                        Log in
+                    <Link href={route('login')} className={`${actionBaseClass} bg-white border border-primary/40 text-primary hover:bg-primary/5 w-full`}>
+                        <span className="material-symbols-outlined text-[18px]">login</span> Log in
                     </Link>
                 );
             }
-} else if (event.champion_name) {
-                statusBadgeClass = "bg-primary text-on-primary";
-                statusText = "FINISHED";
-                cardAction = (
-                    <Link href={route('events.show', event.id)} className="bg-surface-container text-on-surface px-6 py-2 rounded-full font-bold text-sm w-full sm:w-auto mt-4 sm:mt-0 text-center hover:bg-surface-container-high transition-colors flex items-center justify-center gap-2">
-                        <span className="material-symbols-outlined text-[16px]">emoji_events</span>
-                        View Results
-                    </Link>
-                );
-            } else {
-            statusBadgeClass = "bg-error-container text-on-error-container";
+        } else if (event.champion_name) {
+            statusBadgeClass = "bg-primary/10 text-primary border-primary/20";
+            statusText = "FINISHED";
+            cardAction = (
+                <Link href={route('events.show', event.id)} className={`${actionBaseClass} bg-surface-container hover:bg-surface-container-high text-on-surface`}>
+                    <span className="material-symbols-outlined text-[18px]">emoji_events</span> View Results
+                </Link>
+            );
+        } else {
+            statusBadgeClass = "bg-error-container text-on-error-container border-error/20";
             statusText = "CLOSED";
             cardAction = (
-                <a href={venueUrl} target="_blank" rel="noreferrer" className="border-2 border-outline-variant text-on-surface-variant px-6 py-2 rounded-full font-bold text-sm w-full sm:w-auto mt-4 sm:mt-0 text-center hover:border-primary hover:text-primary transition-colors">
-                    Venue Details
+                <a href={venueUrl} target="_blank" rel="noreferrer" className={`${actionBaseClass} bg-white border border-outline-variant/40 text-on-surface-variant hover:text-primary hover:border-primary/50 hover:bg-primary/5 w-full`}>
+                    <span className="material-symbols-outlined text-[18px]">location_on</span> Venue Details
                 </a>
             );
         }
 
+        const borderColor = ['border-l-primary', 'border-l-tertiary', 'border-l-secondary'][index % 3];
+        const progressColor = ['bg-primary', 'bg-tertiary', 'bg-secondary'][index % 3];
+        const fillPercentage = maxParticipants > 0
+            ? Math.round((event.participants_count / maxParticipants) * 100)
+            : 0;
+
         return (
-            <div key={event.id} className="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-[0_40px_40px_-5px_rgba(25,28,32,0.06)] group flex flex-col border border-surface-container-highest/50 hover:-translate-y-1 transition-all duration-300">
-                <div className="relative h-48 overflow-hidden bg-primary/10">
-                    <img alt={event.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src={bgImage} />
+            <div key={event.id} className={`bg-white p-5 sm:p-6 rounded-[2rem] transition-all hover:scale-[1.01] hover:-translate-y-1 border-t-4 sm:border-t-0 sm:border-l-[5px] ${borderColor} shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-6px_rgba(0,0,0,0.08)] border border-surface-container-highest/10 overflow-hidden flex flex-col justify-between h-full group`}>
+                <div className="flex flex-col h-full">
                     
-                    <div className="absolute top-4 left-4 bg-white/90 backdrop-blur text-primary text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest shadow-sm">
-                        {event.name.split(' ')[0] || 'Sport'}
-                    </div>
-
-                    {!isOpen && !isRegistered && (
-                        <>
-                            <div className="absolute inset-0 bg-primary/20 backdrop-grayscale-[0.5]"></div>
-                            <div className="absolute inset-0 flex items-center justify-center">
-                                <span className="bg-white/95 px-4 py-2 rounded-lg font-black text-primary text-xs uppercase tracking-wider shadow-lg">Registration Closed</span>
-                            </div>
-                        </>
-                    )}
-                </div>
-
-                <div className="p-6 flex-1 flex flex-col">
-                    <div className="flex justify-between items-start mb-3 gap-4">
-                        <h3 className="text-xl font-bold text-on-surface leading-tight font-headline">{event.name}</h3>
-                        <span className={`text-[10px] font-black px-2 py-1 rounded tracking-widest shrink-0 uppercase ${statusBadgeClass}`}>
-                            {statusText}
-                        </span>
-                    </div>
-
-                    {event.champion_name && (
-                        <div className="bg-primary/20 text-on-surface px-3 py-2 rounded-lg font-bold text-sm mb-4 flex items-center gap-2 border border-primary/20 shadow-sm">
-                            <span className="material-symbols-outlined text-[18px] text-primary">emoji_events</span>
-                            Champion: {event.champion_name}
+                    <div className="flex flex-row items-start gap-4 sm:gap-5 mb-5">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-[1.25rem] overflow-hidden shrink-0 shadow-sm border border-outline-variant/10 bg-surface-container-highest relative">
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10 pointer-events-none"></div>
+                            <img 
+                                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" 
+                                alt={event.name} 
+                                src={eventImage} 
+                                onError={(e) => { e.target.onerror = null; e.target.src = DEFAULT_BADMINTON_IMAGE; }} 
+                            />
                         </div>
-                    )}
-                    
-                    <div className="flex flex-col gap-2 text-on-surface-variant text-sm mb-6 font-medium">
-                        <span className="flex items-center gap-2">
-                            <span className="material-symbols-outlined text-[18px] text-primary">schedule</span>
-                            {formatDateTime(event.starts_at)}
-                        </span>
-                        <a href={venueUrl} target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-primary transition-colors">
-                            <span className="material-symbols-outlined text-[18px] text-primary">location_on</span>
-                            {event.venue.name}
-                        </a>
-                        <div className="flex items-center flex-shrink-0">
-                            <div className="flex -space-x-2">
-                                <div className="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-[10px] font-bold text-primary border-2 border-surface-container-lowest shadow-sm ring-1 ring-black/5 z-20">
-                                    <span className="material-symbols-outlined text-[14px]">person</span>
-                                </div>
-                                <div className="min-w-8 h-8 px-2 rounded-full bg-surface-container-high flex items-center justify-center text-[10px] font-bold text-on-surface-variant border-2 border-surface-container-lowest z-10 whitespace-nowrap">
-                                    {event.tournament ? `${event.tournament.entrant_count} entrants` : `+${event.participants_count > 0 ? event.participants_count : 0}`}
-                                </div>
+                        <div className="flex-1 min-w-0">
+                            <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                                <h4 className="text-lg sm:text-xl font-headline font-black text-on-surface leading-tight truncate">{event.name}</h4>
+                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider shrink-0 shadow-sm border ${statusBadgeClass}`}>
+                                    {statusText}
+                                </span>
+                                {event.champion_name && statusText !== 'FINISHED' && (
+                                    <span className="bg-primary/10 text-primary border border-primary/20 text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1 uppercase tracking-wider shrink-0 shadow-sm">
+                                        <span className="material-symbols-outlined text-[12px]">emoji_events</span>
+                                        {event.champion_name}
+                                    </span>
+                                )}
                             </div>
+                            <p className="text-on-surface-variant text-sm font-semibold tracking-wide truncate">{event.recurrence || 'General Division'} • {event.venue.city}</p>
+                            <p className="text-on-surface-variant text-xs font-medium mt-2 flex items-center gap-1.5 bg-surface-container-lowest w-fit px-2 py-1 rounded-lg shadow-sm border border-surface-container-highest/20">
+                                <span className="material-symbols-outlined text-[14px] text-primary">calendar_month</span> {formatDateTime(event.starts_at)}
+                            </p>
                         </div>
                     </div>
-
-                    <div className="mt-auto flex flex-col sm:flex-row items-start sm:items-center justify-between pt-6 border-t border-surface-container gap-4 sm:gap-6">
-                        <div className="flex flex-row sm:flex-col items-center sm:items-start justify-between w-full sm:w-auto sm:gap-3">
+                    
+                    <div className="mt-auto flex flex-col gap-5 border-t border-surface-container/60 pt-5">
+                        <div className="flex flex-row items-center justify-between gap-4 bg-surface-container-lowest/50 p-3 rounded-xl border border-surface-container">
+                            <div className="flex flex-col gap-2 w-full max-w-[140px] sm:max-w-[180px]">
+                                <div className="flex items-center justify-between">
+                                    <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-on-surface-variant">Turnout</span>
+                                    <span className="text-[10px] font-black text-primary">{fillPercentage}%</span>
+                                </div>
+                                <div className="w-full h-1.5 bg-surface-container-highest/30 rounded-full overflow-hidden">
+                                    <div className={`h-full ${progressColor} rounded-full transition-all duration-1000 ease-out`} style={{ width: `${fillPercentage}%` }}></div>
+                                </div>
+                            </div>
+                            <div className="text-sm font-black text-on-surface whitespace-nowrap text-right">
+                                {event.tournament ? (
+                                    <div className="flex flex-col items-end leading-tight">
+                                        <span>{event.tournament.entrant_count}</span>
+                                        <span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Active</span>
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col items-end leading-tight">
+                                        <span>{event.participants_count}</span>
+                                        <span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Joined</span>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        
+                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                             {user && (
-                                <Link
-                                    href={route('events.show', event.id)}
-                                    className="group/link inline-flex items-center gap-1.5 text-[14px] font-bold text-primary hover:text-primary/80 transition-all duration-300 whitespace-nowrap"
-                                >
-                                    <span>View details</span>
+                                <Link href={route('events.show', event.id)} className="flex-1 justify-center px-3 py-2.5 bg-gradient-to-b from-[#002B59] to-[#001f40] hover:from-[#003b7a] hover:to-[#002B59] text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg text-sm flex items-center gap-1.5 whitespace-nowrap active:scale-95">
+                                    <span className="material-symbols-outlined text-[18px]">visibility</span> Details
                                 </Link>
                             )}
-                        </div>
-                        <div className="w-full sm:w-auto flex-shrink-0">
                             {cardAction}
                         </div>
                     </div>
+
                 </div>
             </div>
         );
@@ -492,7 +503,7 @@ export default function Index({ events }) {
                         </div>
                     ) : (
                         <>
-                            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8 mb-8">
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 xl:gap-6 mb-8">
                                 {pagedEvents.map((event, index) => renderEventCard(event, (currentPage - 1) * PAGE_SIZE + index))}
                             </div>
 
